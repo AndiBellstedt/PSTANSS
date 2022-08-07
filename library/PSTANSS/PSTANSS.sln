@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E3E5E5A4-33B8-47CE-9CF7-79CE75B67833}") = "PSTANSS", "PSTANSS\PSTANSS.csproj", "{65334175-8676-4929-8E85-CF9CBAC8973E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65334175-8676-4929-8E85-CF9CBAC8973E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65334175-8676-4929-8E85-CF9CBAC8973E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65334175-8676-4929-8E85-CF9CBAC8973E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65334175-8676-4929-8E85-CF9CBAC8973E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FFEC33C6-061F-4C52-90DF-9A9F38361F41}
+	EndGlobalSection
+EndGlobal
