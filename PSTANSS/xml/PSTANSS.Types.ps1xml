@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Types>
   <!-- Foo.Bar -->
+  <!--
   <Type>
     <Name>Deserialized.Foo.Bar</Name>
     <Members>
@@ -34,4 +35,5 @@
       <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
     </TypeConverter>
   </Type>
+-->
 </Types>
