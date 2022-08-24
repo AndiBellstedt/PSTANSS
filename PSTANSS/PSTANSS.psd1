@@ -3,7 +3,7 @@
     RootModule        = 'PSTANSS.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.0.0'
+    ModuleVersion     = '0.0.1'
 
     # ID used to uniquely identify this module
     GUID              = '1fc30b15-bde9-49ba-8763-d3b5060a99cd'
@@ -33,15 +33,18 @@
     # RequiredAssemblies = @('bin\PSTANSS.dll')
 
     # Type files (.ps1xml) to be loaded when importing this module
-    # TypesToProcess = @('xml\PSTANSS.Types.ps1xml')
+    TypesToProcess = @('xml\PSTANSS.Types.ps1xml')
 
     # Format files (.ps1xml) to be loaded when importing this module
-    # FormatsToProcess = @('xml\PSTANSS.Format.ps1xml')
+    FormatsToProcess = @('xml\PSTANSS.Format.ps1xml')
 
     # Functions to export from this module
     FunctionsToExport = @(
+        'Invoke-TANSSRequest',
         'Connect-TANSS',
-        'New-TANSSTicket'
+        'New-TANSSTicket',
+        'Get-TANSSRegisteredAccessToken',
+        'Register-TANSSAccessToken'
     )
 
     # Cmdlets to export from this module
