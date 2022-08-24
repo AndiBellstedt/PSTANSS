@@ -121,11 +121,11 @@
             UserName          = $userName
             EmployeeId        = $response.content.employeeId
             EmployeeType      = $response.content.employeeType
-            Expire            = ([datetime]'1/1/1970').AddSeconds($response.content.expire)
             AccessToken       = ($response.content.apiKey | ConvertTo-SecureString -AsPlainText -Force)
             RefreshToken      = ($response.content.refresh | ConvertTo-SecureString -AsPlainText -Force)
             Message           = $response.meta.text
             TimeStampCreated  = Get-Date
+            TimeStampExpires  = ([datetime]'1/1/1970').AddSeconds($response.content.expire)
             TimeStampModified = Get-Date
         }
 
