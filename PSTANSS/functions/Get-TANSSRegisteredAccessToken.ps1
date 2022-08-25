@@ -4,7 +4,7 @@
        Get-TANSSRegisteredAccessToken
 
     .DESCRIPTION
-       Retrieve the registered LoginToken for TANSS
+       Retrieve the registered LoginToken for default TANSS connection
 
     .EXAMPLE
        Get-TANSSRegisteredAccessToken
@@ -27,6 +27,7 @@
     begin {}
 
     process {
+        Write-PSFMessage -Level Verbose -Message "Retrieving the registered LoginToken for '$($Token.UserName)' on '$($script:TANSSToken.Server)'" -Tag "AccessToken"
         $script:TANSSToken
     }
 

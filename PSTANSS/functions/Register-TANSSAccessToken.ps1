@@ -26,7 +26,7 @@
     )]
     Param(
         [Parameter(Mandatory = $true)]
-        [psobject]
+        [TANSS.Connection]
         $Token
     )
 
@@ -35,7 +35,7 @@
     process {
 
         if ($pscmdlet.ShouldProcess("AccessToken for $($Token.UserName) on '$($Token.Server)'", "Register")) {
-            Write-PSFMessage -Level Verbose -Message "Register AccessToken for $($Token.UserName) on '$($Token.Server)'" -Tag "AccessToken"
+            Write-PSFMessage -Level Verbose -Message "Registering AccessToken for $($Token.UserName) on '$($Token.Server)'" -Tag "AccessToken"
 
             $script:TANSSToken = $Token
         }
