@@ -15,13 +15,16 @@ $TANSSToken = $Token
 $Token = $TANSSToken
 
 Register-TANSSAccessToken -Token $Token
-Get-TANSSRegisteredAccessToken
+$Token = Get-TANSSRegisteredAccessToken
+$Token | Export-Clixml C:\Administration\TANSStoken.xml
+$Token = Import-Clixml C:\Administration\TANSStoken.xml
 
 
 #region Get a specific ticket
 $ticketID = "122337"
 $ticketID = "114009"
 $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/$ticketID"
+Get-TANSSTicket -Id $ticketID -Verbose
 
 $response.meta.linkedEntities
 $response.meta.linkedEntities.ticketStates
