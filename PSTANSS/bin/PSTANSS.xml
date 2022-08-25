@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PSTANSS</name>
+    </assembly>
+    <members>
+        <member name="T:TANSS.Connection">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Connection.Server">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Connection.UserName">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Connection.EmployeeId">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Connection.EmployeeType">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Connection.AccessToken">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Connection.RefreshToken">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Connection.Message">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Connection.TimeStampCreated">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Connection.TimeStampExpires">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Connection.TimeStampModified">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:TANSS.Connection.IsValid">
+            <summary>
+            Whether the token is valid for connections
+            </summary>
+        </member>
+        <member name="P:TANSS.Connection.AccessTokenLifeTime">
+            <summary>
+            The Lifetime of the Access Token
+            </summary>
+        </member>
+        <member name="P:TANSS.Connection.TimeRemaining">
+            <summary>
+            Remaining time of the token Lifetime
+            </summary>
+        </member>
+        <member name="P:TANSS.Connection.PercentRemaining">
+            <summary>
+            Percentage value of the Tokenlifetime
+            </summary>
+        </member>
+    </members>
+</doc>

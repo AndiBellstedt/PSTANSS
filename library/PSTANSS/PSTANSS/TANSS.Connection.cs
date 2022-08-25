@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Management.Automation;
 using System.Security;
 
 namespace TANSS
@@ -47,17 +46,17 @@ namespace TANSS
         /// <summary>
         ///
         /// </summary>
-        public datetime TimeStampCreated;
+        public DateTime TimeStampCreated;
 
         /// <summary>
         ///
         /// </summary>
-        public datetime TimeStampExpires;
+        public DateTime TimeStampExpires;
 
         /// <summary>
         ///
         /// </summary>
-        public datetime TimeStampModified;
+        public DateTime TimeStampModified;
 
         /// <summary>
         /// Whether the token is valid for connections
