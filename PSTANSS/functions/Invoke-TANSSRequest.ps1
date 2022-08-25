@@ -53,11 +53,12 @@
         [hashtable]
         $Body,
 
-        [psobject]
-        $Token = $script:TANSSToken
+        [TANSS.Connection]
+        $Token
     )
 
     begin {
+        if(-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
     }
 
     process {

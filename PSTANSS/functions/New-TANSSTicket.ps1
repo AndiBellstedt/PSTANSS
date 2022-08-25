@@ -195,15 +195,16 @@
         [string]
         $ApiPath = "backend/api/v1/tickets",
 
-        [psobject]
-        $Token = $script:TANSSToken
+        [TANSS.Connection]
+        $Token
     )
 
     begin {
+        if(-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
     }
 
     process {
-
+        #region rest call prepare
         if ($Deadline) {
             $_deadlineDate = [int][double]::Parse((Get-Date -Date $Deadline -UFormat %s))
         } else {
@@ -257,31 +258,27 @@
             reminder                   = $_reminder
             #subTickets                 = @{}
             tags                       = $Tags
-        } | ConvertTo-Json
-
-        $param = @{
-            "Uri"         = "$($Token.Server)/$($ApiPath)"
-            "Headers"     = @{
-                "apiToken" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR( $script:TANSSToken.AccessToken ))
-            }
-            "Body"        = $body
-            "Method"      = "Post"
-            "ContentType" = 'application/json'
-            "Verbose"     = $false
-            "Debug"       = $false
-            "ErrorAction" = "Stop"
         }
+        #endregion rest call prepare
+
         if ($pscmdlet.ShouldProcess("Ticket with Title '$($Title)' on companyID '$($CompanyId)'", "New")) {
-            $response = Invoke-RestMethod @param
+            Write-PSFMessage -Level Verbose -Message "Creating Ticket with Title '$($Title)' on companyID '$($CompanyId)'" -Tag "Ticket" -Data $body
 
-            Write-PSFMessage -Level Debug -Message "API Response: $($response.meta.text)"
+            $response = Invoke-TANSSRequest -Type POST -ApiPath $ApiPath -Body $body -Token $Token
 
-            $output = $response.content
-            $output.psobject.TypeNames.Insert(0, "TANSS.Ticket")
+            if($response) {
+                Write-PSFMessage -Level Verbose -Message "API Response: $($response.meta.text)"
 
-            $output
+                $output = $response.content
+                $output.psobject.TypeNames.Insert(0, "TANSS.Ticket")
+
+                $output
+            } else {
+                Write-PSFMessage -Level Error -Message "Error creating ticket, no ticket response from API"
+            }
         }
     }
 
-    end {}
+    end {
+    }
 }
