@@ -111,12 +111,12 @@
 
             if(-not $response.content.apiKey) {
                 Stop-PSFFunction -Message "Something went wrong on authenticating user $($userName). Unable login to service '$($Prefix)$($server)'" -Tag "Authentication"
+                throw
             }
         }
 
         Write-PSFMessage -Level System -Message "Creating TANSS.Connection" -Tag "Connection"
-        $token = [PSCustomObject]@{
-            PSTypeName        = "TANSS.Connection"
+        $token = [TANSS.Connection]@{
             Server            = "$($Prefix)$($Server)"
             UserName          = $userName
             EmployeeId        = $response.content.employeeId
