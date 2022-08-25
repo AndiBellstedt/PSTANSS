@@ -7,32 +7,15 @@ Get-Command -Module PSTANSS
 $Server = "tansstest.indasys.de"
 $Server = "tanss.indasys.de"
 $Credential = Get-Credential "andreas.bellstedt"
-$LoginToken = ""
 $Protocol = "HTTPS"
-$ApiPath = "backend/api/v1/user/login"
 
 $token = Connect-TANSS -Server $Server -Credential $Credential -PassThru
+$token = Connect-TANSS -Server $Server -Credential $Credential -LoginToken (Read-Host -Prompt "Enter OTP") -PassThru
 $TANSSToken = $Token
 $Token = $TANSSToken
 
 Register-TANSSAccessToken -Token $Token
 Get-TANSSRegisteredAccessToken
-
-#region invoke query
-$param = @{
-    "Uri"         = "$($Token.Server)/$($ApiPath)"
-    "Headers"     = @{
-        "apiToken" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR( $script:TANSSToken.AccessToken ))
-    }
-    "Body"        = $body
-    "Method"      = $method
-    "ContentType" = 'application/json'
-    "Verbose"     = $false
-    "Debug"       = $false
-    "ErrorAction" = "Stop"
-}
-$response = Invoke-RestMethod @param
-#endregion
 
 
 #region Get a specific ticket
