@@ -95,7 +95,7 @@
                 $userName = $credential.UserName
             }
 
-            Write-PSFMessage -Level Verbose -Message "Authenticate user '$($userName)' to service '$($Prefix)$($server)'" -Tag "Connection"
+            Write-PSFMessage -Level Verbose -Message "Authenticate user '$($userName)' to service '$($Prefix)$($server)'" -Tag "Connection", "Authentication"
             $param = @{
                 "Uri"         = "$($prefix)$($server)/$($ApiPath)"
                 "Headers"     = @{
@@ -109,8 +109,8 @@
             }
             $response = Invoke-RestMethod @param
 
-            if(-not $response.content.apiKey) {
-                Stop-PSFFunction -Message "Something went wrong on authenticating user $($userName). Unable login to service '$($Prefix)$($server)'" -Tag "Authentication"
+            if (-not $response.content.apiKey) {
+                Stop-PSFFunction -Message "Something went wrong on authenticating user $($userName). Unable login to service '$($Prefix)$($server)'" -Tag "Connection", "Authentication"
                 throw
             }
         }
@@ -134,10 +134,12 @@
             $script:TANSSToken = $token
 
             Write-PSFMessage -Level Significant -Message "Connected to service '($($token.Server))' as '$($token.UserName)' as default connection" -Tag "Connection"
-        }
 
-        if ($PassThru) {
-            Write-PSFMessage -Level System -Message "Outputting TANSS.Connection object" -Tag "Connection"
+            if ($PassThru) {
+                Write-PSFMessage -Level System -Message "Outputting TANSS.Connection object" -Tag "Connection"
+                $token
+            }
+        } else {
             $token
         }
     }
