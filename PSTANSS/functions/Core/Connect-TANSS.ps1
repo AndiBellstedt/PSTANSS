@@ -1,28 +1,40 @@
 ﻿function Connect-TANSS {
     <#
     .Synopsis
-       Connect-TANSS
+        Connect-TANSS
 
     .DESCRIPTION
-       Connect to TANSS Service
+        Connect to TANSS Service
 
     .PARAMETER Server
         Name of the service to connect to
+
+    .PARAMETER Credential
+        The credentials to login
+
+    .PARAMETER LoginToken
+        If the user needs an login token, this field must be set as well
+
+    .PARAMETER Protocol
+        Specifies if the connection is done with http or https
+
+    .PARAMETER DoNotRegisterConnection
+        Do not register the connection as default connection
 
     .PARAMETER PassThru
         Outputs the token to the console, even when the register switch is set
 
     .EXAMPLE
-       Connect-TANSS -Server "tanss.company.com" -Credential (Get-Credential "username")
+        Connect-TANSS -Server "tanss.company.com" -Credential (Get-Credential "username")
 
-       Connects to "tanss.company.com" via HTTPS protocol and the specified credentials.
-       Connection will be set as default connection for any further action.
+        Connects to "tanss.company.com" via HTTPS protocol and the specified credentials.
+        Connection will be set as default connection for any further action.
 
     .NOTES
-       Author: Andreas Bellstedt
+        Author: Andreas Bellstedt
 
     .LINK
-       https://github.com/AndiBellstedt
+        https://github.com/AndiBellstedt
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
     [CmdletBinding(
@@ -40,28 +52,22 @@
         [String]
         $Server,
 
-        # The credentials to login
-        [Parameter(Mandatory = $true, ParameterSetName = 'Credential')]
+        [Parameter(
+            Mandatory = $true,
+            ParameterSetName = 'Credential'
+        )]
         [System.Management.Automation.PSCredential]
         $Credential,
 
-        # If the user needs an login token, this field must be set as well
         [Parameter(ParameterSetName = 'Credential')]
         [string]
         $LoginToken,
 
-        # Specifies if the connection is done with http or https
         [ValidateSet("HTTP", "HTTPS")]
         [ValidateNotNullOrEmpty()]
         [String]
         $Protocol = "HTTPS",
 
-        # path for API
-        [ValidateNotNullOrEmpty()]
-        [String]
-        $ApiPath = "backend/api/v1/user/login",
-
-        # Do not register the connection as default connection
         [Alias('NoRegistration')]
         [Switch]
         $DoNotRegisterConnection,
@@ -71,8 +77,10 @@
     )
 
     begin {
-        $ApiPath = $ApiPath.Trim("/")
+        $ApiPath = Format-ApiPath -Path "backend/api/v1/user/login"
+    }
 
+    process {
         if ($protocol -eq 'HTTP') {
             Write-PSFMessage -Level Important -Message "Unsecure $($protocol) connection  with possible security risk detected. Please consider switch to HTTPS!" -Tag "Connection"
             $prefix = 'http://'
@@ -80,9 +88,7 @@
             Write-PSFMessage -Level System -Message "Using secure $($protocol) connection." -Tag "Connection"
             $prefix = 'https://'
         }
-    }
 
-    process {
         if ($Server -match '//') {
             if ($Server -match '\/\/(?<Server>(\w+|\.)+)') { $Server = $Matches["Server"] }
             Remove-Variable -Name Matches -Force -Verbose:$false -Debug:$false -Confirm:$false
@@ -97,20 +103,37 @@
 
             Write-PSFMessage -Level Verbose -Message "Authenticate user '$($userName)' to service '$($Prefix)$($server)'" -Tag "Connection", "Authentication"
             $param = @{
-                "Uri"         = "$($prefix)$($server)/$($ApiPath)"
-                "Headers"     = @{
+                "Uri"           = "$($prefix)$($server)/$($ApiPath)"
+                "Headers"       = @{
                     "user"       = $userName
                     "password"   = $credential.GetNetworkCredential().Password
                     "logintoken" = "$($LoginToken)"
                 }
-                "Verbose"     = $false
-                "Debug"       = $false
-                "ErrorAction" = "Stop"
+                "Verbose"       = $false
+                "Debug"         = $false
+                "ErrorAction"   = "Stop"
+                "ErrorVariable" = "invokeError"
             }
-            $response = Invoke-RestMethod @param
+            try {
+                $response = Invoke-RestMethod @param
+            } catch {
+                Stop-PSFFunction -Message "Error invoking rest call on service '$($Prefix)$($server)'. $($invokeError)" -Tag "Connection", "Authentication"
+                throw
+            }
+
+            if ($response.meta.text -like "Unsuccesful login attempt") {
+                $msgText = "$($response.meta.text) to service '$($Prefix)$($server)'. Maybe wrong password"
+                if (-not $LoginToken) {
+                    $msgText = "$($msgText) or LoginToken (OTP) is needed"
+                } else {
+                    $msgText = "$($msgText) or LoginToken (OTP) wrong/expired"
+                }
+                Stop-PSFFunction -Message $msgText -Tag "Connection", "Authentication"
+                throw
+            }
 
             if (-not $response.content.apiKey) {
-                Stop-PSFFunction -Message "Something went wrong on authenticating user $($userName). Unable login to service '$($Prefix)$($server)'" -Tag "Connection", "Authentication"
+                Stop-PSFFunction -Message "Something went wrong on authenticating user $($userName). No apiKey found in response. Unable login to service '$($Prefix)$($server)'" -Tag "Connection", "Authentication"
                 throw
             }
         }
@@ -131,7 +154,7 @@
 
         if (-not $DoNotRegisterConnection) {
             # Make the connection the default connection for further commands
-            $script:TANSSToken = $token
+            Register-TANSSAccessToken -Token $token
 
             Write-PSFMessage -Level Significant -Message "Connected to service '($($token.Server))' as '$($token.UserName)' as default connection" -Tag "Connection"
 
@@ -144,5 +167,6 @@
         }
     }
 
-    end {}
+    end {
+    }
 }

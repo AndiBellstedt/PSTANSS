@@ -59,6 +59,7 @@
 
     begin {
         if(-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
+        $ApiPath = Format-ApiPath -Path $ApiPath
     }
 
     process {

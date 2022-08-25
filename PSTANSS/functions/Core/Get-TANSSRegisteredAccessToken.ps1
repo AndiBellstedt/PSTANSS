@@ -27,7 +27,7 @@
     begin {}
 
     process {
-        Write-PSFMessage -Level Verbose -Message "Retrieving the registered LoginToken for '$($Token.UserName)' on '$($script:TANSSToken.Server)'" -Tag "AccessToken"
+        Write-PSFMessage -Level Verbose -Message "Retrieving the registered LoginToken for '$($script:TANSSToken.UserName)' on '$($script:TANSSToken.Server)'" -Tag "AccessToken"
         $script:TANSSToken
     }
 

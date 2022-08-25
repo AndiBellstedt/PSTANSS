@@ -191,16 +191,13 @@
         [string[]]
         $Tags,
 
-        # path for API
-        [string]
-        $ApiPath = "backend/api/v1/tickets",
-
         [TANSS.Connection]
         $Token
     )
 
     begin {
         if(-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
+        $apiPath = Format-ApiPath -Path "$($apiPrefix)api/v1/tickets"
     }
 
     process {
@@ -264,7 +261,7 @@
         if ($pscmdlet.ShouldProcess("Ticket with Title '$($Title)' on companyID '$($CompanyId)'", "New")) {
             Write-PSFMessage -Level Verbose -Message "Creating Ticket with Title '$($Title)' on companyID '$($CompanyId)'" -Tag "Ticket" -Data $body
 
-            $response = Invoke-TANSSRequest -Type POST -ApiPath $ApiPath -Body $body -Token $Token
+            $response = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token
 
             if($response) {
                 Write-PSFMessage -Level Verbose -Message "API Response: $($response.meta.text)"
