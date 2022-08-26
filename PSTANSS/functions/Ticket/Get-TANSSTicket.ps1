@@ -184,19 +184,34 @@
         }
 
         # Do the constructed query, as long, as variable apiPath has a value
-        if($apiPath) {
+        if ($apiPath) {
             $response += Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token
         }
 
-        if($response) {
+        if ($response) {
             Write-PSFMessage -Level Verbose -Message "Found $(($response.content).count) tickets"
 
+            # Check cache validation runspace
+            if ([TANSS.Cache]::StopValidationRunspace -eq $true) {
+                [TANSS.Cache]::StopValidationRunspace = $true
+                Get-PSFRunspace -Name "TANSS.LookupValidation" | Stop-PSFRunspace
+                [TANSS.Cache]::StopValidationRunspace = $false
+                Start-PSFRunspace -Name "TANSS.LookupValidation"
+            }
+
             # Push meta to cache runspace
-            foreach($item in $response) {
-                #ToDo runspace
+            foreach ($responseItem in $response) {
+                # Push meta information to runspace cache
+                [TANSS.Cache]::Data.Add((New-Guid), $responseItem.meta)
 
                 # Output result
-                $response
+                foreach($ticket in $responseItem.content) {
+                    [TANSS.Ticket]@{
+                        BaseObject = $ticket
+                        Id = $ticket.id
+                    }
+                }
+
             }
         } else {
             Write-PSFMessage -Level Warning -Message "No tickets found." -Tag "Ticket"

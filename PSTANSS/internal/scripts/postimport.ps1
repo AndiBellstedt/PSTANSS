@@ -24,3 +24,6 @@ $moduleRoot = Split-Path (Split-Path $PSScriptRoot)
 
 # Load License
 "$moduleRoot\internal\scripts\license.ps1"
+
+
+"$moduleRoot\internal\scripts\Register-LookupRunspace.ps1"
