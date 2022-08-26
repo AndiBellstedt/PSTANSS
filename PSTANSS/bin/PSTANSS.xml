@@ -4,6 +4,21 @@
         <name>PSTANSS</name>
     </assembly>
     <members>
+        <member name="T:TANSS.Cache">
+            <summary>
+            Hashtables for cache data to exchange content between runspaces
+            </summary>
+        </member>
+        <member name="F:TANSS.Cache.Data">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TANSS.Cache.StopValidationRunspace">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:TANSS.Connection">
              <summary>
             
@@ -78,6 +93,93 @@
             <summary>
             Percentage value of the Tokenlifetime
             </summary>
+        </member>
+        <member name="M:TANSS.Connection.ToString">
+            <summary>
+            Overrides the default ToString() method
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:TANSS.Lookup">
+            <summary>
+            Hashtables for lookups of linked data
+            </summary>
+        </member>
+        <member name="F:TANSS.Lookup.Companies">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TANSS.Lookup.Tickets">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TANSS.Lookup.TicketStates">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TANSS.Lookup.TicketTypes">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TANSS.Lookup.Departments">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TANSS.Lookup.Employees">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TANSS.Lookup.Contracts">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TANSS.Lookup.Phases">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TANSS.Lookup.CostCenters">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TANSS.Lookup.OrderBys">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TANSS.Lookup.Tags">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TANSS.Ticket">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Ticket.BaseObject">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Ticket.Id">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:TANSS.Ticket.ToString">
+            <summary>
+            Overrides the default ToString() method
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Security;
 
-namespace TANSS
-{
+namespace TANSS {
     /// <summary>
     ///
     /// </summary>
-    public class Connection
-    {
+    [Serializable]
+    public class Connection {
+        #region Properties
         /// <summary>
         ///
         /// </summary>
@@ -63,11 +63,11 @@ namespace TANSS
         /// </summary>
         public bool IsValid {
             get {
-                if(TimeStampExpires < DateTime.Now)
+                if (TimeStampExpires < DateTime.Now)
                     return false;
-                if(TimeStampExpires == null)
+                if (TimeStampExpires == null)
                     return false;
-                if(AccessToken == null)
+                if (AccessToken == null)
                     return false;
                 return true;
             }
@@ -93,7 +93,7 @@ namespace TANSS
         /// </summary>
         public TimeSpan TimeRemaining {
             get {
-                if(TimeStampExpires > DateTime.Now) {
+                if (TimeStampExpires > DateTime.Now) {
                     TimeSpan timeSpan = TimeStampExpires - DateTime.Now;
                     return TimeSpan.Parse(timeSpan.ToString(@"dd\.hh\:mm\:ss"));
                 } else {
@@ -111,7 +111,7 @@ namespace TANSS
         /// </summary>
         public Int16 PercentRemaining {
             get {
-                if(TimeStampExpires > DateTime.Now) {
+                if (TimeStampExpires > DateTime.Now) {
                     Int16 percentage = (Int16)(Math.Round(TimeRemaining.TotalMilliseconds / AccessTokenLifeTime.TotalMilliseconds * 100, 0));
                     return percentage;
                 } else {
@@ -123,6 +123,32 @@ namespace TANSS
             }
         }
 
+        private string _returnValue;
 
+        #endregion Properties
+
+
+        #region Statics & Stuff
+        /// <summary>
+        /// Overrides the default ToString() method
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString () {
+            if (!string.IsNullOrEmpty(Server)) {
+                _returnValue = Server;
+                if (!string.IsNullOrEmpty(UserName)) {
+                    _returnValue = string.Concat(_returnValue, " | ", UserName);
+
+                    if(! string.IsNullOrEmpty( Convert.ToString(TimeRemaining) )) {
+                        _returnValue = string.Concat(_returnValue, " | ", Convert.ToString(TimeRemaining));
+                    }
+                }
+            } else {
+                _returnValue = this.GetType().Name;
+            }
+
+            return _returnValue;
+        }
+        #endregion Statics & Stuff
     }
 }
