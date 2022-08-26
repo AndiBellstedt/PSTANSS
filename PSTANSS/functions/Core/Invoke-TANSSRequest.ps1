@@ -88,7 +88,7 @@
 
             try {
                 $response = Invoke-RestMethod @param
-                Write-PSFMessage -Level Verbose -Message "API Response: $($response.meta.text)"
+                Write-PSFMessage -Level System -Message "API Response: $($response.meta.text)"
 
                 $response
                 <#
