@@ -3,10 +3,6 @@ break
 
 Import-Module .\PSTANSS\PSTANSS\PSTANSS.psd1 -Force
 Get-Command -Module PSTANSS
-Get-PSFRunspace
-
-[TANSS.Cache]::StopValidationRunspace = $false
-[TANSS.Cache]::StopValidationRunspace = $true
 
 $Server = "tansstest.indasys.de"
 $Server = "tanss.indasys.de"
@@ -24,6 +20,9 @@ $Token = Import-Clixml C:\Administration\TANSStoken.xml
 
 
 #region lookups
+[TANSS.Cache]::StopValidationRunspace = $false
+[TANSS.Cache]::StopValidationRunspace = $true
+Get-PSFRunspace
 
 [TANSS.Lookup]::Companies
 
