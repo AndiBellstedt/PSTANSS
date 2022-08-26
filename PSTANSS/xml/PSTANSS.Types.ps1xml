@@ -1,39 +1,376 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Types>
-  <!-- Foo.Bar -->
-  <!--
-  <Type>
-    <Name>Deserialized.Foo.Bar</Name>
-    <Members>
-      <MemberSet>
-        <Name>PSStandardMembers</Name>
+    <!-- TANSS.Ticket -->
+    <Type>
+        <Name>Deserialized.TANSS.Ticket</Name>
         <Members>
-          <NoteProperty>
-            <Name>
-              TargetTypeForDeserialization
-            </Name>
-            <Value>
-              Foo.Bar
-            </Value>
-          </NoteProperty>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                TANSS.Ticket
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
         </Members>
-      </MemberSet>
-    </Members>
-  </Type>
-  <Type>
-    <Name>Foo.Bar</Name>
-    <Members>
-      <CodeProperty IsHidden="true">
-        <Name>SerializationData</Name>
-        <GetCodeReference>
-          <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
-          <MethodName>GetSerializationData</MethodName>
-        </GetCodeReference>
-      </CodeProperty>
-    </Members>
-    <TypeConverter>
-      <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
-    </TypeConverter>
-  </Type>
--->
+    </Type>
+    <Type>
+        <Name>TANSS.Ticket</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>CompanyId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.companyId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Company</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Companies["$($this.BaseObject.companyId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Title</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.title
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.title = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Description</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.content
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ClientId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.remitterId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Client</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.remitterId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ExternalTicketId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.extTicketId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>DateCreated</Name>
+                <GetScriptBlock>
+                    ([datetime]'1/1/1970').AddSeconds($this.BaseObject.creationDate)
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeIdAssigned</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.assignedToEmployeeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeAssigned</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.assignedToEmployeeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>DepartmentId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.assignedToDepartmentId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Department</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Departments["$($this.BaseObject.assignedToDepartmentId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>StatusId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.statusId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Status</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::TicketStates["$($this.BaseObject.statusId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>LinkTypeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.linkTypeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <!---
+            <ScriptProperty>
+                <Name>LinkTyp</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::LinkTypes["$($this.BaseObject.linkTypeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+            -->
+
+            <ScriptProperty>
+                <Name>DateDeadline</Name>
+                <GetScriptBlock>
+                    if($this.BaseObject.deadlineDate -gt 0) {
+                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.deadlineDate)
+                    } else {
+                        $null
+                    }
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsProject</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.project )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ProjectId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.projectId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeIdCreator</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.createdEmployeeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeCreator</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.createdEmployeeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>TypeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.typeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Type</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::TicketTypes["$($this.BaseObject.typeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsRepairTicket</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.repair )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>DateReminder</Name>
+                <GetScriptBlock>
+                    if($this.BaseObject.reminder -gt 0) {
+                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.reminder)
+                    } else {
+                        $null
+                    }
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ResponseTime</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.reactionHours
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>DateDueDate</Name>
+                <GetScriptBlock>
+                    if($this.BaseObject.dueDate -gt 0) {
+                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.dueDate)
+                    } else {
+                        $null
+                    }
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>DateResubmission</Name>
+                <GetScriptBlock>
+                    if($this.BaseObject.resubmissionDate -gt 0) {
+                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.resubmissionDate)
+                    } else {
+                        $null
+                    }
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>resubmissionText</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.resubmissionText
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>PhaseId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.phaseId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Phase</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Phases["$($this.BaseObject.phaseId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EstimatedMinutes</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.estimatedMinutes
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>TicketAdminFlag</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.localTicketAdminFlag
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>OrderNumber</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.orderNumber
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeTicketAdminId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.localTicketAdminEmployeeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeTicketAdmin</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.localTicketAdminEmployeeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ContractId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.contractId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Contract</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Contracts["$($this.BaseObject.contractId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>DateLastChange</Name>
+                <GetScriptBlock>
+                    if($this.BaseObject.lastStateChangeDate -gt 0) {
+                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.lastStateChangeDate)
+                    } else {
+                        $null
+                    }
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeelastStateChangeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.lastStateChangeEmployeeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeelastStateChange</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.lastStateChangeEmployeeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>DateModified</Name>
+                <GetScriptBlock>
+                    if($this.BaseObject.modifiedTime -gt 0) {
+                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.modifiedTime)
+                    } else {
+                        $null
+                    }
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeModifiedId</Name>
+                <GetScriptBlock>
+                        $this.BaseObject.modifiedBy
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeModified</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.modifiedBy)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
 </Types>
