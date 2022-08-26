@@ -1,13 +1,16 @@
 ﻿# Dev PSTANSS
 break
 
-Import-Module .\PSTANSS.psd1 -Force
+Import-Module .\PSTANSS\PSTANSS\PSTANSS.psd1 -Force
 Get-Command -Module PSTANSS
+Get-PSFRunspace
+
+[TANSS.Cache]::StopValidationRunspace = $false
+[TANSS.Cache]::StopValidationRunspace = $true
 
 $Server = "tansstest.indasys.de"
 $Server = "tanss.indasys.de"
 $Credential = Get-Credential "andreas.bellstedt"
-$Protocol = "HTTPS"
 
 $token = Connect-TANSS -Server $Server -Credential $Credential -PassThru
 $token = Connect-TANSS -Server $Server -Credential $Credential -LoginToken (Read-Host -Prompt "Enter OTP") -PassThru
@@ -20,11 +23,37 @@ $Token | Export-Clixml C:\Administration\TANSStoken.xml
 $Token = Import-Clixml C:\Administration\TANSStoken.xml
 
 
+#region lookups
+
+[TANSS.Lookup]::Companies
+
+[TANSS.Lookup]::Contracts
+
+[TANSS.Lookup]::CostCenters
+
+[TANSS.Lookup]::Departments
+
+[TANSS.Lookup]::Employees
+
+[TANSS.Lookup]::OrderBys
+
+[TANSS.Lookup]::Phases
+
+[TANSS.Lookup]::Tags
+
+[TANSS.Lookup]::Tickets
+
+[TANSS.Lookup]::TicketStates
+
+[TANSS.Lookup]::TicketTypes
+#endregion lookups
+
+
 #region Get a specific ticket
 $ticketID = "122337"
 $ticketID = "114009"
 $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/$ticketID"
-Get-TANSSTicket -Id $ticketID -Verbose
+$result = Get-TANSSTicket -Id $ticketID -Verbose
 
 $response.meta.linkedEntities
 $response.meta.linkedEntities.ticketStates
@@ -44,6 +73,11 @@ $response.content.mails | Format-Table
 #region Get a list of company tickets
 $companyID = "100000"
 $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/company/$companyID" -Verbose
+$result = Get-TANSSTicket -CompanyId $companyID -Verbose
+
+$result | Export-Clixml C:\Administration\Tickets.xml
+$result = Import-Clixml C:\Administration\Tickets.xml
+$response = $result
 
 $response
 $response.meta | Format-List
