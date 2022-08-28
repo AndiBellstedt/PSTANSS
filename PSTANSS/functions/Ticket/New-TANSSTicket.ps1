@@ -30,30 +30,43 @@
        https://github.com/AndiBellstedt
     #>
     [CmdletBinding(
-        DefaultParameterSetName = 'Credential',
+        DefaultParameterSetName = 'UserFriendly',
         SupportsShouldProcess = $true,
         ConfirmImpact = 'Medium'
     )]
-    #[Parameter(ParameterSetName = 'ByCompany', ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, Mandatory = $true, Position = 0)]
     param (
         # Company id of the ticket. Name is stored in the "linked entities" - "companies". Can only be set if the user has access to the company
-        [Parameter(
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
-        )]
+        [Parameter(ParameterSetName="ApiNative")]
         [int]
         $CompanyId,
 
+        # Company name where the ticket should create for. Can only be set if the user has access to the company
+        [Parameter(ParameterSetName="Userfriendly")]
+        [String]
+        $Company,
+
         # If the ticket has a remitter, the id goes here. Name is stored in the "linked entities" - "employees"
+        [Parameter(ParameterSetName="ApiNative")]
+        [Alias('ClientId')]
         [int]
         $RemitterId,
+
+        # If the ticket has a remitter/client, the name of the client
+        [Parameter(ParameterSetName="Userfriendly")]
+        [String]
+        $Client,
 
         # gives infos about how the remitter gave the order. Infos are stored in the "linked entities" - "orderBys"
         [int]
         $OrderById,
 
         # The title / subject of the ticket
-        [Parameter(Mandatory = $true)]
+        [Parameter(
+            Mandatory = $true,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+
+        )]
         [string]
         $Title,
 
@@ -65,25 +78,49 @@
         # External ticket id (optional)
         [Alias('extTicketId')]
         [string]
-        $ExternalTicket,
+        $ExternalTicketId,
 
         # id of employee which ticket is assigned to. Name is stored in "linked entities" - "employees"
+        [Parameter(ParameterSetName="ApiNative")]
         [Alias('assignedToEmployeeId')]
         [int]
         $EmployeeIdAssigned,
 
-        # id of department which ticket is assigned to. Name is stored in "linked entities" - "departments"
+        # Name of the employee the ticket is assigned to
+        [Parameter(ParameterSetName="Userfriendly")]
+        [String]
+        $EmployeeAssigned,
+
+        # id of department the ticket is assigned to. Name is stored in "linked entities" - "departments"
+        [Parameter(ParameterSetName="ApiNative")]
         [Alias('assignedToDepartmentId')]
         [int]
         $DepartmentIdAssigned,
 
+        # Name of the department the ticket is assigned to
+        [Parameter(ParameterSetName="Userfriendly")]
+        [String]
+        $Department,
+
         # id of the ticket state. Name is give in "linked entities" - "ticketStates"
+        [Parameter(ParameterSetName="ApiNative")]
         [int]
         $StatusId,
 
+        # The name of the ticket status
+        [Parameter(ParameterSetName="Userfriendly")]
+        [String]
+        $Status,
+
         # id of the ticket type. Name is give in "linked entities" - "ticketTypes"
+        [Parameter(ParameterSetName="ApiNative")]
         [int]
         $TypeId,
+
+        # The name of the ticket type
+        [Parameter(ParameterSetName="Userfriendly")]
+        [String]
+        $Type,
 
         # if ticket is assigned to device / employee, linktype is given here
         [Alias('LinkTypeId')]
@@ -105,8 +142,14 @@
         $ProjectId,
 
         # if the ticket is assignet to a project phase. The name of the phase is stored in the "linked entities" - "phases"
+        [Parameter(ParameterSetName="ApiNative")]
         [Int]
         $PhaseId,
+
+        # if the ticket is assignet to a project phase, the name of the phase
+        [Parameter(ParameterSetName="Userfriendly")]
+        [String]
+        $Phase,
 
         # if true, this ticket is a "repair ticket"
         [Alias('repair')]
@@ -132,11 +175,9 @@
         [string]
         $InstallationFeeDriveMode = "NONE",
 
-
         #Amount for the installation fee
         [int]
         $InstallationFeeAmount,
-
 
         # If true, the ticket shall be billed separately
         [bool]
@@ -174,10 +215,16 @@
         [string]
         $LocalTicketAdminFlag = "NONE",
 
-
         # if the ticket is assigned to a local ticket admin, this represents the employee (local ticket admin) who is assigned for this ticket
+        [Parameter(ParameterSetName="ApiNative")]
         [int]
         $LocalTicketAdminEmployeeId,
+
+        # if the ticket is assigned to a local ticket admin, this represents the name of the employee (local ticket admin) who is assigned for this ticket
+        [Parameter(ParameterSetName="Userfriendly")]
+        [ValidateNotNullOrEmpty]
+        [String]
+        $EmployeeTicketAdmin,
 
         # Sets the order number
         [string]
@@ -198,6 +245,66 @@
     begin {
         if(-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
         $apiPath = Format-ApiPath -Path "$($apiPrefix)api/v1/tickets"
+
+        if($EmployeeTicketAdmin) {
+            $LocalTicketAdminEmployeeId = ConvertFrom-NameCache -Name $EmployeeTicketAdmin -Type "Employees"
+            if(-not $LocalTicketAdminEmployeeId) {
+                Write-PSFMessage -Level Warning -Message "No Id for employee '$($EmployeeTicketAdmin)' found. Ticket will be created with blank value on TicketAdminEmployee"
+                #todo implement API call for employee
+            }
+        }
+
+        if($EmployeeAssigned) {
+            $EmployeeIdAssigned = ConvertFrom-NameCache -Name $EmployeeAssigned -Type "Employees"
+            if(-not $EmployeeIdAssigned) {
+                Write-PSFMessage -Level Warning -Message "No Id for employee '$($EmployeeAssigned)' found. Ticket will be created with blank value on EmployeeIdAssigned"
+                #todo implement API call for employee
+            }
+        }
+
+        if($Client) {
+            $RemitterId = ConvertFrom-NameCache -Name $Client -Type "Employees"
+            if(-not $RemitterId) {
+                Write-PSFMessage -Level Warning -Message "No Id for client '$($Client)' found. Ticket will be created with blank value on RemitterId"
+                #todo implement API call for employee
+            }
+        }
+
+        if($Phase) {
+            $PhaseId = ConvertFrom-NameCache -Name $Phase -Type "Phases"
+            if(-not $PhaseId) {
+                Write-PSFMessage -Level Warning -Message "No Id for phase '$($Phase)' found. Ticket will be created with blank value on Phase"
+            }
+        }
+
+        if($Type) {
+            $TypeId = ConvertFrom-NameCache -Name $Type -Type "TicketTypes"
+            if(-not $TypeId) {
+                Write-PSFMessage -Level Warning -Message "No Id for ticket type '$($Type)' found. Ticket will be created with blank value on TicketType"
+            }
+        }
+
+        if($Status) {
+            $StatusId = ConvertFrom-NameCache -Name $Status -Type "TicketStates"
+            if(-not $StatusId) {
+                Write-PSFMessage -Level Warning -Message "No Id for ticket state '$($Status)' found. Ticket will be created with blank value on TicketStatus"
+            }
+        }
+
+        if($Department) {
+            $DepartmentIdAssigned = ConvertFrom-NameCache -Name $Department -Type "Department"
+            if(-not $DepartmentIdAssigned) {
+                Write-PSFMessage -Level Warning -Message "No Id for department '$($Department)' found. Ticket will be created with blank value on departmentIdAssigned"
+            }
+        }
+
+        if($Company) {
+            $CompanyId = ConvertFrom-NameCache -Name $Company -Type "Companies"
+            if(-not $CompanyId) {
+                Write-PSFMessage -Level Warning -Message "No Id for company '$($Company)' found. Ticket will be created with blank value on CompanyId"
+            }
+        }
+
     }
 
     process {
@@ -226,7 +333,7 @@
             orderById                  = $OrderById
             title                      = "$($Title)"
             content                    = "$($Description)"
-            extTicketId                = "$($ExternalTicket)"
+            extTicketId                = "$($ExternalTicketId)"
             assignedToEmployeeId       = $EmployeeIdAssigned
             assignedToDepartmentId     = $DepartmentIdAssigned
             statusId                   = $StatusId
