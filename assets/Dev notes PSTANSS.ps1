@@ -173,3 +173,30 @@ $response.meta.properties.extras
 
 $response.content.companies | Format-Table
 #endregion
+
+
+
+#region Tickethandling
+$i = 120
+$x = [TANSS.Ticket]@{
+    BaseObject = $result.content[$i]
+    Id         = $result.content[$i].id
+}
+$x | Format-List
+$x | Format-List *
+$x | Format-List emp*
+$x | Format-Table
+$x | Out-GridView
+$x.BaseObject.title
+$x.Title
+
+$y = foreach ($ticket in $responseItem.content) {
+    [TANSS.Ticket]@{
+        BaseObject = $ticket
+        Id         = $ticket.id
+    }
+}
+$y | Out-GridView
+
+
+#endregion Tickethandling
