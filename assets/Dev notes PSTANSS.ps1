@@ -165,7 +165,7 @@ $body = @{
     areas = @("COMPANY")
     query = "ask"
 }
-$response = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/search" -Verbose
+$response = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/search" -Body $body -Verbose
 
 
 $response.meta.text
