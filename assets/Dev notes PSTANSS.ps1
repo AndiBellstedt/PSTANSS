@@ -7,6 +7,9 @@ Get-Command -Module PSTANSS
 $Server = "tansstest.indasys.de"
 $Server = "tanss.indasys.de"
 $Credential = Get-Credential "andreas.bellstedt"
+$Credential = Get-Credential "admin"
+$Credential = Import-Clixml .\tanns.xml
+$Credential = Import-Clixml .\tannstest.xml
 
 $token = Connect-TANSS -Server $Server -Credential $Credential -PassThru
 $token = Connect-TANSS -Server $Server -Credential $Credential -LoginToken (Read-Host -Prompt "Enter OTP") -PassThru
@@ -15,8 +18,8 @@ $Token = $TANSSToken
 
 Register-TANSSAccessToken -Token $Token
 $Token = Get-TANSSRegisteredAccessToken
-$Token | Export-Clixml C:\Administration\TANSStoken.xml
-$Token = Import-Clixml C:\Administration\TANSStoken.xml
+$Token | Export-Clixml .\TANSStoken.xml
+$Token = Import-Clixml .\TANSStoken.xml
 
 
 #region lookups
@@ -47,6 +50,20 @@ Get-PSFRunspace
 [TANSS.Lookup]::TicketTypes
 #endregion lookups
 
+
+#region Get-TANSSTicket
+Get-TANSSTicket -Id 1
+Get-TANSSTicket -CompanyId 100000
+Get-TANSSTicket -MyTickets
+Get-TANSSTicket -NotAssigned
+Get-TANSSTicket -AllTechnician
+Get-TANSSTicket -RepairTickets
+Get-TANSSTicket -NotIdentified
+Get-TANSSTicket -Projects
+Get-TANSSTicket -LocalTicketAdmin
+Get-TANSSTicket -TicketWithTechnicanRole
+
+#endregion Get-TANSSTicket
 
 #region Get a specific ticket
 $ticketID = "122337"
@@ -106,7 +123,9 @@ $response.content | Where-Object companyid -like "1552"
 
 #region Get tickets from all technician
 $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/technician" -Verbose
+$response = Get-TANSSTicket -AllTechnician
 
+$response
 $response.meta | Format-List
 $response.meta.properties | Format-List
 $response.meta.properties.extras
@@ -198,5 +217,8 @@ $y = foreach ($ticket in $responseItem.content) {
 }
 $y | Out-GridView
 
-
+$result = New-TANSSTicket -Company 'indasys IT Systemhaus AG - TESTSYSTEM' -Client 'indasys TanssTest Admin' -Title "Überraschung"
+$result
 #endregion Tickethandling
+
+
