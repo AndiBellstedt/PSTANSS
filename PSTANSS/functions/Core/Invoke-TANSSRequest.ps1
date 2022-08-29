@@ -76,7 +76,7 @@
             }
             "Body"          = $bodyData
             "Method"        = $Type
-            "ContentType"   = 'application/json'
+            "ContentType"   = 'application/json; charset=UTF-8'
             "Verbose"       = $false
             "Debug"         = $false
             "ErrorAction"   = "Stop"
