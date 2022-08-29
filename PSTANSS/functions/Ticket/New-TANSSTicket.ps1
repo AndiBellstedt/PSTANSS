@@ -57,8 +57,14 @@
         $Client,
 
         # gives infos about how the remitter gave the order. Infos are stored in the "linked entities" - "orderBys"
+        [Parameter(ParameterSetName="ApiNative")]
         [int]
         $OrderById,
+
+        # gives infos about how the Client gave the order.
+        [Parameter(ParameterSetName = "UserFriendly")]
+        [string]
+        $OrderBy,
 
         # The title / subject of the ticket
         [Parameter(
@@ -284,6 +290,13 @@
             }
         }
 
+        if ($OrderBy) {
+            $OrderById = ConvertFrom-NameCache -Name $OrderBy -Type "OrderBys"
+            if (-not $OrderById) {
+                Write-PSFMessage -Level Warning -Message "No Id for OrderBy type '$($OrderBy)' found. Ticket will be created with blank value on OrderById"
+            }
+        }
+
         if($Status) {
             $StatusId = ConvertFrom-NameCache -Name $Status -Type "TicketStates"
             if(-not $StatusId) {
@@ -327,6 +340,13 @@
             $_reminder = 0
         }
 
+        if ($DueDate) {
+            $_dueDate = [int][double]::Parse((Get-Date -Date $DueDate -UFormat %s))
+        } else {
+            $_dueDate = 0
+        }
+
+
         $body = [ordered]@{
             companyId                  = $CompanyId
             remitterId                 = $RemitterId
@@ -344,7 +364,7 @@
             projectId                  = $ProjectId
             phaseId                    = $PhaseId
             repair                     = $IsRepair
-            dueDate                    = $DueDate
+            dueDate                    = $_dueDate
             attention                  = $Attention
             installationFee            = $InstallationFee
             installationFeeDriveMode   = $InstallationFeeDriveMode
@@ -365,18 +385,18 @@
         }
         #endregion rest call prepare
 
-        if ($pscmdlet.ShouldProcess("Ticket with Title '$($Title)' on companyID '$($CompanyId)'", "New")) {
-            Write-PSFMessage -Level Verbose -Message "Creating Ticket with Title '$($Title)' on companyID '$($CompanyId)'" -Tag "Ticket" -Data $body
+        if ($pscmdlet.ShouldProcess("Ticket with title '$($Title)' on companyID '$($CompanyId)'", "New")) {
+            Write-PSFMessage -Level Verbose -Message "Creating Ticket with title '$($Title)' on companyID '$($CompanyId)'" -Tag "Ticket" -Data $body
 
             $response = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token
 
             if($response) {
                 Write-PSFMessage -Level Verbose -Message "API Response: $($response.meta.text)"
 
-                $output = $response.content
-                $output.psobject.TypeNames.Insert(0, "TANSS.Ticket")
-
-                $output
+                [TANSS.Ticket]@{
+                    BaseObject = $response.content
+                    Id         = $response.content.id
+                }
             } else {
                 Write-PSFMessage -Level Error -Message "Error creating ticket, no ticket response from API"
             }
