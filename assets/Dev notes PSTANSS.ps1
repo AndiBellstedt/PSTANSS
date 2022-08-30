@@ -68,6 +68,7 @@ Get-TANSSTicket -TicketWithTechnicanRole
 #region Get a specific ticket
 $ticketID = "122337"
 $ticketID = "114009"
+$ticketID = "82"
 $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/$ticketID"
 $result = Get-TANSSTicket -Id $ticketID -Verbose
 
@@ -217,8 +218,18 @@ $y = foreach ($ticket in $responseItem.content) {
 }
 $y | Out-GridView
 
-$result = New-TANSSTicket -Company 'indasys IT Systemhaus AG - TESTSYSTEM' -Client 'indasys TanssTest Admin' -Title "Überraschung"
-$result
+$ticket = New-TANSSTicket -Company 'indasys IT Systemhaus AG - TESTSYSTEM' -Client 'indasys TanssTest Admin' -OrderBy "persönlich" -Title "Überraschung $(get-date -Format s)" -Description "Something wild and random"  -Type 'Störung / Incident' -DueDate (Get-Date).AddDays(2) -Attention YES -ExternalTicketId 12345 -EmployeeAssigned 'Mitarbeiter, Technik' -Department "Technik" -Deadline (Get-Date).AddDays(4) -SeparateBilling $true -EstimatedMinutes 30  -OrderNumber 112233
+$ticket = New-TANSSTicket -Company 'indasys IT Systemhaus AG - TESTSYSTEM' -Client 'indasys TanssTest Admin' -OrderBy "telefonisch" -Title "Repair Überraschung $(get-date -Format s)" -Description "Something wild and random"  -Type 'Störung / Incident' -IsRepair $true -DueDate (Get-Date).AddDays(1) -Attention YES -ExternalTicketId 12345 -EmployeeAssigned 'Mitarbeiter, Technik' -Deadline (Get-Date).AddDays(7) -EstimatedMinutes 30
+$ticket
+Get-TANSSTicket -Id 80, 81
+$ticket = Get-TANSSTicket -Id 80
+Get-TANSSTicket -Id 82 | ft id, title, *link*
+
+
+$ticket | Set-TANSSTicket -NewTitle "Überraschung abc" -Verbose
+$ticket | Set-TANSSTicket -OrderBy "persönlich" -Department "Technik" -Type 'Änderung / Minor change' -Status 'Abschließende Überprüfung'
+
+
 #endregion Tickethandling
 
 
