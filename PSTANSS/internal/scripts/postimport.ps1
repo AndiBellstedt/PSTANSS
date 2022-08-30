@@ -25,5 +25,5 @@ $moduleRoot = Split-Path (Split-Path $PSScriptRoot)
 # Load License
 "$moduleRoot\internal\scripts\license.ps1"
 
-
+# Initialize background runspace for cache values
 "$moduleRoot\internal\scripts\Register-LookupRunspace.ps1"
