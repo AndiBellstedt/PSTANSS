@@ -18,3 +18,15 @@ Set-PSFConfig -Module 'PSTANSS' -Name 'Import.IndividualFiles' -Value $false -In
 New-Variable -Name TANSSToken -Scope Script -Visibility Public -Description "Variable for registered token. This is for convinience use with the commands in the module" -Force
 
 Set-PSFConfig -Module 'PSTANSS' -Name 'API.RestPathPrefix' -Value "backend/" -Initialize -Validation 'string' -Description "Individual URI path for API webservices on TANSS server. HuckIT specifies the rest calls on 'https://api-doc.tanss.de/', but on prod-installations for TANSS, there maybe a prefix in the path of the api rest calls."
+
+<#
+[TANSS.Lookup]::LinkTypes = @{
+    0 = "Keine Zuweisung"
+    1 = "PC"
+    3 = "Mitarbeiter"
+    4 = "Peripherie"
+    5 = "Komponente"
+    6 = "Lizenz"
+    24 = "Domain"
+}
+#>
