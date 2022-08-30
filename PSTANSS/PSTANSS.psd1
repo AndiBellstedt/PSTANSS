@@ -45,7 +45,8 @@
         'New-TANSSTicket',
         'Get-TANSSRegisteredAccessToken',
         'Register-TANSSAccessToken',
-        'Get-TANSSTicket'
+        'Get-TANSSTicket',
+        'Set-TANSSTicket'
     )
 
     # Cmdlets to export from this module
