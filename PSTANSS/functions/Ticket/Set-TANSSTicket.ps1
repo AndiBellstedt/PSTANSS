@@ -1,4 +1,4 @@
-﻿function New-TANSSTicket {
+﻿function Set-TANSSTicket {
     <#
     .Synopsis
        Set-TANSSTicket
@@ -11,6 +11,9 @@
 
     .PARAMETER Token
         The TANSS.Connection token
+
+    .PARAMETER PassThru
+        Outputs the token to the console, even when the register switch is set
 
     .PARAMETER WhatIf
         If this switch is enabled, no actions are performed but informational messages will be displayed that explain what would happen if the command were to run.
@@ -278,9 +281,8 @@
         [datetime]
         $Reminder,
 
-        # When persisting a ticket, you can also send a list of tag assignments which will be assigned to the ticket
-        [string[]]
-        $Tags,
+        [switch]
+        $PassThru,
 
         [TANSS.Connection]
         $Token
@@ -288,7 +290,6 @@
 
     begin {
         if (-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
-        $apiPath = Format-ApiPath -Path "$($apiPrefix)api/v1/tickets"
 
 
         if ($EmployeeTicketAdmin) {
@@ -344,7 +345,7 @@
         }
 
         if ($Department) {
-            $DepartmentIdAssigned = ConvertFrom-NameCache -Name $Department -Type "Department"
+            $DepartmentIdAssigned = ConvertFrom-NameCache -Name $Department -Type "Departments"
             if (-not $DepartmentIdAssigned) {
                 Write-PSFMessage -Level Warning -Message "No Id for department '$($Department)' found, ticket will not be modified on departmentIdAssigned value"
             }
@@ -396,41 +397,42 @@
 
         foreach ($ticket in $InputObject) {
             Write-PSFMessage -Level Verbose -Message "Working on TicketID $($ticket.Id) '$($ticket.Title)'"
+            $apiPath = Format-ApiPath -Path "$($apiPrefix)api/v1/tickets/$($ticket.Id)"
 
             $body = [ordered]@{
-                "companyId"                  = (if ($CompanyId) { $CompanyId } else { $ticket.BaseObject.companyId })
-                "remitterId"                 = (if ($RemitterId) { $RemitterId } else { $ticket.BaseObject.remitterId })
-                "title"                      = (if ($NewTitle) { "$($NewTitle)" } else { $ticket.BaseObject.remitterId })
-                "content"                    = (if ($Description) { "$($Description)" } else { $ticket.BaseObject.content })
-                "extTicketId"                = (if ($ExternalTicketId) { "$($ExternalTicketId)" } else { $ticket.BaseObject.extTicketId })
-                "assignedToEmployeeId"       = (if ($EmployeeIdAssigned) { $EmployeeIdAssigned } else { $ticket.BaseObject.assignedToEmployeeId })
-                "assignedToDepartmentId"     = (if ($DepartmentIdAssigned) { $DepartmentIdAssigned } else { $ticket.BaseObject.assignedToDepartmentId })
-                "statusId"                   = (if ($StatusId) { $StatusId } else { $ticket.BaseObject.statusId })
-                "typeId"                     = (if ($TypeId) { $TypeId } else { $ticket.BaseObject.typeId })
-                "linkTypeId"                 = (if ($AssignmentId) { $AssignmentId } else { $ticket.BaseObject.linkTypeId })
+                "companyId"                  = (.{if ($CompanyId) { $CompanyId } else { $ticket.BaseObject.companyId }})
+                "remitterId"                 = (.{if ($RemitterId) { $RemitterId } else { $ticket.BaseObject.remitterId }})
+                "title"                      = (.{if ($NewTitle) { "$($NewTitle)" } else { $ticket.BaseObject.remitterId }})
+                "content"                    = (.{if ($Description) { "$($Description)" } else { $ticket.BaseObject.content }})
+                "extTicketId"                = (.{if ($ExternalTicketId) { "$($ExternalTicketId)" } else { $ticket.BaseObject.extTicketId }})
+                "assignedToEmployeeId"       = (.{if ($EmployeeIdAssigned) { $EmployeeIdAssigned } else { $ticket.BaseObject.assignedToEmployeeId }})
+                "assignedToDepartmentId"     = (.{if ($DepartmentIdAssigned) { $DepartmentIdAssigned } else { $ticket.BaseObject.assignedToDepartmentId }})
+                "statusId"                   = (.{if ($StatusId) { $StatusId } else { $ticket.BaseObject.statusId }})
+                "typeId"                     = (.{if ($TypeId) { $TypeId } else { $ticket.BaseObject.typeId }})
+                "linkTypeId"                 = (.{if ($AssignmentId) { $AssignmentId } else { $ticket.BaseObject.linkTypeId }})
                 "linkId"                     = $ticket.BaseObject.linkId
-                "deadlineDate"               = (if ($_deadlineDate) { $_deadlineDate } else { $ticket.BaseObject.deadlineDate })
+                "deadlineDate"               = (.{if ($_deadlineDate) { $_deadlineDate } else { $ticket.BaseObject.deadlineDate }})
                 "project"                    = $ticket.BaseObject.project.ToString()
-                "projectId"                  = (if ($ProjectId) { $ProjectId } else { $ticket.BaseObject.projectId })
-                "repair"                     = (if ($IsRepair) { $IsRepair } else { $ticket.BaseObject.repair })
-                "dueDate"                    = (if ($_dueDate) { $_dueDate } else { $ticket.BaseObject.dueDate })
-                "attention"                  = (if ($Attention) { $Attention } else { $ticket.BaseObject.attention })
-                "orderById"                  = (if ($OrderById) { $OrderById } else { $ticket.BaseObject.orderById })
-                "installationFee"            = (if ($InstallationFee) { $InstallationFee } else { $ticket.BaseObject.installationFee })
-                "installationFeeDriveMode"   = (if ($InstallationFeeDriveMode) { $InstallationFeeDriveMode } else { "None" })
-                "installationFeeAmount"      = (if ($InstallationFeeAmount) { $InstallationFeeAmount } else { $ticket.BaseObject.installationFeeAmount })
-                "separateBilling"            = (if ($SeparateBilling) { $SeparateBilling.ToString() } else { $ticket.BaseObject.separateBilling })
-                "serviceCapAmount"           = (if ($ServiceCapAmount) { $ServiceCapAmount } else { $ticket.BaseObject.serviceCapAmount })
-                "relationshipLinkTypeId"     = (if ($RelationshipLinkTypeId) { $RelationshipLinkTypeId } else { $ticket.BaseObject.orderById })
-                "relationshipLinkId"         = (if ($RelationshipLinkId) { $RelationshipLinkId } else { $ticket.BaseObject.relationshipLinkId })
-                "resubmissionDate"           = (if ($_resubmissionDate) { $_resubmissionDate } else { $ticket.BaseObject.resubmissionDate })
-                "estimatedMinutes"           = (if ($EstimatedMinutes) { $EstimatedMinutes } else { $ticket.BaseObject.estimatedMinutes })
-                "localTicketAdminFlag"       = (if ($LocalTicketAdminFlag) { $LocalTicketAdminFlag } else { $ticket.BaseObject.localTicketAdminFlag })
-                "localTicketAdminEmployeeId" = (if ($LocalTicketAdminEmployeeId) { $LocalTicketAdminEmployeeId } else { $ticket.BaseObject.localTicketAdminEmployeeId })
-                "phaseId"                    = (if ($PhaseId) { $PhaseId } else { $ticket.BaseObject.phaseId })
-                "resubmissionText"           = (if ($ResubmissionText) { "$($ResubmissionText)" } else { $ticket.BaseObject.resubmissionText })
-                "orderNumber"                = (if ($OrderNumber) { "$($OrderNumber)" } else { $ticket.BaseObject.orderNumber })
-                "reminder"                   = (if ($_reminder) { $_reminder } else { $ticket.BaseObject.reminder })
+                "projectId"                  = (.{if ($ProjectId) { $ProjectId } else { $ticket.BaseObject.projectId }})
+                "repair"                     = (.{if ($IsRepair) { $IsRepair } else { $ticket.BaseObject.repair }})
+                "dueDate"                    = (.{if ($_dueDate) { $_dueDate } else { $ticket.BaseObject.dueDate }})
+                "attention"                  = (.{if ($Attention) { $Attention } else { $ticket.BaseObject.attention }})
+                "orderById"                  = (.{if ($OrderById) { $OrderById } else { $ticket.BaseObject.orderById }})
+                "installationFee"            = (.{if ($InstallationFee) { $InstallationFee } else { $ticket.BaseObject.installationFee }})
+                "installationFeeDriveMode"   = (.{if ($InstallationFeeDriveMode) { $InstallationFeeDriveMode } else { "None" }})
+                "installationFeeAmount"      = (.{if ($InstallationFeeAmount) { $InstallationFeeAmount } else { $ticket.BaseObject.installationFeeAmount }})
+                "separateBilling"            = (.{if ($SeparateBilling) { $SeparateBilling.ToString() } else { $ticket.BaseObject.separateBilling }})
+                "serviceCapAmount"           = (.{if ($ServiceCapAmount) { $ServiceCapAmount } else { $ticket.BaseObject.serviceCapAmount }})
+                "relationshipLinkTypeId"     = (.{if ($RelationshipLinkTypeId) { $RelationshipLinkTypeId } else { $ticket.BaseObject.orderById }})
+                "relationshipLinkId"         = (.{if ($RelationshipLinkId) { $RelationshipLinkId } else { $ticket.BaseObject.relationshipLinkId }})
+                "resubmissionDate"           = (.{if ($_resubmissionDate) { $_resubmissionDate } else { $ticket.BaseObject.resubmissionDate }})
+                "estimatedMinutes"           = (.{if ($EstimatedMinutes) { $EstimatedMinutes } else { $ticket.BaseObject.estimatedMinutes }})
+                "localTicketAdminFlag"       = (.{if ($LocalTicketAdminFlag) { $LocalTicketAdminFlag } else { $ticket.BaseObject.localTicketAdminFlag }})
+                "localTicketAdminEmployeeId" = (.{if ($LocalTicketAdminEmployeeId) { $LocalTicketAdminEmployeeId } else { $ticket.BaseObject.localTicketAdminEmployeeId }})
+                "phaseId"                    = (.{if ($PhaseId) { $PhaseId } else { $ticket.BaseObject.phaseId }})
+                "resubmissionText"           = (.{if ($ResubmissionText) { "$($ResubmissionText)" } else { $ticket.BaseObject.resubmissionText }})
+                "orderNumber"                = (.{if ($OrderNumber) { "$($OrderNumber)" } else { $ticket.BaseObject.orderNumber }})
+                "reminder"                   = (.{if ($_reminder) { $_reminder } else { $ticket.BaseObject.reminder }})
             }
 
             if ($pscmdlet.ShouldProcess("TicketID $($ticket.Id) with $(if($NewTitle){"new "})title '$(if($NewTitle){$NewTitle}else{$ticket.Title})'", "Update")) {
@@ -441,10 +443,12 @@
                 if ($response) {
                     Write-PSFMessage -Level Verbose -Message "API Response: $($response.meta.text)"
 
-                    foreach ($content in $response.content) {
-                        [TANSS.Ticket]@{
-                            BaseObject = $content
-                            Id         = $content.id
+                    if($PassThru) {
+                        foreach ($content in $response.content) {
+                            [TANSS.Ticket]@{
+                                BaseObject = $content
+                                Id         = $content.id
+                            }
                         }
                     }
                 } else {

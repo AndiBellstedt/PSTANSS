@@ -62,12 +62,20 @@
         $OrderById,
 
         # gives infos about how the Client gave the order.
-        [Parameter(ParameterSetName = "UserFriendly")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [string]
         $OrderBy,
 
         # The title / subject of the ticket
         [Parameter(
+            ParameterSetName="Userfriendly",
+            Mandatory = $true,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+
+        )]
+        [Parameter(
+            ParameterSetName="ApiNative",
             Mandatory = $true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
@@ -77,11 +85,15 @@
         $Title,
 
         # The content / description of the ticket
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [Alias('content')]
         [string]
         $Description,
 
         # External ticket id (optional)
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [Alias('extTicketId')]
         [string]
         $ExternalTicketId,
@@ -129,21 +141,29 @@
         $Type,
 
         # if ticket is assigned to device / employee, linktype is given here
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [Alias('LinkTypeId')]
         [int]
         $AssignmentId,
 
         # If ticket has a deadline, the date is given here
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [Alias('deadlineDate')]
         [datetime]
         $Deadline,
 
         # if ticket is actually a project, this value is true
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [Alias('project')]
         [bool]
         $IsProject = $false,
 
         # if ticket is a sub-ticket of a project, the id of the project goes here. Name of the project is in the "linked entities" - "tickets"
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [int]
         $ProjectId,
 
@@ -158,58 +178,84 @@
         $Phase,
 
         # if true, this ticket is a "repair ticket"
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [Alias('repair')]
         [bool]
         $IsRepair = $false,
 
         # if ticket has a due date, the timestamp is given here
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [datetime]
         $DueDate,
 
         # Determines the "attention" flag state of a ticket
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [ValidateSet("NO", "YES", "RESUBMISSION", "MAIL")]
         [string]
         $Attention = "NO",
 
         # If the ticket has an installation fee, this value is true
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [ValidateSet("NO", "YES", "NO_PROJECT_INSTALLATION_FEE")]
         [string]
         $InstallationFee = "NO",
 
         # Sets the installation fee drive mode. If it is set to NONE then the system config parameter "leistung.ip.fahrzeit_berechnen" will be used. If the company from the ticket has an installation fee drive mode set then that will be used instead of the system config parameter.
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [ValidateSet("NONE", "DRIVE_INCLUDED", "DRIVE_EXCLUDED")]
         [string]
         $InstallationFeeDriveMode = "NONE",
 
         #Amount for the installation fee
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [int]
         $InstallationFeeAmount,
 
         # If true, the ticket shall be billed separately
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [bool]
         $SeparateBilling = $false,
 
         # if the ticket has a service cap, here the amount is given
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [int]
         $ServiceCapAmount,
 
         # linkId of the relationship (if ticket has a relation)
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [int]
         $RelationshipLinkId,
 
         # linkTypeId of the relationship (if ticket has a relation)
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [int]
         $RelationshipLinkTypeId,
 
         # if the ticket as a resubmission date set, this is given here
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [datetime]
         $ResubmissionDate,
 
         # If a resubmission text is set, this text is returned here
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [string]
         $ResubmissionText,
 
         # Number of estimated minutes which is planned for the ticket
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [int]
         $EstimatedMinutes,
 
@@ -217,6 +263,8 @@
         # NONE: "normal" ticket
         # LOCAL_ADMIN: ticket is assigned to a local ticket admin
         # TECHNICIAN: local ticket admin has forwarded the ticket to a technician
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [ValidateSet("NONE", "LOCAL_ADMIN", "TECHNICIAN")]
         [string]
         $LocalTicketAdminFlag = "NONE",
@@ -233,17 +281,25 @@
         $EmployeeTicketAdmin,
 
         # Sets the order number
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [string]
         $OrderNumber,
 
         # If the ticket has a reminder set, the timestamp is returned here
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [datetime]
         $Reminder,
 
         # When persisting a ticket, you can also send a list of tag assignments which will be assigned to the ticket
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [string[]]
         $Tags,
 
+        [Parameter(ParameterSetName="ApiNative")]
+        [Parameter(ParameterSetName="Userfriendly")]
         [TANSS.Connection]
         $Token
     )
@@ -305,7 +361,7 @@
         }
 
         if($Department) {
-            $DepartmentIdAssigned = ConvertFrom-NameCache -Name $Department -Type "Department"
+            $DepartmentIdAssigned = ConvertFrom-NameCache -Name $Department -Type "Departments"
             if(-not $DepartmentIdAssigned) {
                 Write-PSFMessage -Level Warning -Message "No Id for department '$($Department)' found. Ticket will be created with blank value on departmentIdAssigned"
             }
