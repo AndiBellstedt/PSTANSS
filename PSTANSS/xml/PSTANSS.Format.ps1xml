@@ -64,6 +64,9 @@
                                 <PropertyName>Department</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
+                                <PropertyName>LinkType</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
                                 <PropertyName>EmployeeCreator</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
@@ -86,9 +89,6 @@
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>contract</PropertyName>
-                            </TableColumnItem>
-                            <TableColumnItem>
-                                <PropertyName>LinkTypeId</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>EstimatedMinutes</PropertyName>
@@ -164,7 +164,7 @@
                                 <PropertyName>Department</PropertyName>
                             </ListItem>
                             <ListItem>
-                                <PropertyName>LinkTypeId</PropertyName>
+                                <PropertyName>LinkType</PropertyName>
                             </ListItem>
                             <ListItem>
                                 <PropertyName>EstimatedMinutes</PropertyName>

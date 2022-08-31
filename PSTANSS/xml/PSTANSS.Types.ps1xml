@@ -130,14 +130,12 @@
                 </GetScriptBlock>
             </ScriptProperty>
 
-            <!---
             <ScriptProperty>
-                <Name>LinkTyp</Name>
+                <Name>LinkType</Name>
                 <GetScriptBlock>
                     [TANSS.Lookup]::LinkTypes["$($this.BaseObject.linkTypeId)"]
                 </GetScriptBlock>
             </ScriptProperty>
-            -->
 
             <ScriptProperty>
                 <Name>DateDeadline</Name>
