@@ -1,24 +1,24 @@
 ﻿function Get-TANSSTicket {
     <#
     .Synopsis
-       Get-TANSSTicket
+        Get-TANSSTicket
 
     .DESCRIPTION
-       Retrieve the registered LoginToken for default TANSS connection
+        Retrieve the registered LoginToken for default TANSS connection
 
     .PARAMETER Token
         The TANSS.Connection token
 
     .EXAMPLE
-       Get-TANSSTicket
+        Get-TANSSTicket
 
-       Get tickets
+        Get tickets
 
     .NOTES
-       Author: Andreas Bellstedt
+        Author: Andreas Bellstedt
 
     .LINK
-       https://github.com/AndiBellstedt
+        https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
         DefaultParameterSetName = 'TicketId',

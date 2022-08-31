@@ -1,10 +1,10 @@
 ﻿function Invoke-TANSSRequest {
     <#
     .Synopsis
-       Invoke-TANSSRequest
+        Invoke-TANSSRequest
 
     .DESCRIPTION
-       Invoke a API request to TANSS Server
+        Invoke a API request to TANSS Server
 
     .PARAMETER Type
         Type of web request
@@ -25,15 +25,15 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-       Invoke-TANSSRequest -Server $Server
+        Invoke-TANSSRequest -Server $Server
 
-       Invoke a web request to API
+        Invoke a web request to API
 
     .NOTES
-       Author: Andreas Bellstedt
+        Author: Andreas Bellstedt
 
     .LINK
-       https://github.com/AndiBellstedt
+        https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
         DefaultParameterSetName = 'Default',

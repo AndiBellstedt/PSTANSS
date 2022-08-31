@@ -1,21 +1,21 @@
 ﻿function Get-TANSSRegisteredAccessToken {
     <#
     .Synopsis
-       Get-TANSSRegisteredAccessToken
+        Get-TANSSRegisteredAccessToken
 
     .DESCRIPTION
-       Retrieve the registered LoginToken for default TANSS connection
+        Retrieve the registered LoginToken for default TANSS connection
 
     .EXAMPLE
-       Get-TANSSRegisteredAccessToken
+        Get-TANSSRegisteredAccessToken
 
-       Retrieve the registered LoginToken for TANSS
+        Retrieve the registered LoginToken for TANSS
 
     .NOTES
-       Author: Andreas Bellstedt
+        Author: Andreas Bellstedt
 
     .LINK
-       https://github.com/AndiBellstedt
+        https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
         SupportsShouldProcess = $false,

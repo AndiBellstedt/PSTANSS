@@ -1,24 +1,24 @@
 ﻿function Register-TANSSAccessToken {
     <#
     .Synopsis
-       Register-TANSSAccessToken
+        Register-TANSSAccessToken
 
     .DESCRIPTION
-       Register the AccessToken as default connection setting for TANSS
+        Register the AccessToken as default connection setting for TANSS
 
     .PARAMETER Token
         AccessToken object to register as default connection for TANSS
 
     .EXAMPLE
-       Register-TANSSAccessToken
+        Register-TANSSAccessToken
 
-       Retrieve the registered LoginToken for TANSS
+        Retrieve the registered LoginToken for TANSS
 
     .NOTES
-       Author: Andreas Bellstedt
+        Author: Andreas Bellstedt
 
     .LINK
-       https://github.com/AndiBellstedt
+        https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
         SupportsShouldProcess = $true,

@@ -1,13 +1,10 @@
 ﻿function Set-TANSSTicket {
     <#
     .Synopsis
-       Set-TANSSTicket
+        Set-TANSSTicket
 
     .DESCRIPTION
-       Modify a ticket in TANSS
-
-    .PARAMETER Server
-        Name of the service to connect to
+        Modify a ticket in TANSS
 
     .PARAMETER Token
         The TANSS.Connection token
@@ -22,15 +19,15 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-       Set-TANSSTicket -ID 10 -NewTitle "New ticket title"
+        Set-TANSSTicket -ID 10 -NewTitle "New ticket title"
 
-       Update title to "New ticket title" of ticket with ticketID 10
+        Update title to "New ticket title" of ticket with ticketID 10
 
     .NOTES
-       Author: Andreas Bellstedt
+        Author: Andreas Bellstedt
 
     .LINK
-       https://github.com/AndiBellstedt
+        https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
         DefaultParameterSetName = 'UserFriendly-ByInputObject',
@@ -397,7 +394,7 @@
 
         foreach ($ticket in $InputObject) {
             Write-PSFMessage -Level Verbose -Message "Working on TicketID $($ticket.Id) '$($ticket.Title)'"
-            $apiPath = Format-ApiPath -Path "$($apiPrefix)api/v1/tickets/$($ticket.Id)"
+            $apiPath = Format-ApiPath -Path "api/v1/tickets/$($ticket.Id)"
 
             $body = [ordered]@{
                 "companyId"                  = (.{if ($CompanyId) { $CompanyId } else { $ticket.BaseObject.companyId }})

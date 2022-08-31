@@ -34,7 +34,7 @@
         Author: Andreas Bellstedt
 
     .LINK
-        https://github.com/AndiBellstedt
+        https://github.com/AndiBellstedt/PSTANSS
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
     [CmdletBinding(
@@ -77,7 +77,7 @@
     )
 
     begin {
-        $ApiPath = Format-ApiPath -Path "backend/api/v1/user/login"
+        $ApiPath = Format-ApiPath -Path "api/v1/user/login"
     }
 
     process {

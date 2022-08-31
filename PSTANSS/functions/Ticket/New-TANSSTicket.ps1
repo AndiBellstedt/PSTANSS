@@ -1,10 +1,10 @@
 ﻿function New-TANSSTicket {
     <#
     .Synopsis
-       New-TANSSTicket
+        New-TANSSTicket
 
     .DESCRIPTION
-       Creates a ticket in the database
+        Creates a ticket in the database
 
     .PARAMETER Server
         Name of the service to connect to
@@ -19,15 +19,15 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-       New-TANSSTicket -Title "A new Ticket"
+        New-TANSSTicket -Title "A new Ticket"
 
-       Create a ticket
+        Create a ticket
 
     .NOTES
-       Author: Andreas Bellstedt
+        Author: Andreas Bellstedt
 
     .LINK
-       https://github.com/AndiBellstedt
+        https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
         DefaultParameterSetName = 'UserFriendly',
@@ -306,7 +306,7 @@
 
     begin {
         if(-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
-        $apiPath = Format-ApiPath -Path "$($apiPrefix)api/v1/tickets"
+        $apiPath = Format-ApiPath -Path "api/v1/tickets"
 
         if($EmployeeTicketAdmin) {
             $LocalTicketAdminEmployeeId = ConvertFrom-NameCache -Name $EmployeeTicketAdmin -Type "Employees"
