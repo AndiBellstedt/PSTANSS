@@ -48,6 +48,8 @@ Get-PSFRunspace
 [TANSS.Lookup]::TicketStates
 
 [TANSS.Lookup]::TicketTypes
+
+[TANSS.Lookup]::LinkTypes
 #endregion lookups
 
 
@@ -69,12 +71,19 @@ Get-TANSSTicket -TicketWithTechnicanRole
 $ticketID = "122337"
 $ticketID = "114009"
 $ticketID = "82"
-$response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/$ticketID"
-$result = Get-TANSSTicket -Id $ticketID -Verbose
+$ticketID = "16"
+$ticketID = "81"
 
+$response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/$ticketID"
 $response.meta.linkedEntities
 $response.meta.linkedEntities.ticketStates
 $response.content
+
+
+$result = Get-TANSSTicket -Id $ticketID -Verbose
+$result
+$result | Format-List
+
 #endregion
 
 
@@ -197,37 +206,24 @@ $response.content.companies | Format-Table
 
 
 #region Tickethandling
-$i = 120
-$x = [TANSS.Ticket]@{
-    BaseObject = $result.content[$i]
-    Id         = $result.content[$i].id
-}
-$x | Format-List
-$x | Format-List *
-$x | Format-List emp*
-$x | Format-Table
-$x | Out-GridView
-$x.BaseObject.title
-$x.Title
-
-$y = foreach ($ticket in $responseItem.content) {
-    [TANSS.Ticket]@{
-        BaseObject = $ticket
-        Id         = $ticket.id
-    }
-}
-$y | Out-GridView
-
+# Create ticket
 $ticket = New-TANSSTicket -Company 'indasys IT Systemhaus AG - TESTSYSTEM' -Client 'indasys TanssTest Admin' -OrderBy "persönlich" -Title "Überraschung $(get-date -Format s)" -Description "Something wild and random"  -Type 'Störung / Incident' -DueDate (Get-Date).AddDays(2) -Attention YES -ExternalTicketId 12345 -EmployeeAssigned 'Mitarbeiter, Technik' -Department "Technik" -Deadline (Get-Date).AddDays(4) -SeparateBilling $true -EstimatedMinutes 30  -OrderNumber 112233
 $ticket = New-TANSSTicket -Company 'indasys IT Systemhaus AG - TESTSYSTEM' -Client 'indasys TanssTest Admin' -OrderBy "telefonisch" -Title "Repair Überraschung $(get-date -Format s)" -Description "Something wild and random"  -Type 'Störung / Incident' -IsRepair $true -DueDate (Get-Date).AddDays(1) -Attention YES -ExternalTicketId 12345 -EmployeeAssigned 'Mitarbeiter, Technik' -Deadline (Get-Date).AddDays(7) -EstimatedMinutes 30
 $ticket
 Get-TANSSTicket -Id 80, 81
 $ticket = Get-TANSSTicket -Id 80
-Get-TANSSTicket -Id 82 | ft id, title, *link*
+Get-TANSSTicket -Id 82 | Format-Table id, title, *link*
 
 
+# Change / Set ticket
 $ticket | Set-TANSSTicket -NewTitle "Überraschung abc" -Verbose
 $ticket | Set-TANSSTicket -OrderBy "persönlich" -Department "Technik" -Type 'Änderung / Minor change' -Status 'Abschließende Überprüfung'
+
+
+# Remove ticket
+$ticketID = "81"
+$result = Get-TANSSTicket -Id $ticketID -Verbose
+$result | Remove-TANSSTicket -Verbose
 
 
 #endregion Tickethandling
