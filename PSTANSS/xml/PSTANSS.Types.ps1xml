@@ -371,4 +371,166 @@
         </TypeConverter>
     </Type>
 
+
+    <!-- TANSS.Company -->
+    <Type>
+        <Name>Deserialized.TANSS.Company</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.Company
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.Company</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>CompanyNumber</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.displayId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Name</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.name
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Street</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.street
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>PostCode</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.postCode
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>City</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.city
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Country</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.country
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Phone</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.phoneNumber
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Fax</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.faxNumber
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Email</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.email
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Website</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.website
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsInactive</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.inactive )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsLocked</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.Lockout )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CentralType</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.centralType
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsPrivateCustomer</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.personalCustomer )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Mobile</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.mobileNumber
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>PrivateNumber</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.privateNumber
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CompanyType</Name>
+                <GetScriptBlock>
+                    if($this.BaseObject.types) {
+                        foreach ($typeItem in $this.BaseObject.types) {
+                            [TANSS.CompanyType]@{
+                                BaseObject = $typeItem
+                                Id = $typeItem.Id
+                            }
+                        }
+                    }
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
 </Types>
