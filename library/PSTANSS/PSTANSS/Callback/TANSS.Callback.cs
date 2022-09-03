@@ -6,39 +6,18 @@ namespace TANSS {
     ///
     /// </summary>
     [Serializable]
-    public class CompanyType {
+    public class Callback {
         #region Properties
 
         /// <summary>
         ///
         /// </summary>
+        public object BaseObject;
+
+        /// <summary>
+        ///
+        /// </summary>
         public int Id;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public string Name;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public int CategoryId;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public string CategoryName;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public string Icon;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool IsHidden;
-
 
         private string _returnValue;
 
@@ -51,8 +30,8 @@ namespace TANSS {
         /// </summary>
         /// <returns></returns>
         public override string ToString () {
-            if (! string.IsNullOrEmpty(Name) ) {
-                _returnValue = Name;
+            if (! string.IsNullOrEmpty(Convert.ToString(Id)) ) {
+                _returnValue = Convert.ToString(Id);
             } else {
                 _returnValue = this.GetType().Name;
             }
