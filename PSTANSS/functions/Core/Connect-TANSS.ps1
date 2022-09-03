@@ -21,6 +21,9 @@
     .PARAMETER DoNotRegisterConnection
         Do not register the connection as default connection
 
+    .PARAMETER NoCacheInit
+        Do not query current existing tickets to fill cache data for lookup types
+
     .PARAMETER PassThru
         Outputs the token to the console, even when the register switch is set
 
@@ -40,6 +43,7 @@
     [CmdletBinding(
         DefaultParameterSetName = 'Credential',
         SupportsShouldProcess = $false,
+        PositionalBinding = $true,
         ConfirmImpact = 'Medium'
     )]
     Param(
@@ -71,6 +75,9 @@
         [Alias('NoRegistration')]
         [Switch]
         $DoNotRegisterConnection,
+
+        [switch]
+        $NoCacheInit,
 
         [switch]
         $PassThru
@@ -150,6 +157,17 @@
             TimeStampCreated  = Get-Date
             TimeStampExpires  = ([datetime]'1/1/1970').AddSeconds($response.content.expire)
             TimeStampModified = Get-Date
+        }
+
+        if(-not $NoCacheInit) {
+            Write-PSFMessage -Level Verbose -Message "Start creating lookup cache from current tickets in TANSS" -Tag "Cache"
+
+            $tickets = @()
+            $tickets += Get-TANSSTicket -MyTickets -Token $token
+            $tickets += Get-TANSSTicket -NotAssigned -Token $token
+            $tickets += Get-TANSSTicket -AllTechnician -Token $token
+
+            Write-PSFMessage -Level Verbose -Message "Built cache from $($tickets.count) tickets" -Tag "Cache"
         }
 
         if (-not $DoNotRegisterConnection) {
