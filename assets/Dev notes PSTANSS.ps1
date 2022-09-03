@@ -193,14 +193,18 @@ $response.content[0].types | Format-Table
 
 #region search company
 help Find-TANSSObject -ShowWindow
+$result = Find-TANSSObject -Company -Text "ASK" -ResultSize 10000
+$result
+$result[0] | Format-List
+
 
 $body = @{
     areas = @("COMPANY")
     query = "Stuttgart"
 }
 $body = @{
-    areas = @("COMPANY")
-    query = "1"
+    areas   = @("COMPANY")
+    query   = "1"
     configs = @{
         company = @{
             maxResults = 10000
@@ -209,8 +213,8 @@ $body = @{
 }
 $response = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/search" -Body $body -Verbose
 $response.content
-$response.content.companies | ft
-$response.content.companies | measure
+$response.content.companies | Format-Table
+$response.content.companies | Measure-Object
 
 $response.meta.text
 $response.meta.properties.extras
