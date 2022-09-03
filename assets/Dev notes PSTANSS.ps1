@@ -13,6 +13,8 @@ $Credential = Import-Clixml .\tannstest.xml
 
 $token = Connect-TANSS -Server $Server -Credential $Credential -PassThru
 $token = Connect-TANSS -Server $Server -Credential $Credential -LoginToken (Read-Host -Prompt "Enter OTP") -PassThru
+$token = Connect-TANSS -Server $Server -Credential $Credential -DoNotRegisterConnection -PassThru
+$token = Connect-TANSS -Server $Server -Credential $Credential -PassThru -DoNotRegisterConnection
 $TANSSToken = $Token
 $Token = $TANSSToken
 
@@ -190,12 +192,25 @@ $response.content[0].types | Format-Table
 
 
 #region search company
+help Find-TANSSObject -ShowWindow
+
 $body = @{
     areas = @("COMPANY")
-    query = "ask"
+    query = "Stuttgart"
+}
+$body = @{
+    areas = @("COMPANY")
+    query = "1"
+    configs = @{
+        company = @{
+            maxResults = 10000
+        }
+    }
 }
 $response = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/search" -Body $body -Verbose
-
+$response.content
+$response.content.companies | ft
+$response.content.companies | measure
 
 $response.meta.text
 $response.meta.properties.extras
@@ -221,7 +236,7 @@ $ticket | Set-TANSSTicket -OrderBy "persönlich" -Department "Technik" -Type 'Ä
 
 
 # Remove ticket
-$ticketID = "81"
+$ticketID = "83"
 $result = Get-TANSSTicket -Id $ticketID -Verbose
 $result | Remove-TANSSTicket -Verbose
 
