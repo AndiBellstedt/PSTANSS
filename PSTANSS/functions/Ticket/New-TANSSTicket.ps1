@@ -32,6 +32,7 @@
     [CmdletBinding(
         DefaultParameterSetName = 'UserFriendly',
         SupportsShouldProcess = $true,
+        PositionalBinding = $true,
         ConfirmImpact = 'Medium'
     )]
     param (
@@ -306,6 +307,7 @@
 
     begin {
         if(-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
+        Assert-CacheRunspaceRunning
         $apiPath = Format-ApiPath -Path "api/v1/tickets"
 
         if($EmployeeTicketAdmin) {
@@ -448,6 +450,8 @@
 
             if($response) {
                 Write-PSFMessage -Level Verbose -Message "API Response: $($response.meta.text)"
+
+                Push-DataToCacheRunspace -MetaData $response.meta
 
                 [TANSS.Ticket]@{
                     BaseObject = $response.content

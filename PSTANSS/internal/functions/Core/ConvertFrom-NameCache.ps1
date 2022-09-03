@@ -1,10 +1,10 @@
 ﻿function ConvertFrom-NameCache {
     <#
     .Synopsis
-       ConvertFrom-NameCache
+        ConvertFrom-NameCache
 
     .DESCRIPTION
-       Convert Name to ID from cached TANSS.Lookup values
+        Convert Name to ID from cached TANSS.Lookup values
 
     .PARAMETER Name
         Name to convert into ID
@@ -16,15 +16,15 @@
         Lookup type where the name should convert from
 
     .EXAMPLE
-       ConvertFrom-NameCache -Name "User X" -Type "Employee"
+        ConvertFrom-NameCache -Name "User X" -Type "Employee"
 
-       Example
+        Example
 
     .NOTES
-       Author: Andreas Bellstedt
+        Author: Andreas Bellstedt
 
     .LINK
-       https://github.com/AndiBellstedt
+        https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
         DefaultParameterSetName="FromName",
@@ -85,7 +85,7 @@
         Default {
             Stop-PSFFunction -Message "Unhandeled ParameterSetName. Developers mistake." -EnableException $true
             throw
-         }
+        }
     }
 
 }

@@ -114,6 +114,7 @@
 
     begin {
         if (-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
+        Assert-CacheRunspaceRunning
     }
 
     process {
@@ -191,18 +192,9 @@
         if ($response) {
             Write-PSFMessage -Level Verbose -Message "Found $(($response.content).count) tickets"
 
-            # Check cache validation runspace
-            if ([TANSS.Cache]::StopValidationRunspace -eq $true) {
-                [TANSS.Cache]::StopValidationRunspace = $true
-                Get-PSFRunspace -Name "TANSS.LookupValidation" | Stop-PSFRunspace
-                [TANSS.Cache]::StopValidationRunspace = $false
-                Start-PSFRunspace -Name "TANSS.LookupValidation"
-            }
-
             # Push meta to cache runspace
             foreach ($responseItem in $response) {
-                # Push meta information to runspace cache
-                [TANSS.Cache]::Data.Add((New-Guid), $responseItem.meta)
+                Push-DataToCacheRunspace -MetaData $responseItem.meta
 
                 # Output result
                 foreach($ticket in $responseItem.content) {

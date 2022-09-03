@@ -29,6 +29,7 @@
     [CmdletBinding(
         DefaultParameterSetName = 'ById',
         SupportsShouldProcess = $true,
+        PositionalBinding = $true,
         ConfirmImpact = 'High'
     )]
     param (

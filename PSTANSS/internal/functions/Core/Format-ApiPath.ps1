@@ -1,24 +1,24 @@
 ﻿function Format-ApiPath {
     <#
     .Synopsis
-       Format-ApiPath
+        Format-ApiPath
 
     .DESCRIPTION
-       Ensure the right format and the existense of api prefix in the given path
+        Ensure the right format and the existense of api prefix in the given path
 
     .PARAMETER Path
         Path to format
 
     .EXAMPLE
-       Format-ApiPath -Path $ApiPath
+        Format-ApiPath -Path $ApiPath
 
-       Example
+        Example
 
     .NOTES
-       Author: Andreas Bellstedt
+        Author: Andreas Bellstedt
 
     .LINK
-       https://github.com/AndiBellstedt
+        https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
         SupportsShouldProcess = $false,

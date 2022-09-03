@@ -32,6 +32,7 @@
     [CmdletBinding(
         DefaultParameterSetName = 'UserFriendly-ByInputObject',
         SupportsShouldProcess = $true,
+        PositionalBinding = $true,
         ConfirmImpact = 'Medium'
     )]
     param (
@@ -287,7 +288,7 @@
 
     begin {
         if (-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
-
+        Assert-CacheRunspaceRunning
 
         if ($EmployeeTicketAdmin) {
             $LocalTicketAdminEmployeeId = ConvertFrom-NameCache -Name $EmployeeTicketAdmin -Type "Employees"
@@ -439,6 +440,8 @@
 
                 if ($response) {
                     Write-PSFMessage -Level Verbose -Message "API Response: $($response.meta.text)"
+
+                    Push-DataToCacheRunspace -MetaData $response
 
                     if($PassThru) {
                         foreach ($content in $response.content) {
