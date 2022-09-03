@@ -153,16 +153,15 @@
                         }
                     }
 
-                    $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body
+                    $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token
 
                     if($response.content.companies) {
                         Write-PSFMessage -Level Verbose -Message "API response: $($response.meta.text) - $($response.content.companies.count) records returned"
 
-                        $company = $response.content.companies[0]
-                        foreach ($company in $response.content.companies) {
+                        foreach ($companyItem in $response.content.companies) {
                             [TANSS.Company]@{
-                                BaseObject = $company
-                                Id = $company.id
+                                BaseObject = $companyItem
+                                Id = $companyItem.id
                             }
                         }
                     } else {
