@@ -47,7 +47,8 @@
         'Register-TANSSAccessToken',
         'Get-TANSSTicket',
         'Set-TANSSTicket',
-        'Remove-TANSSTicket'
+        'Remove-TANSSTicket',
+        'Find-TANSSObject'
     )
 
     # Cmdlets to export from this module
