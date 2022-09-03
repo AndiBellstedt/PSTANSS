@@ -22,3 +22,5 @@ Register-PSFTeppArgumentCompleter -Command Set-TANSSTicket -Parameter Phase -Nam
 Register-PSFTeppArgumentCompleter -Command Set-TANSSTicket -Parameter Status -Name PSTANSS.CacheLookup.TicketStates
 Register-PSFTeppArgumentCompleter -Command Set-TANSSTicket -Parameter Type -Name PSTANSS.CacheLookup.TicketTypes
 Register-PSFTeppArgumentCompleter -Command Set-TANSSTicket -Parameter OrderBy -Name PSTANSS.CacheLookup.OrderBys
+
+Register-PSFTeppArgumentCompleter -Command Find-TANSSObject -Parameter CompanyName -Name PSTANSS.CacheLookup.Companies
