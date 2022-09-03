@@ -4,6 +4,48 @@
         <name>PSTANSS</name>
     </assembly>
     <members>
+        <member name="T:TANSS.Company">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Company.BaseObject">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Company.Id">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:TANSS.Company.ToString">
+            <summary>
+            Overrides the default ToString() method
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:TANSS.CompanyType">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.CompanyType.BaseObject">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.CompanyType.Id">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:TANSS.CompanyType.ToString">
+            <summary>
+            Overrides the default ToString() method
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:TANSS.Cache">
             <summary>
             Hashtables for cache data to exchange content between runspaces
@@ -106,6 +148,11 @@
             </summary>
         </member>
         <member name="F:TANSS.Lookup.Companies">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Lookup.CompanyTypes">
              <summary>
             
              </summary>
