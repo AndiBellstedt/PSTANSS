@@ -14,6 +14,11 @@ namespace TANSS {
         /// <summary>
         ///
         /// </summary>
+        public static System.Collections.Hashtable CompanyTypes = new System.Collections.Hashtable();
+
+        /// <summary>
+        ///
+        /// </summary>
         public static System.Collections.Hashtable Tickets = new System.Collections.Hashtable();
 
         /// <summary>
