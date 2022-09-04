@@ -372,6 +372,108 @@
     </Type>
 
 
+    <!-- TANSS.TicketPreview -->
+    <Type>
+        <Name>Deserialized.TANSS.TicketPreview</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.TicketPreview
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.TicketPreview</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>CompanyId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.companyId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Company</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Companies["$($this.BaseObject.companyId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Title</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.title
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.title = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Description</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.content
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ExternalTicketId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.extTicketId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeIdAssigned</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.assignedToEmployeeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeAssigned</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.assignedToEmployeeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>StatusId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.statusId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Status</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::TicketStates["$($this.BaseObject.statusId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
+
     <!-- TANSS.Company -->
     <Type>
         <Name>Deserialized.TANSS.Company</Name>
@@ -465,9 +567,9 @@
             </ScriptProperty>
 
             <ScriptProperty>
-                <Name>IsInactive</Name>
+                <Name>IsActive</Name>
                 <GetScriptBlock>
-                    [bool]::Parse( $this.BaseObject.inactive )
+                    -not [bool]::Parse( $this.BaseObject.inactive )
                 </GetScriptBlock>
             </ScriptProperty>
 
@@ -511,11 +613,195 @@
                 <GetScriptBlock>
                     if($this.BaseObject.types) {
                         foreach ($typeItem in $this.BaseObject.types) {
-                            [TANSS.CompanyType]@{
-                                BaseObject = $typeItem
+                            return [TANSS.CompanyType]@{
                                 Id = $typeItem.Id
+                                Name = $typeItem.Name
+                                CategoryId = $typeItem.CategoryId
+                                CategoryName = $typeItem.CategoryName
+                                Icon = $typeItem.Icon
+                                IsHidden = [bool]::Parse( $typeItem.hidden )
                             }
                         }
+                    }
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CallBack</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.anticipatedCallbacks
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
+    <!-- TANSS.Employee -->
+    <Type>
+        <Name>Deserialized.TANSS.Employee</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.Employee
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.Employee</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>Name</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.name
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <AliasProperty>
+                <Name>Fullname</Name>
+                <ReferencedMemberName>Name</ReferencedMemberName>
+            </AliasProperty>
+
+            <ScriptProperty>
+                <Name>Firstname</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.firstname
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <AliasProperty>
+                <Name>GivenName</Name>
+                <ReferencedMemberName>Firstname</ReferencedMemberName>
+            </AliasProperty>
+
+            <ScriptProperty>
+                <Name>Lastname</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.lastname
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <AliasProperty>
+                <Name>Surname</Name>
+                <ReferencedMemberName>Lastname</ReferencedMemberName>
+            </AliasProperty>
+
+            <ScriptProperty>
+                <Name>DepartmentId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.departmentId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Department</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Departments["$($this.BaseObject.departmentId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Role</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.role
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Phone</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.phoneNr
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Phone2</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.phoneNr2
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Email</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.email
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Mobile</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.mobileNr
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Mobile2</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.mobileNr2
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>PrivateNumber</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.privateNr
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsActive</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.active )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CompanyId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.companies
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Company</Name>
+                <GetScriptBlock>
+                    foreach($item in $this.BaseObject.companies) {
+                        [TANSS.Lookup]::Companies["$($item)"]
+                    }
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CallBack</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.anticipatedCallbacks
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeCategory</Name>
+                <GetScriptBlock>
+                    foreach($item in $this.BaseObject.categories) {
+                        [TANSS.Lookup]::EmployeeCategories["$($item)"]
                     }
                 </GetScriptBlock>
             </ScriptProperty>

@@ -4,38 +4,47 @@
         <name>PSTANSS</name>
     </assembly>
     <members>
+        <member name="T:TANSS.Callback">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:TANSS.Company">
              <summary>
             
              </summary>
-        </member>
-        <member name="F:TANSS.Company.BaseObject">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="F:TANSS.Company.Id">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="M:TANSS.Company.ToString">
-            <summary>
-            Overrides the default ToString() method
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:TANSS.CompanyType">
              <summary>
             
              </summary>
         </member>
-        <member name="F:TANSS.CompanyType.BaseObject">
+        <member name="F:TANSS.CompanyType.Id">
              <summary>
             
              </summary>
         </member>
-        <member name="F:TANSS.CompanyType.Id">
+        <member name="F:TANSS.CompanyType.Name">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.CompanyType.CategoryId">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.CompanyType.CategoryName">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.CompanyType.Icon">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.CompanyType.IsHidden">
              <summary>
             
              </summary>
@@ -212,26 +221,46 @@
             
              </summary>
         </member>
+        <member name="F:TANSS.Lookup.EmployeeCategories">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.Object">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Object.BaseObject">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Object.Id">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:TANSS.Object.ToString">
+            <summary>
+            Overrides the default ToString() method
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:TANSS.Employee">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:TANSS.Ticket">
              <summary>
             
              </summary>
         </member>
-        <member name="F:TANSS.Ticket.BaseObject">
+        <member name="T:TANSS.TicketPreview">
              <summary>
             
              </summary>
-        </member>
-        <member name="F:TANSS.Ticket.Id">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="M:TANSS.Ticket.ToString">
-            <summary>
-            Overrides the default ToString() method
-            </summary>
-            <returns></returns>
         </member>
     </members>
 </doc>

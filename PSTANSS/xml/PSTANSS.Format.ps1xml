@@ -216,6 +216,89 @@
         </View>
 
 
+        <!-- TANSS.TicketPreview -->
+        <View>
+            <Name>TANSS.TicketPreview_Table</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.TicketPreview</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize/>
+                <TableHeaders>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Id</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Title</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Status</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Company</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EmployeeAssigned</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>ExternalTicketId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Description</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+        <View>
+            <Name>TANSS.TicketPreview_List</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.TicketPreview</TypeName>
+            </ViewSelectedBy>
+            <ListControl>
+                <ListEntries>
+                    <ListEntry>
+                        <ListItems>
+                            <ListItem>
+                                <PropertyName>Id</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Title</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Company</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Status</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>EmployeeAssigned</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>ExternalTicketId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Description</PropertyName>
+                            </ListItem>
+                        </ListItems>
+                    </ListEntry>
+                </ListEntries>
+            </ListControl>
+        </View>
+
+
         <!-- TANSS.Company -->
         <View>
             <Name>TANSS.Company_Table</Name>
@@ -252,7 +335,7 @@
                                 <PropertyName>Name</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>IsInactive</PropertyName>
+                                <PropertyName>IsActive</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>IsLocked</PropertyName>
@@ -314,7 +397,7 @@
                                 <PropertyName>Name</PropertyName>
                             </ListItem>
                             <ListItem>
-                                <PropertyName>IsInactive</PropertyName>
+                                <PropertyName>IsActive</PropertyName>
                             </ListItem>
                             <ListItem>
                                 <PropertyName>IsLocked</PropertyName>
@@ -360,6 +443,153 @@
                 </ListEntries>
             </ListControl>
         </View>
+
+
+        <!-- TANSS.Employee -->
+        <View>
+            <Name>TANSS.Employee_Table</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Employee</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize/>
+                <TableHeaders>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Name</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Id</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>IsActive</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>FirstName</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Lastname</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Email</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Phone</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Phone2</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Mobile</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Mobile2</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>PrivateNumber</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Role</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Department</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Company</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EmployeeCategory</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>CallBack</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+        <View>
+            <Name>TANSS.Employee_List</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Employee</TypeName>
+            </ViewSelectedBy>
+            <ListControl>
+                <ListEntries>
+                    <ListEntry>
+                        <ListItems>
+                            <ListItem>
+                                <PropertyName>Id</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Name</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>IsActive</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Company</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Department</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Role</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Firstname</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Lastname</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Email</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Phone</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Phone2</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Mobile</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Mobile2</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>PrivateNumber</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>EmployeeCategory</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>CallBack</PropertyName>
+                            </ListItem>
+                        </ListItems>
+                    </ListEntry>
+                </ListEntries>
+            </ListControl>
+        </View>
+
 
     </ViewDefinitions>
 </Configuration>

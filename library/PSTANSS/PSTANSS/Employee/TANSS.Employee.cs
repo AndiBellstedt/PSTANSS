@@ -6,6 +6,6 @@ namespace TANSS {
     ///
     /// </summary>
     [Serializable]
-    public class Callback : TANSS.Object {
+    public class Employee : TANSS.Object {
     }
 }
