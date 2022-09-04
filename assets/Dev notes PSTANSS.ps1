@@ -8,6 +8,8 @@ $Server = "tansstest.indasys.de"
 $Server = "tanss.indasys.de"
 $Credential = Get-Credential "andreas.bellstedt"
 $Credential = Get-Credential "admin"
+$Credential | Export-Clixml .\tanns.xml
+$Credential | Export-Clixml .\tannstest.xml
 $Credential = Import-Clixml .\tanns.xml
 $Credential = Import-Clixml .\tannstest.xml
 
@@ -191,20 +193,24 @@ $response.content[0].types | Format-Table
 #endregion
 
 
+
 #region search company
 help Find-TANSSObject -ShowWindow
-$result = Find-TANSSObject -Company -Text "ASK" -ResultSize 10000
+$result = Find-TANSSObject -Company -Text "Test" -ResultSize 100
+$result = Find-TANSSObject -Company -Text "07" -ResultSize 10000 -Verbose
+$result = Find-TANSSObject -Company -Text "07" -ResultSize 10000 -ShowInactive -ShowLocked -Verbose
 $result
-$result[0] | Format-List
+$result.count
+$result | Out-GridView
+$result | Group-Object CompanyType | Sort-Object name
+$result | Group-Object IsActive | Sort-Object name
+$result | Group-Object IsLocked | Sort-Object name
+$result | Group-Object IsPrivateCustomer | Sort-Object name
 
 
-$body = @{
-    areas = @("COMPANY")
-    query = "Stuttgart"
-}
 $body = @{
     areas   = @("COMPANY")
-    query   = "1"
+    query   = "Stuttgart"
     configs = @{
         company = @{
             maxResults = 10000
@@ -218,8 +224,103 @@ $response.content.companies | Measure-Object
 
 $response.meta.text
 $response.meta.properties.extras
+#endregion
 
-$response.content.companies | Format-Table
+
+#region search Employee
+help Find-TANSSObject -ShowWindow
+$result = Find-TANSSObject -Employee -Text "Test" -ResultSize 100 -Verbose
+$result = Find-TANSSObject -Employee -Text "07" -ResultSize 10000 -GetCategories $true -GetCallbacks $true -Verbose -Token $token
+$result = Find-TANSSObject -Employee -Text "07" -ResultSize 10000 -Status Active -GetCategories $true -GetCallbacks $true -Verbose -Token $token
+$result = Find-TANSSObject -Employee -Text "07" -ResultSize 10000 -CompanyId 100000 -Verbose
+$result
+$result.count
+$result | Out-GridView
+$result[0].BaseObject
+$result[0] | Format-Table
+$result[0] | Format-List
+$result.BaseObject | Out-GridView
+
+$result | Group-Object IsActive | Sort-Object name
+$result | Group-Object Role | Sort-Object name
+$result | Group-Object EmployeeCategory | Sort-Object name
+$result | Group-Object Department | Sort-Object count -Descending
+
+
+
+$body = @{
+    areas   = @("EMPLOYEE")
+    query   = "07"
+    configs = @{
+        employee = @{
+            maxResults = 10000
+            inactive   = $true
+            categories = $true
+            callbacks  = $true
+        }
+    }
+}
+$response = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/search" -Body $body -Verbose
+$response.meta
+$response.meta.linkedEntities | Format-List
+$response.meta.linkedEntities.companies
+$response.meta.linkedEntities.employeeCategories
+$response.content
+$response.content.employees | Format-Table
+$response.content.employees | Out-GridView
+$response.content.employees | Measure-Object
+
+$response.meta.text
+$response.meta.properties.extras
+#endregion
+
+
+#region search Ticket
+help Find-TANSSObject -ShowWindow
+$result = Find-TANSSObject -Ticket -Text "Bellstedt" -ResultSize 200000 -Verbose
+$result = Find-TANSSObject -Ticket -Text "4.7.2" -ResultSize 200000 -Verbose -Token $token
+$result = Find-TANSSObject -Ticket -Text "4.7.2" -ResultSize 200000 -PreviewContentMaxChars 10 -Verbose -Token $token
+$result = Find-TANSSObject -Ticket -Text "S2D" -ResultSize 200000 -CompanyId 100000 -Verbose
+$result.count
+$result | Get-Member
+$result | Out-GridView
+$result[0].BaseObject
+$result[0] | Format-Table
+$result[0] | Format-List
+$result.BaseObject | Out-GridView
+
+$result | Where-Object status -notlike "erledigt" | Format-List
+$result | Where-Object status -notlike "erledigt" | Get-TANSSTicket -Verbose | fl
+
+$result | Group-Object Status | Sort-Object name
+$result | Group-Object Companz | Sort-Object name
+$result | Group-Object EmployeeAssigned | Sort-Object name
+
+
+
+$body = @{
+    areas   = @("TICKET")
+    query   = "4.7.2"
+    configs = @{
+        employee = @{
+            maxResults = 1000000
+            #PreviewContentMaxChars = 10
+        }
+    }
+}
+$response = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/search" -Body $body -Verbose -Token $token
+$response.meta
+$response.meta.linkedEntities | Format-List
+$response.meta.linkedEntities.companies
+$response.meta.linkedEntities.employeeCategories
+$response.content
+$response.content.tickets | Format-Table
+$response.content.tickets | Out-GridView
+$response.content.tickets | Measure-Object
+Get-TANSSTicket -Id $response.content.tickets.id -Verbose
+
+$response.meta.text
+$response.meta.properties.extras
 #endregion
 
 
