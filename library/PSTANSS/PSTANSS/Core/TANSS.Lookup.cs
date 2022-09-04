@@ -71,5 +71,10 @@ namespace TANSS {
         /// </summary>
         public static System.Collections.Hashtable LinkTypes = new System.Collections.Hashtable();
 
+        /// <summary>
+        ///
+        /// </summary>
+        public static System.Collections.Hashtable EmployeeCategories = new System.Collections.Hashtable();
+
     }
 }
