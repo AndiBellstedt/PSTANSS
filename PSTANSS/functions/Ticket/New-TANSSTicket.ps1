@@ -6,9 +6,6 @@
     .DESCRIPTION
         Creates a ticket in the database
 
-    .PARAMETER Server
-        Name of the service to connect to
-
     .PARAMETER Token
         The TANSS.Connection token
 
@@ -30,7 +27,7 @@
         https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
-        DefaultParameterSetName = 'UserFriendly',
+        DefaultParameterSetName = "Userfriendly",
         SupportsShouldProcess = $true,
         PositionalBinding = $true,
         ConfirmImpact = 'Medium'
@@ -379,6 +376,14 @@
     }
 
     process {
+        $parameterSetName = $pscmdlet.ParameterSetName
+        Write-PSFMessage -Level Debug -Message "ParameterNameSet: $($parameterSetName)"
+
+        if ($parameterSetName -like "Userfriendly" -and (-not $Title)) {
+            Write-PSFMessage -Level Error -Message "No title specified"
+            continue
+        }
+
         #region rest call prepare
         if ($Deadline) {
             $_deadlineDate = [int][double]::Parse((Get-Date -Date $Deadline -UFormat %s))

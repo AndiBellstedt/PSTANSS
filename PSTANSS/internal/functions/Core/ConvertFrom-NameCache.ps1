@@ -27,27 +27,27 @@
         https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
-        DefaultParameterSetName="FromName",
+        DefaultParameterSetName = "FromName",
         SupportsShouldProcess = $false,
         ConfirmImpact = 'Low'
     )]
     Param(
         [Parameter(
-            ParameterSetName="FromName",
-            Mandatory=$true
+            ParameterSetName = "FromName",
+            Mandatory = $true
         )]
         [string]
         $Name,
 
         [Parameter(
-            ParameterSetName="FromId",
-            Mandatory=$true
+            ParameterSetName = "FromId",
+            Mandatory = $true
         )]
         [int]
         $Id,
 
-        [Parameter(Mandatory=$true)]
-        [ValidateSet("Companies","Contracts","CostCenters","Departments","Employees","OrderBys","Phases","Tags","Tickets","TicketStates","TicketTypes")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("Companies", "Contracts", "CostCenters", "Departments", "Employees", "OrderBys", "Phases", "Tags", "Tickets", "TicketStates", "TicketTypes")]
         [string]
         $Type
 
@@ -59,9 +59,9 @@
     switch ($parameterSetName) {
         "FromName" {
             Write-PSFMessage -Level Verbose -Message "Start converting '$($Name)' of type '$($Type)' to ID"
-            if( ([TANSS.Lookup]::$Type).ContainsValue($Name) ) {
-                foreach($key in [TANSS.Lookup]::$Type.Keys) {
-                    if([TANSS.Lookup]::$Type[$key] -like $Name) {
+            if ( ([TANSS.Lookup]::$Type).ContainsValue($Name) ) {
+                foreach ($key in [TANSS.Lookup]::$Type.Keys) {
+                    if ([TANSS.Lookup]::$Type[$key] -like $Name) {
                         Write-PSFMessage -Level Verbose -Message "Found ID '$key' for name '$($Name)' of type '$($Type)'"
                         return $key
                     }
@@ -73,7 +73,7 @@
 
         "FromId" {
             Write-PSFMessage -Level Verbose -Message "Start converting ID '$($Id)' of type '$($Type)' to name"
-            if( ([TANSS.Lookup]::$Type).ContainsKey("$($Id)") ) {
+            if ( ([TANSS.Lookup]::$Type).ContainsKey("$($Id)") ) {
                 $output = [TANSS.Lookup]::$Type["$($Id)"]
                 Write-PSFMessage -Level Verbose -Message "Found '$output' with ID '$($Id)' of type '$($Type)'"
                 return $output
