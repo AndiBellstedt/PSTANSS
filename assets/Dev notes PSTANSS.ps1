@@ -27,8 +27,10 @@ Register-TANSSAccessToken -Token $Token
 
 Update-TANSSAccessToken
 Update-TANSSAccessToken -Verbose
-Update-TANSSAccessToken -PassThru
-Update-TANSSAccessToken -DoNotRegisterConnection
+$Token = Update-TANSSAccessToken -PassThru
+$Token = Update-TANSSAccessToken -DoNotRegisterConnection
+
+
 
 #region lookups
 [TANSS.Cache]::StopValidationRunspace = $false
@@ -50,6 +52,7 @@ Get-PSFRunspace
 #endregion lookups
 
 
+
 #region Get-TANSSTicket
 Get-TANSSTicket -Id 1
 Get-TANSSTicket -CompanyId 100000
@@ -63,6 +66,8 @@ Get-TANSSTicket -LocalTicketAdmin
 Get-TANSSTicket -TicketWithTechnicanRole
 
 #endregion Get-TANSSTicket
+
+
 
 #region Get a specific ticket
 $ticketID = "122337"
@@ -84,6 +89,7 @@ $result | Format-List
 #endregion
 
 
+
 #region Get a ticket history
 $ticketID = "114009"
 $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/history/$ticketID" -Verbose
@@ -91,6 +97,7 @@ $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/histo
 $response.meta.linkedEntities
 $response.content.mails | Format-Table
 #endregion
+
 
 
 #region Get a list of company tickets
@@ -112,6 +119,7 @@ $response.content | Format-Table
 #endregion
 
 
+
 #region Get all projects
 $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/projects" -Verbose
 
@@ -126,6 +134,7 @@ $response.meta.properties.extras.departmentOrder
 $response.content | Format-Table
 $response.content | Where-Object companyid -like "1552"
 #endregion
+
 
 
 #region Get tickets from all technician
@@ -159,6 +168,7 @@ $response.meta.linkedEntities.employees
 $response.content | Format-Table
 $response.content.panels
 #endregion
+
 
 
 #region Get Ticketboard from a project
@@ -220,6 +230,7 @@ $response.meta.properties.extras
 #endregion
 
 
+
 #region search Employee
 help Find-TANSSObject -ShowWindow
 $result = Find-TANSSObject -Employee -Text "Test" -ResultSize 100 -Verbose
@@ -266,6 +277,7 @@ $response.content.employees | Measure-Object
 $response.meta.text
 $response.meta.properties.extras
 #endregion
+
 
 
 #region search Ticket
@@ -341,6 +353,107 @@ $result | Remove-TANSSTicket -Verbose
 
 #endregion Tickethandling
 
+
+
+#region Technican/ Employee
+#region get Technican
+$response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/employees/technicians" -Verbose
+$response
+
+$response.meta | Format-List
+$response.meta.properties | Format-List
+$response.meta.properties.extras
+
+$response.content | Format-Table
+$response.content[0] | Format-List
+
+
+$result = Get-TANSSTechnican
+Get-TANSSTechnican -Name "*a*"
+Get-TANSSTechnican -Name "*a*", "*servic*" -Verbose
+Get-TANSSTechnican -Id 6
+#endregion get Technican
+
+#region Create new employee
+
+$body = @{
+    "id"                 = 0
+    "name"               = "1234Test User AnBe"
+    "firstName"          = "1234An"
+    "lastName"           = "1234Be"
+    "salutationId"       = 0
+    "departmentId"       = 0
+    "room"               = "Room"
+    "telephoneNumber"    = "+49 (711) 12 34 56 7"
+    "emailAddress"       = "anbe@test.com"
+    "carId"              = 0
+    "mobilePhone"        = "+49 (711) 12 34 56 7"
+    "initials"           = "AnBe"
+    "workingHourModelId" = 0
+    "accountingTypeId"   = 0
+    "privatePhoneNumber" = "+49 (711) 12 34 56 7"
+    "active"             = $true
+    "erpNumber"          = "0"
+    "personalFaxNumber"  = "+49 (711) 12 34 56 7"
+    "role"               = "role"
+    "titleId"            = 0
+    "language"           = ""
+    "telephoneNumberTwo" = "+49 (711) 12 34 56 7"
+    "mobileNumberTwo"    = "+49 (711) 12 34 56 7"
+    "birthday"           = "0000-00-00"
+    "companyAssignments" = @(
+        @{
+            "companyId" = 4
+        }
+    )
+}
+$response = Invoke-TANSSRequest -Type Post -ApiPath "backend/api/v1/employees" -Body $body -Verbose
+$response.meta
+
+$response.content.companyAssignments
+
+$t = [TANSS.Employee]@{
+    BaseObject = $response.content
+    Id         = $response.content.id
+}
+$t | Format-List
+
+help New-TANSSEmployee
+$employee = New-TANSSEmployee -Verbose -Name "Test, AnBe" -WhatIf
+
+$invokeParam = @{
+    "Name"               = "Test User AnBe"
+    "firstName"          = "An"
+    "lastName"           = "Be"
+    "room"               = "Room"
+    "telephoneNumber"    = "+49 (711) 12 34 56 7"
+    "emailAddress"       = "anbe@test.com"
+    "mobilePhone"        = "+49 (711) 12 34 56 7"
+    "initials"           = "AnBe"
+    "privatePhoneNumber" = "+49 (711) 12 34 56 7"
+    "active"             = $true
+    "erpNumber"          = "0"
+    "personalFaxNumber"  = "+49 (711) 12 34 56 7"
+    "role"               = "role"
+    "language"           = ""
+    "telephoneNumberTwo" = "+49 (711) 12 34 56 7"
+    "mobileNumberTwo"    = "+49 (711) 12 34 56 7"
+    "birthday"           = "01.01.1900"
+}
+$employee = New-TANSSEmployee @invokeParam -Verbose
+
+$employee = New-TANSSEmployee -Name "Test, AnBe"
+$employee = New-TANSSEmployee -Name "AnBe Test"
+$employee = New-TANSSEmployee -Name "SuperTest"
+
+$employee  = New-TANSSEmployee -Verbose -Name "Bellstedt, Andreas (Test)" -FirstName "Andreas" -LastName "Bellstedt" -Email "anbe@test.com" -Initials "AnBe" -IsActive $true -CompanyName "Musterfirma", "TestA", "TestB" -Department "Technik"
+
+$employee | Format-Table
+$employee.BaseObject
+
+#endregion
+
+#endregion
 
 
 
