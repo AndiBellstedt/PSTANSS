@@ -25,7 +25,7 @@
         ConfirmImpact = 'Low'
     )]
     Param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]
         $Path
     )
@@ -38,7 +38,7 @@
     $apiPath = $Path.Trim('/')
 
     # check on API path prefix
-    if(-not $ApiPath.StartsWith($apiPrefix)) {
+    if (-not $ApiPath.StartsWith($apiPrefix)) {
         $ApiPath = $apiPrefix + $ApiPath
         Write-PSFMessage -Level System -Message "Add API prefix, finished formatting path to '$($ApiPath)'"
     } else {
