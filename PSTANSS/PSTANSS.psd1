@@ -49,7 +49,9 @@
         'Get-TANSSTicket',
         'Set-TANSSTicket',
         'Remove-TANSSTicket',
-        'Find-TANSSObject'
+        'Find-TANSSObject',
+        'Get-TANSSTechnican',
+        'New-TANSSEmployee'
     )
 
     # Cmdlets to export from this module

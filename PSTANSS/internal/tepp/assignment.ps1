@@ -24,3 +24,6 @@ Register-PSFTeppArgumentCompleter -Command Set-TANSSTicket -Parameter Type -Name
 Register-PSFTeppArgumentCompleter -Command Set-TANSSTicket -Parameter OrderBy -Name PSTANSS.CacheLookup.OrderBys
 
 Register-PSFTeppArgumentCompleter -Command Find-TANSSObject -Parameter CompanyName -Name PSTANSS.CacheLookup.Companies
+
+Register-PSFTeppArgumentCompleter -Command New-TANSSEmployee -Parameter Department -Name PSTANSS.CacheLookup.Departments
+Register-PSFTeppArgumentCompleter -Command New-TANSSEmployee -Parameter CompanyName -Name PSTANSS.CacheLookup.Companies
