@@ -20,11 +20,15 @@ $token = Connect-TANSS -Server $Server -Credential $Credential -PassThru -DoNotR
 $TANSSToken = $Token
 $Token = $TANSSToken
 
-Register-TANSSAccessToken -Token $Token
 $Token = Get-TANSSRegisteredAccessToken
 $Token | Export-Clixml .\TANSStoken.xml
 $Token = Import-Clixml .\TANSStoken.xml
+Register-TANSSAccessToken -Token $Token
 
+Update-TANSSAccessToken
+Update-TANSSAccessToken -Verbose
+Update-TANSSAccessToken -PassThru
+Update-TANSSAccessToken -DoNotRegisterConnection
 
 #region lookups
 [TANSS.Cache]::StopValidationRunspace = $false
@@ -32,27 +36,16 @@ $Token = Import-Clixml .\TANSStoken.xml
 Get-PSFRunspace
 
 [TANSS.Lookup]::Companies
-
 [TANSS.Lookup]::Contracts
-
 [TANSS.Lookup]::CostCenters
-
 [TANSS.Lookup]::Departments
-
 [TANSS.Lookup]::Employees
-
 [TANSS.Lookup]::OrderBys
-
 [TANSS.Lookup]::Phases
-
 [TANSS.Lookup]::Tags
-
 [TANSS.Lookup]::Tickets
-
 [TANSS.Lookup]::TicketStates
-
 [TANSS.Lookup]::TicketTypes
-
 [TANSS.Lookup]::LinkTypes
 #endregion lookups
 
@@ -290,7 +283,7 @@ $result[0] | Format-List
 $result.BaseObject | Out-GridView
 
 $result | Where-Object status -notlike "erledigt" | Format-List
-$result | Where-Object status -notlike "erledigt" | Get-TANSSTicket -Verbose | fl
+$result | Where-Object status -notlike "erledigt" | Get-TANSSTicket -Verbose | Format-List
 
 $result | Group-Object Status | Sort-Object name
 $result | Group-Object Companz | Sort-Object name
@@ -349,3 +342,109 @@ $result | Remove-TANSSTicket -Verbose
 #endregion Tickethandling
 
 
+
+
+#region Vacation API in beta
+
+# Vacationtypes
+$response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/vacationRequests/planningAdditionalTypes"
+$response.content | Format-Table
+
+
+
+# Query vacation information
+$vacationType = "VACATION"
+$vacationType = "ILLNESS"
+$vacationType = "ABSENCE"
+$vacationType = "STAND_BY"
+$vacationType = "OVERTIME"
+
+$StartDate = (Get-Date -Date (Get-Date).AddDays( 1 ) -Format "dd.MM.yyyy")
+$EndDate = (Get-Date -Date (Get-Date).AddDays( 2 ) -Format "dd.MM.yyyy")
+
+$RequesterId = [TANSS.Lookup]::Employees | Out-GridView -OutputMode Single | Select-Object -ExpandProperty Name
+
+
+$_startDate = [int][double]::Parse((Get-Date -Date $StartDate -UFormat %s))
+$_endDate = [int][double]::Parse((Get-Date -Date $EndDate -UFormat %s))
+$body = @{
+    "requesterId"  = $RequesterId
+    "planningType" = $vacationType
+    "startDate"    = $_startDate
+    "endDate"      = $_endDate
+}
+$response = Invoke-TANSSRequest -Type POST -ApiPath "backend/api/v1/vacationRequests/properties" -Body $body
+$response.meta | Format-List *
+$response.content | Format-Table
+$response.content | Format-List *
+$response.content.days
+
+
+$_requestDate = [int][double]::Parse((Get-Date -UFormat %s))
+
+$response.content.requestReason = "Test $(get-date) new"
+$response.content.requestDate = $_requestDate
+$body = $response.content | ConvertTo-PSFHashtable
+
+# Create vacation request
+$vacationRequest = Invoke-TANSSRequest -Type POST -ApiPath "backend/api/v1/vacationRequests" -Body $body
+$vacationRequest.content
+
+# Change vacation request
+$id = $vacationRequest.content.id
+$response.content.requestReason = "Test $(get-date) new"
+$body = $response.content | ConvertTo-PSFHashtable
+$vacationRequest = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/vacationRequests/$($id)" -Body $body
+$vacationRequest
+$vacationRequest.content
+
+# Approve vacation request
+$id = $vacationRequest.content.id
+$body = @{
+    "status" = "APPROVED"
+}
+$body = @{
+    "status" = "DECLINED"
+}
+
+$result = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/vacationRequests/$($id)" -Body $body
+$result.content
+
+# delete vacation request
+$id = $vacationRequest.content.id
+$result = Invoke-TANSSRequest -Type DELETE -ApiPath "backend/api/v1/vacationRequests/$($id)" -Body $body
+$result
+
+
+# List vacation days of all employees
+$year = 2022
+$response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/vacationRequests/vacationDays/year/$($year)"
+$response.content | Format-Table
+$response.content[0].employee | Format-List
+
+
+
+# Set vacation days of all employees
+$body = @{
+    "employeeId"   = 2
+    "year"         = 2022
+    "numberOfDays" = 30.0
+    "transferred"  = 0.0
+}
+$response = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/vacationRequests/vacationDays" -Body $body
+$response.content
+
+
+
+# not functional - query all vacation requests of employee
+$body = @{
+    "year"        = 2022
+    "employeeIds" = @(
+        2
+    )
+}
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/vacationRequests/vacationDays" -Body $body
+$response.content
+
+
+#endregion
