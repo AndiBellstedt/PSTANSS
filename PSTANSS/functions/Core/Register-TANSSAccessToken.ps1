@@ -35,7 +35,7 @@
     process {
 
         if ($pscmdlet.ShouldProcess("AccessToken for $($Token.UserName) on '$($Token.Server)'", "Register")) {
-            Write-PSFMessage -Level Verbose -Message "Registering AccessToken for $($Token.UserName) on '$($Token.Server)'" -Tag "AccessToken"
+            Write-PSFMessage -Level Verbose -Message "Registering AccessToken for $($Token.UserName) on '$($Token.Server)' valid until '$($Token.TimeStampExpires)'" -Tag "AccessToken"
 
             $script:TANSSToken = $Token
         }
