@@ -27,6 +27,12 @@
     .PARAMETER PassThru
         Outputs the token to the console, even when the register switch is set
 
+    .PARAMETER WhatIf
+        If this switch is enabled, no actions are performed but informational messages will be displayed that explain what would happen if the command were to run.
+
+    .PARAMETER Confirm
+        If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
+
     .EXAMPLE
         Connect-TANSS -Server "tanss.company.com" -Credential (Get-Credential "username")
 
@@ -159,7 +165,7 @@
             TimeStampModified = Get-Date
         }
 
-        if(-not $NoCacheInit) {
+        if (-not $NoCacheInit) {
             Write-PSFMessage -Level Verbose -Message "Start creating lookup cache from current tickets in TANSS" -Tag "Cache"
 
             $tickets = @()
@@ -181,6 +187,7 @@
                 $token
             }
         } else {
+            Write-PSFMessage -Level Significant -Message "Connected to service '($($token.Server))' as '$($token.UserName)', outputting TANSS.Connection" -Tag "Connection"
             $token
         }
     }
