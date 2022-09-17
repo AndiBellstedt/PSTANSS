@@ -400,7 +400,7 @@
             $body = [ordered]@{
                 "companyId"                  = (.{if ($CompanyId) { $CompanyId } else { $ticket.BaseObject.companyId }})
                 "remitterId"                 = (.{if ($RemitterId) { $RemitterId } else { $ticket.BaseObject.remitterId }})
-                "title"                      = (.{if ($NewTitle) { "$($NewTitle)" } else { $ticket.BaseObject.remitterId }})
+                "title"                      = (.{if ($NewTitle) { "$($NewTitle)" } else { $ticket.BaseObject.title }})
                 "content"                    = (.{if ($Description) { "$($Description)" } else { $ticket.BaseObject.content }})
                 "extTicketId"                = (.{if ($ExternalTicketId) { "$($ExternalTicketId)" } else { $ticket.BaseObject.extTicketId }})
                 "assignedToEmployeeId"       = (.{if ($EmployeeIdAssigned) { $EmployeeIdAssigned } else { $ticket.BaseObject.assignedToEmployeeId }})
