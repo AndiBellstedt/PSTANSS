@@ -472,6 +472,8 @@ $employee.BaseObject
 $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/vacationRequests/planningAdditionalTypes"
 $response.content | Format-Table
 
+[TANSS.Lookup]::VacationTypes
+Get-TANSSVacationType
 
 
 # Query vacation information
@@ -481,8 +483,8 @@ $vacationType = "ABSENCE"
 $vacationType = "STAND_BY"
 $vacationType = "OVERTIME"
 
-$StartDate = (Get-Date -Date (Get-Date).AddDays( 1 ) -Format "dd.MM.yyyy")
-$EndDate = (Get-Date -Date (Get-Date).AddDays( 2 ) -Format "dd.MM.yyyy")
+$StartDate = (Get-Date -Date (Get-Date).AddDays( 2 ) -Format "dd.MM.yyyy")
+$EndDate = (Get-Date -Date (Get-Date).AddDays( 4 ) -Format "dd.MM.yyyy")
 
 $RequesterId = [TANSS.Lookup]::Employees | Out-GridView -OutputMode Single | Select-Object -ExpandProperty Name
 
@@ -504,13 +506,15 @@ $response.content.days
 
 $_requestDate = [int][double]::Parse((Get-Date -UFormat %s))
 
-$response.content.requestReason = "Test $(get-date) new"
+$response.content.requestReason = "Test $(get-date) new 2"
 $response.content.requestDate = $_requestDate
 $body = $response.content | ConvertTo-PSFHashtable
 
 # Create vacation request
 $vacationRequest = Invoke-TANSSRequest -Type POST -ApiPath "backend/api/v1/vacationRequests" -Body $body
 $vacationRequest.content
+$vacationRequest.content.days
+
 
 # Change vacation request
 $id = $vacationRequest.content.id
