@@ -226,12 +226,17 @@
             
              </summary>
         </member>
-        <member name="F:TANSS.Lookup.VacationTypePredefinedApi">
+        <member name="F:TANSS.Lookup.VacationTypesPredefinedApi">
              <summary>
             
              </summary>
         </member>
-        <member name="F:TANSS.Lookup.VacationTypePredefined">
+        <member name="F:TANSS.Lookup.VacationTypesPredefined">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Lookup.VacationTypes">
              <summary>
             
              </summary>
