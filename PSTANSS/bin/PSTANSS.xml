@@ -231,12 +231,7 @@
             
              </summary>
         </member>
-        <member name="F:TANSS.Lookup.VacationTypesPredefined">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="F:TANSS.Lookup.VacationTypes">
+        <member name="F:TANSS.Lookup.VacationAbsenceTypes">
              <summary>
             
              </summary>
@@ -277,7 +272,7 @@
             
              </summary>
         </member>
-        <member name="T:TANSS.Vacation.Type">
+        <member name="T:TANSS.Vacation.AbsenceType">
              <summary>
             
              </summary>
