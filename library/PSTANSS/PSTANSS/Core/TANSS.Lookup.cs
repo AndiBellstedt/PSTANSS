@@ -79,12 +79,17 @@ namespace TANSS {
         /// <summary>
         ///
         /// </summary>
-        public static System.Collections.Hashtable VacationTypePredefinedApi = new System.Collections.Hashtable();
+        public static System.Collections.Hashtable VacationTypesPredefinedApi = new System.Collections.Hashtable();
 
         /// <summary>
         ///
         /// </summary>
-        public static System.Collections.Hashtable VacationTypePredefined = new System.Collections.Hashtable();
+        public static System.Collections.Hashtable VacationTypesPredefined = new System.Collections.Hashtable();
+
+        /// <summary>
+        ///
+        /// </summary>
+        public static System.Collections.Hashtable VacationTypes = new System.Collections.Hashtable();
 
     }
 }
