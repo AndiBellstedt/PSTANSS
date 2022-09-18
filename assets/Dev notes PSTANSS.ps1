@@ -92,10 +92,19 @@ $result | Format-List
 
 #region Get a ticket history
 $ticketID = "114009"
-$response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/history/$ticketID" -Verbose
-
-$response.meta.linkedEntities
+$ticketID = "3"
+$response = @()
+$tickets = Get-TANSSTicket -AllTechnician
+foreach ($ticketid in $tickets.id) {
+    $response += Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/history/$ticketID" -Verbose
+}
+$response.meta.linkedEntities | Format-List *
+$response.meta.listProperties | Format-List *
+$response.meta | Format-List
+$response[1].content | Format-Table
 $response.content.mails | Format-Table
+$response.content.comments | Format-Table
+$response.content.supports | Format-Table
 #endregion
 
 
@@ -446,7 +455,7 @@ $employee = New-TANSSEmployee -Name "Test, AnBe"
 $employee = New-TANSSEmployee -Name "AnBe Test"
 $employee = New-TANSSEmployee -Name "SuperTest"
 
-$employee  = New-TANSSEmployee -Verbose -Name "Bellstedt, Andreas (Test)" -FirstName "Andreas" -LastName "Bellstedt" -Email "anbe@test.com" -Initials "AnBe" -IsActive $true -CompanyName "Musterfirma", "TestA", "TestB" -Department "Technik"
+$employee = New-TANSSEmployee -Verbose -Name "Bellstedt, Andreas (Test)" -FirstName "Andreas" -LastName "Bellstedt" -Email "anbe@test.com" -Initials "AnBe" -IsActive $true -CompanyName "Musterfirma", "TestA", "TestB" -Department "Technik"
 
 $employee | Format-Table
 $employee.BaseObject
