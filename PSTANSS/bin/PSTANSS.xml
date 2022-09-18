@@ -226,6 +226,16 @@
             
              </summary>
         </member>
+        <member name="F:TANSS.Lookup.VacationTypePredefinedApi">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Lookup.VacationTypePredefined">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:TANSS.Object">
              <summary>
             
@@ -258,6 +268,21 @@
              </summary>
         </member>
         <member name="T:TANSS.TicketPreview">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.Vacation.Type">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.Vacation.Request">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.Vacation.Entitlement">
              <summary>
             
              </summary>
