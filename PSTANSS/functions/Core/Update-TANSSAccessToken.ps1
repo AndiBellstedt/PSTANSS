@@ -7,6 +7,9 @@
         Updates the AccessToken from a refreshToken for TANSS connection
         By defaault, the new Access is registered to as default connection
 
+    .PARAMETER NoCacheInit
+        Do not requery tickets and various types to fill cache data for lookup types
+
     .PARAMETER DoNotRegisterConnection
         Do not register the connection as default connection
 
@@ -46,6 +49,9 @@
         [Alias('NoRegistration')]
         [Switch]
         $DoNotRegisterConnection,
+
+        [switch]
+        $NoCacheRefresh,
 
         [switch]
         $PassThru
@@ -113,6 +119,18 @@
                 TimeStampCreated  = $Token.TimeStampCreated
                 TimeStampExpires  = ([datetime]'1/1/1970').AddSeconds($response.content.expire)
                 TimeStampModified = Get-Date
+            }
+
+            if (-not $NoCacheRefresh) {
+                Write-PSFMessage -Level Verbose -Message "Start updating lookup cache from current tickets in TANSS" -Tag "Cache"
+
+                $tickets = @()
+                $tickets += Get-TANSSTicket -MyTickets -Token $token
+                $tickets += Get-TANSSTicket -NotAssigned -Token $token
+                $tickets += Get-TANSSTicket -AllTechnician -Token $token
+                Write-PSFMessage -Level Verbose -Message "Built cache from $($tickets.count) tickets" -Tag "Cache"
+
+                $null = Get-TANSSVacationAbsenceType
             }
 
             if (-not $DoNotRegisterConnection) {

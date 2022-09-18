@@ -22,7 +22,7 @@
         Do not register the connection as default connection
 
     .PARAMETER NoCacheInit
-        Do not query current existing tickets to fill cache data for lookup types
+        Do not query current existing tickets and various types to fill cache data for lookup types
 
     .PARAMETER PassThru
         Outputs the token to the console, even when the register switch is set
@@ -172,8 +172,9 @@
             $tickets += Get-TANSSTicket -MyTickets -Token $token
             $tickets += Get-TANSSTicket -NotAssigned -Token $token
             $tickets += Get-TANSSTicket -AllTechnician -Token $token
-
             Write-PSFMessage -Level Verbose -Message "Built cache from $($tickets.count) tickets" -Tag "Cache"
+
+            $null = Get-TANSSVacationAbsenceType
         }
 
         if (-not $DoNotRegisterConnection) {

@@ -7,7 +7,7 @@ namespace TANSS {
         ///
         /// </summary>
         [Serializable]
-        public class Type : TANSS.Object {
+        public class AbsenceType : TANSS.Object {
         }
 
         /// <summary>

@@ -591,5 +591,60 @@
         </View>
 
 
+        <!-- TANSS.Vacation.AbsenceType -->
+        <View>
+            <Name>TANSS.Vacation.AbsenceType_Table</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Vacation.AbsenceType</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize/>
+                <TableHeaders>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Id</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Name</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>IsCharged</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+        <View>
+            <Name>TANSS.Vacation.AbsenceType_List</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Vacation.AbsenceType</TypeName>
+            </ViewSelectedBy>
+            <ListControl>
+                <ListEntries>
+                    <ListEntry>
+                        <ListItems>
+                            <ListItem>
+                                <PropertyName>Id</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Name</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>IsCharged</PropertyName>
+                            </ListItem>
+                        </ListItems>
+                    </ListEntry>
+                </ListEntries>
+            </ListControl>
+        </View>
+
+
     </ViewDefinitions>
 </Configuration>

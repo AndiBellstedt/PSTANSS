@@ -646,6 +646,7 @@
         </TypeConverter>
     </Type>
 
+
     <!-- TANSS.Employee -->
     <Type>
         <Name>Deserialized.TANSS.Employee</Name>
@@ -818,5 +819,56 @@
             <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
         </TypeConverter>
     </Type>
+
+
+    <!-- TANSS.Vacation.AbsenceType -->
+    <Type>
+        <Name>Deserialized.TANSS.Vacation.AbsenceType</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.Vacation.AbsenceType
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.Vacation.AbsenceType</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>Name</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.name
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsCharged</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.charged
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
 
 </Types>

@@ -42,19 +42,13 @@ New-Variable -Name TANSSToken -Scope Script -Visibility Public -Description "Var
 
 [TANSS.Lookup]::VacationTypesPredefinedApi = [ordered]@{
     "VACATION" = "Urlaub"
-    "ILLNESS" = "Krankheit"
-    "ABSENCE" = "Abwesenheit"
+    "ILLNESS"  = "Krankheit"
+    "ABSENCE"  = "Abwesenheit"
     "STAND_BY" = "Bereitschaft"
     "OVERTIME" = "Überstunden abfeiern"
 }
 
-[TANSS.Lookup]::VacationTypesPredefined = [ordered]@{
-    4 = "Urlaub"
-    5 = "Krankheit"
-    6 = "Abwesenheit"
-    7 = "Bereitschaft"
-    8 = "Privater Termin"
-    9 = "Überstunden abfeiern"
-}
+[TANSS.Lookup]::VacationAbsenceTypes = @{}
+
 
 #endregion Manual Lookup definitions
