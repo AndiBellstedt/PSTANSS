@@ -650,11 +650,28 @@
         <View>
             <Name>TANSS.Vacation.Request_Table</Name>
             <ViewSelectedBy>
-                <TypeName>TANSS.Vacation.Request1</TypeName>
+                <TypeName>TANSS.Vacation.Request</TypeName>
             </ViewSelectedBy>
             <TableControl>
                 <AutoSize/>
                 <TableHeaders>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
                     <TableColumnHeader/>
                     <TableColumnHeader/>
                     <TableColumnHeader/>
@@ -666,10 +683,65 @@
                                 <PropertyName>Id</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>Name</PropertyName>
+                                <PropertyName>Date</PropertyName>
+                                <FormatString>{0:yyyy}-{0:MM}-{0:dd}</FormatString>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>IsCharged</PropertyName>
+                                <PropertyName>EmployeeName</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>TypeName</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>AbsenceSubType</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Status</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>StartDate</PropertyName>
+                                <FormatString>{0:yyyy}-{0:MM}-{0:dd}</FormatString>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EndDate</PropertyName>
+                                <FormatString>{0:yyyy}-{0:MM}-{0:dd}</FormatString>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Description</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Days</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>SupervisorName</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>SupervisorDate</PropertyName>
+                                <FormatString>{0:yyyy}-{0:MM}-{0:dd}</FormatString>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>SupervisorComment</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>ProcessId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>ProcessStepId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>TaskSeriesId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>RecurrenceRuleId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EmployeeId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>SupervisorId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Type</PropertyName>
                             </TableColumnItem>
                         </TableColumnItems>
                     </TableRowEntry>
@@ -679,7 +751,7 @@
         <View>
             <Name>TANSS.Vacation.Request_List</Name>
             <ViewSelectedBy>
-                <TypeName>TANSS.Vacation.Request1</TypeName>
+                <TypeName>TANSS.Vacation.Request</TypeName>
             </ViewSelectedBy>
             <ListControl>
                 <ListEntries>
@@ -689,10 +761,64 @@
                                 <PropertyName>Id</PropertyName>
                             </ListItem>
                             <ListItem>
-                                <PropertyName>Name</PropertyName>
+                                <PropertyName>Date</PropertyName>
                             </ListItem>
                             <ListItem>
-                                <PropertyName>IsCharged</PropertyName>
+                                <PropertyName>EmployeeId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>EmployeeName</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>TypeName</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Type</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>AbsenceSubTypeId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>AbsenceSubType</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>StartDate</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>EndDate</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Status</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Description</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>SupervisorId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>SupervisorName</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>SupervisorDate</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>SupervisorComment</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>ProcessId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>ProcessStepId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>TaskSeriesId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>RecurrenceRuleId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Days</PropertyName>
                             </ListItem>
                         </ListItems>
                     </ListEntry>

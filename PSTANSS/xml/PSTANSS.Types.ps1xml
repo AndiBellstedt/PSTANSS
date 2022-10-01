@@ -988,7 +988,11 @@
             <ScriptProperty>
                 <Name>SupervisorDate</Name>
                 <GetScriptBlock>
-                    ([datetime]'1/1/1970').AddSeconds($this.BaseObject.supervisorDate)
+                    if($this.BaseObject.supervisorDate -eq 0) {
+                        $null
+                    } else {
+                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.supervisorDate)
+                    }
                 </GetScriptBlock>
             </ScriptProperty>
 
@@ -1002,7 +1006,7 @@
             <ScriptProperty>
                 <Name>AbsenceSubType</Name>
                 <GetScriptBlock>
-                    [TANSS.Lookup]::VacationAbsenceTypes[([int]$this.BaseObject.planningAdditionalId)]
+                    [TANSS.Lookup]::VacationAbsenceSubTypes[([int]$this.BaseObject.planningAdditionalId)]
                 </GetScriptBlock>
             </ScriptProperty>
 

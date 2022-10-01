@@ -37,7 +37,6 @@
         https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
-        #DefaultParameterSetName = "Vacation",
         SupportsShouldProcess = $true,
         PositionalBinding = $true,
         ConfirmImpact = 'Medium'
@@ -100,7 +99,6 @@
         # Validation - Basic checks
         if (-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
         Assert-CacheRunspaceRunning
-
     }
 
     process {
@@ -114,13 +112,21 @@
         }
 
         # Fallback to employeeId from token if no requestorId is set
-        if (-not $RequesterId) { $RequesterId = $Token.EmployeeId }
+        if (-not $EmployeeId) {
+            Write-PSFMessage -Level Verbose -Message "No Employee specified, using current logged in employee '$($Token.UserName)' (Id:$($Token.EmployeeId))" -Tag "VacationRequest", "EmployeeId"
+            $EmployeeId = $Token.EmployeeId
+        }
 
         # Find additional AbsenceSubType from specified name
         if ($parameterSetName -like "AbsenceWithAbsenceName") {
             Write-PSFMessage -Level System -Message "Gathering TANSS absence type '$($AbsenceSubTypeName)'" -Tag "VacationRequest", "AbsenceSubType", "Lookup"
 
+            $tmpWhatIfPreference = $WhatIfPreference
+            $WhatIfPreference = $fals
             $AbsenceSubType = Get-TANSSVacationAbsenceSubType -Name $AbsenceSubTypeName -Token $Token -ErrorAction Ignore
+            $WhatIfPreference = $tmpWhatIfPreference
+            Remove-Variable tmpWhatIfPreference -Force -WhatIf:$false -Confirm:$false -Verbose:$false -Debug:$false
+
             if ($AbsenceSubType) {
                 Write-PSFMessage -Level Verbose -Message "Found AbsenceSubTypeId '$($AbsenceSubType.Id)' for '$($AbsenceSubTypeName)'"
             } else {
@@ -155,7 +161,7 @@
                 "startDate"    = $_startDate
                 "endDate"      = $_endDate
             }
-            $plannedVactionRequest = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token | Select-Object -ExpandProperty content
+            $plannedVactionRequest = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false | Select-Object -ExpandProperty content
             if ($plannedVactionRequest) {
                 Write-PSFMessage -Level Verbose -Message "Received VacationRequest object with $($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($planningType)'" -Tag "VacationRequest", "VactionRequestObject"
             } else {
@@ -189,5 +195,6 @@
         }
     }
 
-    end {}
+    end {
+    }
 }
