@@ -171,7 +171,7 @@
             $tickets += Get-TANSSTicket -AllTechnician -Token $token
             Write-PSFMessage -Level Verbose -Message "Built cache from $($tickets.count) tickets" -Tag "Cache"
 
-            $null = Get-TANSSVacationAbsenceSubType
+            $null = Get-TANSSVacationAbsenceSubType -Token $token
         }
 
         if (-not $DoNotRegisterConnection) {
