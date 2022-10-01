@@ -6,47 +6,47 @@
     <members>
         <member name="T:TANSS.Callback">
              <summary>
-
+            
              </summary>
         </member>
         <member name="T:TANSS.Company">
              <summary>
-
+            
              </summary>
         </member>
         <member name="T:TANSS.CompanyType">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.CompanyType.Id">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.CompanyType.Name">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.CompanyType.CategoryId">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.CompanyType.CategoryName">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.CompanyType.Icon">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.CompanyType.IsHidden">
              <summary>
-
+            
              </summary>
         </member>
         <member name="M:TANSS.CompanyType.ToString">
@@ -62,67 +62,67 @@
         </member>
         <member name="F:TANSS.Cache.Data">
             <summary>
-
+            
             </summary>
         </member>
         <member name="F:TANSS.Cache.StopValidationRunspace">
             <summary>
-
+            
             </summary>
         </member>
         <member name="T:TANSS.Connection">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Connection.Server">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Connection.UserName">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Connection.EmployeeId">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Connection.EmployeeType">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Connection.AccessToken">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Connection.RefreshToken">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Connection.Message">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Connection.TimeStampCreated">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Connection.TimeStampExpires">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Connection.TimeStampModified">
              <summary>
-
+            
              </summary>
         </member>
         <member name="P:TANSS.Connection.IsValid">
@@ -158,97 +158,97 @@
         </member>
         <member name="F:TANSS.Lookup.Companies">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.CompanyTypes">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.Tickets">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.TicketStates">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.TicketTypes">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.Departments">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.Employees">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.Contracts">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.Phases">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.CostCenters">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.OrderBys">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.Tags">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.LinkTypes">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.EmployeeCategories">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.VacationTypesPredefinedApi">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Lookup.VacationAbsenceSubTypes">
              <summary>
-
+            
              </summary>
         </member>
         <member name="T:TANSS.Object">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Object.BaseObject">
              <summary>
-
+            
              </summary>
         </member>
         <member name="F:TANSS.Object.Id">
              <summary>
-
+            
              </summary>
         </member>
         <member name="M:TANSS.Object.ToString">
@@ -259,32 +259,37 @@
         </member>
         <member name="T:TANSS.Employee">
              <summary>
-
+            
              </summary>
         </member>
         <member name="T:TANSS.Ticket">
              <summary>
-
+            
              </summary>
         </member>
         <member name="T:TANSS.TicketPreview">
              <summary>
-
+            
              </summary>
         </member>
         <member name="T:TANSS.Vacation.AbsenceSubType">
              <summary>
-
+            
              </summary>
         </member>
         <member name="T:TANSS.Vacation.Request">
              <summary>
-
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.Vacation.Day">
+             <summary>
+            
              </summary>
         </member>
         <member name="T:TANSS.Vacation.Entitlement">
              <summary>
-
+            
              </summary>
         </member>
     </members>
