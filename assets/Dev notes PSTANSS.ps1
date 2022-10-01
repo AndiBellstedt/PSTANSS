@@ -1,5 +1,6 @@
 ﻿# Dev PSTANSS
 break
+[enum]::GetValues( [PSFramework.Message.MessageLevel] ) | Select-Object @{n = "x"; e = { "$($_.value__):$($_)" } }
 
 Import-Module .\PSTANSS\PSTANSS\PSTANSS.psd1 -Force
 Get-Command -Module PSTANSS
@@ -49,6 +50,8 @@ Get-PSFRunspace
 [TANSS.Lookup]::TicketStates
 [TANSS.Lookup]::TicketTypes
 [TANSS.Lookup]::LinkTypes
+[TANSS.Lookup]::VacationTypesPredefinedApi
+[TANSS.Lookup]::VacationAbsenceSubTypes
 #endregion lookups
 
 
@@ -205,7 +208,7 @@ $response.content[0].types | Format-Table
 #endregion
 
 
-
+#region company
 #region search company
 help Find-TANSSObject -ShowWindow
 $result = Find-TANSSObject -Company -Text "Test" -ResultSize 100
@@ -236,8 +239,28 @@ $response.content.companies | Measure-Object
 
 $response.meta.text
 $response.meta.properties.extras
-#endregion
+#endregion search company
 
+
+$response = Invoke-TANSSRequest -Type Put -ApiPath "backend/api/v1/companies/" -Body @{
+    #"searchText" = "inda"
+    #"companyTypeIds" = @(1, 2, 3, 100000)
+    "fetchEmployees"   = $false
+    "checkPermissions" = $false
+}
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/salutations"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/properties"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/100000"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/100000/employees"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/search?query=ind"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/departments?withEmployees=true"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/technicianRecommendation/100000"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/technicianRecommendation/100000"
+$response
+$response.meta
+$response.content | Format-Table
+
+#endregion company
 
 
 #region search Employee
@@ -462,18 +485,58 @@ $employee.BaseObject
 
 #endregion
 
+
+# Get employee
+$employeeId = 2
+$response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/employees/$($employeeId)"
+$response.meta.linkedEntities | Format-List *
+$response.content | Format-List
+
 #endregion
 
 
 
 #region Vacation API in beta
+# Get additional Vacationtypes
+$response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/salutations/1"
+$ApiPath = "backend/api/v1/salutations"
 
-# Vacationtypes
 $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/vacationRequests/planningAdditionalTypes"
 $response.content | Format-Table
-
 [TANSS.Lookup]::VacationTypes
-Get-TANSSVacationType
+Get-TANSSVacationAbsenceSubType
+
+
+# Query Vacation records
+$body = @{
+    "year"        = 2022
+    #"month" = 1
+    "employeeIds" = @( 2, 3 )
+    #"departmentIds" = @( )
+    #"planningTypes" = @(
+    #    "VACATION",
+    #    "ILLNESS",
+    #    "ABSENCE",
+    #    "STAND_BY",
+    #    "OVERTIME"
+    #)
+    #"planningAdditionalIds" = @()
+    #"statesOnly" = @(
+    #    "NEW",
+    #    "REQUESTED",
+    #    "APPROVED",
+    #    "DECLINED"
+    #)
+}
+$response = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/vacationRequests/list" -Body $body
+$response
+$response.meta | Format-List *
+$response.meta.linkedEntities
+
+$response.content | Format-List
+$response.content.vacationRequests
+$response.content.employeeSummaries.'2'.vacationDaysForYear
+
 
 
 # Query vacation information
@@ -483,12 +546,9 @@ $vacationType = "ABSENCE"
 $vacationType = "STAND_BY"
 $vacationType = "OVERTIME"
 
-$StartDate = (Get-Date -Date (Get-Date).AddDays( 2 ) -Format "dd.MM.yyyy")
-$EndDate = (Get-Date -Date (Get-Date).AddDays( 4 ) -Format "dd.MM.yyyy")
-
+$StartDate = (Get-Date -Date (Get-Date).AddDays( -4 ) -Format "dd.MM.yyyy")
+$EndDate = (Get-Date -Date (Get-Date).AddDays( -2 ) -Format "dd.MM.yyyy")
 $RequesterId = [TANSS.Lookup]::Employees | Out-GridView -OutputMode Single | Select-Object -ExpandProperty Name
-
-
 $_startDate = [int][double]::Parse((Get-Date -Date $StartDate -UFormat %s))
 $_endDate = [int][double]::Parse((Get-Date -Date $EndDate -UFormat %s))
 $body = @{
@@ -502,19 +562,45 @@ $response.meta | Format-List *
 $response.content | Format-Table
 $response.content | Format-List *
 $response.content.days
+$tnsVactionRequest = $response.content
 
 
-$_requestDate = [int][double]::Parse((Get-Date -UFormat %s))
 
-$response.content.requestReason = "Test $(get-date) new 2"
-$response.content.requestDate = $_requestDate
-$body = $response.content | ConvertTo-PSFHashtable
+help Add-TANSSVacationRequest
+# Vacation
+Add-TANSSVacationRequest -Vacation -StartDate "01.10.2022" -EndDate "10.10.2022"
+Add-TANSSVacationRequest -Illness -StartDate "01.10.2022" -EndDate "10.10.2022"
+Add-TANSSVacationRequest -Standby -StartDate "01.10.2022" -EndDate "10.10.2022"
+Add-TANSSVacationRequest -Overtime -StartDate "01.10.2022" -EndDate "10.10.2022"
+Add-TANSSVacationRequest -Absence -StartDate "01.10.2022" -EndDate "10.10.2022"
+Add-TANSSVacationRequest -Absence -AbsenceSubTypeName "Sonderurlaub"  -StartDate "01.10.2022" -EndDate "10.10.2022"
+Add-TANSSVacationRequest -Absence -AbsenceSubType (Get-TANSSVacationAbsenceSubType)[0] -StartDate "01.10.2022" -EndDate "10.10.2022"
+
+# Errors
+Add-TANSSVacationRequest
+Add-TANSSVacationRequest -Vacation -StartDate "10.10.2022" -EndDate "01.10.2022"
+Add-TANSSVacationRequest -Absence -AbsenceSubTypeName "foo" -StartDate "01.10.2022" -EndDate "10.10.2022"
+
+
+Import-Module .\PSTANSS\PSTANSS\PSTANSS.psd1 -Force
+Register-TANSSAccessToken -Token $Token
+$Token = Get-TANSSRegisteredAccessToken
+Update-TANSSAccessToken
+Get-PSFMessage -Last 1 | Select-Object -Last 1 | Format-List  *
+
+[TANSS.Lookup]::VacationAbsenceSubTypes
+
 
 # Create vacation request
+$_requestDate = [int][double]::Parse((Get-Date -UFormat %s))
+$response.content.requestReason = "Test $(get-date)"
+$response.content.requestDate = $_requestDate
+$response.content.planningAdditionalId = Get-TANSSVacationAbsenceSubType | Out-GridView -OutputMode Single | Select-Object -ExpandProperty id
+$body = $response.content | ConvertTo-PSFHashtable
+
 $vacationRequest = Invoke-TANSSRequest -Type POST -ApiPath "backend/api/v1/vacationRequests" -Body $body
 $vacationRequest.content
 $vacationRequest.content.days
-
 
 # Change vacation request
 $id = $vacationRequest.content.id
@@ -574,3 +660,21 @@ $response.content
 
 
 #endregion
+
+
+#regions API routes from JAR
+$ApiPath = "backend/api/v1/companies"
+$ApiPath = "backend/api/v1/companies/1"
+$ApiPath = "backend/api/v1/companies/1/employees"
+$ApiPath = "backend/api/v1/companies/search?query=ind"
+$ApiPath = "backend/api/v1/companies/departments?withEmployees=true"
+
+$Type = "Get"
+$Type = "Put"
+
+$response = Invoke-TANSSRequest -Type $Type -ApiPath $ApiPath -Verbose
+$response
+$response.meta
+$response.content
+
+#endregions API routes from JAR
