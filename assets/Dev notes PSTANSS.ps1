@@ -14,7 +14,7 @@ $Credential | Export-Clixml .\tannstest.xml
 $Credential = Import-Clixml .\tanns.xml
 $Credential = Import-Clixml .\tannstest.xml
 
-$token = Connect-TANSS -Server $Server -Credential $Credential -PassThru
+$token = Connect-TANSS -Server $Server -Credential $Credential -PassThru -Verbose
 $token = Connect-TANSS -Server $Server -Credential $Credential -LoginToken (Read-Host -Prompt "Enter OTP") -PassThru
 $token = Connect-TANSS -Server $Server -Credential $Credential -DoNotRegisterConnection -PassThru
 $token = Connect-TANSS -Server $Server -Credential $Credential -PassThru -DoNotRegisterConnection
@@ -562,24 +562,27 @@ $response.meta | Format-List *
 $response.content | Format-Table
 $response.content | Format-List *
 $response.content.days
-$tnsVactionRequest = $response.content
 
 
 
-help Add-TANSSVacationRequest
+help New-TANSSVacationRequest
 # Vacation
-Add-TANSSVacationRequest -Vacation -StartDate "01.10.2022" -EndDate "10.10.2022"
-Add-TANSSVacationRequest -Illness -StartDate "01.10.2022" -EndDate "10.10.2022"
-Add-TANSSVacationRequest -Standby -StartDate "01.10.2022" -EndDate "10.10.2022"
-Add-TANSSVacationRequest -Overtime -StartDate "01.10.2022" -EndDate "10.10.2022"
-Add-TANSSVacationRequest -Absence -StartDate "01.10.2022" -EndDate "10.10.2022"
-Add-TANSSVacationRequest -Absence -AbsenceSubTypeName "Sonderurlaub"  -StartDate "01.10.2022" -EndDate "10.10.2022"
-Add-TANSSVacationRequest -Absence -AbsenceSubType (Get-TANSSVacationAbsenceSubType)[0] -StartDate "01.10.2022" -EndDate "10.10.2022"
+$vacationRequest = New-TANSSVacationRequest -Vacation -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
+$vacationRequest = New-TANSSVacationRequest -Illness -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
+$vacationRequest = New-TANSSVacationRequest -Standby -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
+$vacationRequest = New-TANSSVacationRequest -Overtime -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
+$vacationRequest = New-TANSSVacationRequest -Absence -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
+$vacationRequest = New-TANSSVacationRequest -Absence -AbsenceSubTypeName "Sonderurlaub"  -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose #-WhatIf
+$vacationRequest = New-TANSSVacationRequest -Absence -AbsenceSubType (Get-TANSSVacationAbsenceSubType)[0] -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
+
+$vacationRequest | Format-Table
+$vacationRequest | Format-List
+
 
 # Errors
-Add-TANSSVacationRequest
-Add-TANSSVacationRequest -Vacation -StartDate "10.10.2022" -EndDate "01.10.2022"
-Add-TANSSVacationRequest -Absence -AbsenceSubTypeName "foo" -StartDate "01.10.2022" -EndDate "10.10.2022"
+New-TANSSVacationRequest
+New-TANSSVacationRequest -Vacation -StartDate "2022-10-10" -EndDate "2022-10-01"
+New-TANSSVacationRequest -Absence -AbsenceSubTypeName "foo" -StartDate "2022-10-01" -EndDate "2022-10-10"
 
 
 Import-Module .\PSTANSS\PSTANSS\PSTANSS.psd1 -Force
@@ -589,6 +592,15 @@ Update-TANSSAccessToken
 Get-PSFMessage -Last 1 | Select-Object -Last 1 | Format-List  *
 
 [TANSS.Lookup]::VacationAbsenceSubTypes
+
+$result | Export-Clixml VactionRequest.xml
+$result = Import-Clixml VactionRequest.xml
+$r = [TANSS.Vacation.Request]@{
+    BaseObject = $result.content
+    Id         = $result.content.id
+}
+$r | Format-Table
+$r | Format-List
 
 
 # Create vacation request
