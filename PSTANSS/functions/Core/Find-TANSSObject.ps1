@@ -142,8 +142,7 @@
                 "Active" { $inactive = $false }
                 "Inactive" { $inactive = $true }
                 Default {
-                    Stop-PSFFunction -Message "Unhandeled Status. Developers mistake." -EnableException $true
-                    throw
+                    Stop-PSFFunction -Message "Unhandeled Status. Developers mistake." -EnableException $true -Cmdlet $pscmdlet
                 }
             }
         }
@@ -282,8 +281,7 @@
             }
 
             Default {
-                Stop-PSFFunction -Message "Unhandeled ParameterSetName. Developers mistake." -EnableException $true
-                throw
+                Stop-PSFFunction -Message "Unhandeled ParameterSetName. Developers mistake." -EnableException $true -Cmdlet $pscmdlet
             }
         }
     }

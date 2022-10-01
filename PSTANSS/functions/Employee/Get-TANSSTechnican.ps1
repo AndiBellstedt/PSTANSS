@@ -116,8 +116,7 @@
                         $employee
 
                     } else {
-                        Stop-PSFFunction -Message "Unexpected error searching '$($technican.name)' with ID '$($technican.id)'. TANSS is unable to find details of employee"
-                        throw
+                        Stop-PSFFunction -Message "Unexpected error searching '$($technican.name)' with ID '$($technican.id)'. TANSS is unable to find details of employee" -EnableException $true -Cmdlet $pscmdlet
                     }
                 }
             }
