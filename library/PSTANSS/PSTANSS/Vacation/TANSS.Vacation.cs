@@ -7,7 +7,7 @@ namespace TANSS {
         ///
         /// </summary>
         [Serializable]
-        public class AbsenceType : TANSS.Object {
+        public class AbsenceSubType : TANSS.Object {
         }
 
         /// <summary>
@@ -21,7 +21,14 @@ namespace TANSS {
         ///
         /// </summary>
         [Serializable]
-        public class Entitlement  : TANSS.Object {
+        public class Day : TANSS.Object {
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [Serializable]
+        public class Entitlement : TANSS.Object {
         }
 
     }

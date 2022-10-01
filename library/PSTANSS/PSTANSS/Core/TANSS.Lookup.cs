@@ -84,7 +84,7 @@ namespace TANSS {
         /// <summary>
         ///
         /// </summary>
-        public static System.Collections.Hashtable VacationAbsenceTypes = new System.Collections.Hashtable();
+        public static System.Collections.Hashtable VacationAbsenceSubTypes = new System.Collections.Hashtable();
 
     }
 }

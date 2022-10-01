@@ -1,7 +1,7 @@
-﻿function Get-TANSSVacationAbsenceType {
+﻿function Get-TANSSVacationAbsenceSubType {
     <#
     .Synopsis
-        Get-TANSSVacationAbsenceType
+        Get-TANSSVacationAbsenceSubType
 
     .DESCRIPTION
         Retrieve the additional absence types for the vacation type "absence".
@@ -19,7 +19,7 @@
         AccessToken object to register as default connection for TANSS
 
     .EXAMPLE
-        Get-TANSSVacationAbsenceType
+        Get-TANSSVacationAbsenceSubType
 
         Description
 
@@ -84,20 +84,20 @@
                     if ($filterSuccess -eq $false) { continue }
                 }
 
-                # Compiling additional TANSS.Vacation.AbsenceType
-                $output += [TANSS.Vacation.AbsenceType]@{
+                # Compiling additional TANSS.Vacation.AbsenceSubType
+                $output += [TANSS.Vacation.AbsenceSubType]@{
                     BaseObject = $type
                     Id         = $type.id
                 }
 
                 # Check VacationType lookup cache
-                if ([TANSS.Lookup]::VacationAbsenceTypes[$type.id] -notlike $type.name) {
-                    if ([TANSS.Lookup]::VacationAbsenceTypes[$type.id]) {
-                        Write-PSFMessage -Level Debug -Message "Update existing id '$($id)' in [TANSS.Lookup]::VacationAbsenceTypes with value '$($type.name)'" -Tag "Cache"
-                        [TANSS.Lookup]::VacationAbsenceTypes[$type.id] = $type.name
+                if ([TANSS.Lookup]::VacationAbsenceSubTypes[$type.id] -notlike $type.name) {
+                    if ([TANSS.Lookup]::VacationAbsenceSubTypes[$type.id]) {
+                        Write-PSFMessage -Level Debug -Message "Update existing id '$($id)' in [TANSS.Lookup]::VacationAbsenceSubTypes with value '$($type.name)'" -Tag "Cache"
+                        [TANSS.Lookup]::VacationAbsenceSubTypes[$type.id] = $type.name
                     } else {
-                        Write-PSFMessage -Level Debug -Message "Insert in [TANSS.Lookup]::VacationAbsenceTypes: $($type.id) - '$($($type.name))'" -Tag "Cache"
-                        ([TANSS.Lookup]::VacationAbsenceTypes).Add($type.id, $type.name)
+                        Write-PSFMessage -Level Debug -Message "Insert in [TANSS.Lookup]::VacationAbsenceSubTypes: $($type.id) - '$($($type.name))'" -Tag "Cache"
+                        ([TANSS.Lookup]::VacationAbsenceSubTypes).Add($type.id, $type.name)
                     }
                 }
             }

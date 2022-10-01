@@ -48,7 +48,7 @@ New-Variable -Name TANSSToken -Scope Script -Visibility Public -Description "Var
     "OVERTIME" = "Überstunden abfeiern"
 }
 
-[TANSS.Lookup]::VacationAbsenceTypes = @{}
+[TANSS.Lookup]::VacationAbsenceSubTypes = @{}
 
 
 #endregion Manual Lookup definitions

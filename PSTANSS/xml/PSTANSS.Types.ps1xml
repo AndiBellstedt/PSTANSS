@@ -821,9 +821,9 @@
     </Type>
 
 
-    <!-- TANSS.Vacation.AbsenceType -->
+    <!-- TANSS.Vacation.AbsenceSubType -->
     <Type>
-        <Name>Deserialized.TANSS.Vacation.AbsenceType</Name>
+        <Name>Deserialized.TANSS.Vacation.AbsenceSubType</Name>
         <Members>
             <MemberSet>
                 <Name>PSStandardMembers</Name>
@@ -833,7 +833,7 @@
                             TargetTypeForDeserialization
                         </Name>
                         <Value>
-                            TANSS.Vacation.AbsenceType
+                            TANSS.Vacation.AbsenceSubType
                         </Value>
                     </NoteProperty>
                 </Members>
@@ -841,7 +841,7 @@
         </Members>
     </Type>
     <Type>
-        <Name>TANSS.Vacation.AbsenceType</Name>
+        <Name>TANSS.Vacation.AbsenceSubType</Name>
         <Members>
             <ScriptProperty>
                 <Name>Name</Name>
@@ -854,6 +854,190 @@
                 <Name>IsCharged</Name>
                 <GetScriptBlock>
                     $this.BaseObject.charged
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
+    <!-- TANSS.Vacation.Request -->
+    <Type>
+        <Name>Deserialized.TANSS.Vacation.Request</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.Vacation.Request
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.Vacation.Request</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>Type</Name>
+                <GetScriptBlock>
+                    switch ($this.BaseObject.planningType) {
+                        "VACATION" { "Vacation" }
+                        "ILLNESS" { "Illness" }
+                        "ABSENCE" { "Absence" }
+                        "STAND_BY" { "Standby" }
+                        "OVERTIME" { "Overtime" }
+                        Default {
+                            $this.BaseObject.planningType.ToUpper()[0] + $this.BaseObject.planningType.ToLower().TrimStart( $this.BaseObject.planningType.ToLower()[0] )
+                        }
+                    }
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>TypeName</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::VacationTypesPredefinedApi[$this.BaseObject.planningType]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Status</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.Status
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>StartDate</Name>
+                <GetScriptBlock>
+                    ([datetime]'1/1/1970').AddSeconds($this.BaseObject.startDate)
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EndDate</Name>
+                <GetScriptBlock>
+                    ([datetime]'1/1/1970').AddSeconds($this.BaseObject.endDate)
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.requesterId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeName</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.requesterId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Description</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.requestReason
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Date</Name>
+                <GetScriptBlock>
+                    ([datetime]'1/1/1970').AddSeconds($this.BaseObject.requestDate)
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>SupervisorId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.supervisorId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>SupervisorName</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.supervisorId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>SupervisorComment</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.supervisorReason
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>SupervisorDate</Name>
+                <GetScriptBlock>
+                    ([datetime]'1/1/1970').AddSeconds($this.BaseObject.supervisorDate)
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>AbsenceSubTypeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.planningAdditionalId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>AbsenceSubType</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::VacationAbsenceTypes[([int]$this.BaseObject.planningAdditionalId)]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ProcessId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.processId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ProcessStepId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.ProcessStepId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>TaskSeriesId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.taskSeriesId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>RecurrenceRuleId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.RecurrenceRuleId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Days</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.days
                 </GetScriptBlock>
             </ScriptProperty>
 

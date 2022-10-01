@@ -66,8 +66,7 @@
         if ($Token.RefreshToken) {
             $refreshTokenInfo = ConvertFrom-JWTtoken -TokenText ([System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Token.RefreshToken))).split(" ")[1]
         } else {
-            Stop-PSFFunction -Message "Invalid Token specified. No refreshToken found" -Tag "Connection", "Authentication"
-            throw
+            Stop-PSFFunction -Message "Invalid Token specified. No refreshToken found" -Tag "Connection", "Authentication" -EnableException $true -Cmdlet $pscmdlet
         }
 
         Write-PSFMessage -Level Verbose -Message "Checking RefreshToken from TANSS.Connection of $($Token.UserName) on '$($Token.Server)'" -Tag "AccessToken", "Connection", "Authentication"
@@ -93,18 +92,15 @@
             try {
                 $response = Invoke-RestMethod @param
             } catch {
-                Stop-PSFFunction -Message "Error invoking rest call on service '$($Token.Server)'. $($invokeError)" -Tag "Connection", "Authentication"
-                throw
+                Stop-PSFFunction -Message "Error invoking rest call on service '$($Token.Server)'. $($invokeError)" -Tag "Connection", "Authentication" -EnableException $true -Cmdlet $pscmdlet
             }
 
             if ($response.meta.text -notlike "Welcome, your ApiToken is 4 hours valid.") {
-                Stop-PSFFunction -Message "$($response.meta.text) to service '$($Token.Server)'. Apperantly, refreshToken is not valid" -Tag "Connection", "Authentication"
-                throw
+                Stop-PSFFunction -Message "$($response.meta.text) to service '$($Token.Server)'. Apperantly, refreshToken is not valid" -Tag "Connection", "Authentication" -EnableException $true -Cmdlet $pscmdlet
             }
 
             if (-not $response.content.apiKey) {
-                Stop-PSFFunction -Message "Something went wrong on authenticating user $($Token.UserName). No apiKey found in response. Unable to refresh token from connection '$($Token.Server)'" -Tag "Connection", "Authentication"
-                throw
+                Stop-PSFFunction -Message "Something went wrong on authenticating user $($Token.UserName). No apiKey found in response. Unable to refresh token from connection '$($Token.Server)'" -Tag "Connection", "Authentication" -EnableException $true -Cmdlet $pscmdlet
             }
 
             Write-PSFMessage -Level System -Message "Creating TANSS.Connection from refreshed AccessToken" -Tag "Connection"
@@ -130,7 +126,7 @@
                 $tickets += Get-TANSSTicket -AllTechnician -Token $token
                 Write-PSFMessage -Level Verbose -Message "Built cache from $($tickets.count) tickets" -Tag "Cache"
 
-                $null = Get-TANSSVacationAbsenceType
+                $null = Get-TANSSVacationAbsenceSubType
             }
 
             if (-not $DoNotRegisterConnection) {

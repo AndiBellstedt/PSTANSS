@@ -591,11 +591,11 @@
         </View>
 
 
-        <!-- TANSS.Vacation.AbsenceType -->
+        <!-- TANSS.Vacation.AbsenceSubType -->
         <View>
-            <Name>TANSS.Vacation.AbsenceType_Table</Name>
+            <Name>TANSS.Vacation.AbsenceSubType_Table</Name>
             <ViewSelectedBy>
-                <TypeName>TANSS.Vacation.AbsenceType</TypeName>
+                <TypeName>TANSS.Vacation.AbsenceSubType</TypeName>
             </ViewSelectedBy>
             <TableControl>
                 <AutoSize/>
@@ -622,9 +622,64 @@
             </TableControl>
         </View>
         <View>
-            <Name>TANSS.Vacation.AbsenceType_List</Name>
+            <Name>TANSS.Vacation.AbsenceSubType_List</Name>
             <ViewSelectedBy>
-                <TypeName>TANSS.Vacation.AbsenceType</TypeName>
+                <TypeName>TANSS.Vacation.AbsenceSubType</TypeName>
+            </ViewSelectedBy>
+            <ListControl>
+                <ListEntries>
+                    <ListEntry>
+                        <ListItems>
+                            <ListItem>
+                                <PropertyName>Id</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Name</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>IsCharged</PropertyName>
+                            </ListItem>
+                        </ListItems>
+                    </ListEntry>
+                </ListEntries>
+            </ListControl>
+        </View>
+
+
+        <!-- TANSS.Vacation.Request -->
+        <View>
+            <Name>TANSS.Vacation.Request_Table</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Vacation.Request1</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize/>
+                <TableHeaders>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Id</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Name</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>IsCharged</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+        <View>
+            <Name>TANSS.Vacation.Request_List</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Vacation.Request1</TypeName>
             </ViewSelectedBy>
             <ListControl>
                 <ListEntries>

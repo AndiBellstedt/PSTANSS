@@ -14,4 +14,4 @@ Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.Tags" -ScriptBlock { [TAN
 Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.Tickets" -ScriptBlock { [TANSS.Lookup]::Tickets.Values }
 Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.TicketStates" -ScriptBlock { [TANSS.Lookup]::TicketStates.Values }
 Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.TicketTypes" -ScriptBlock { [TANSS.Lookup]::TicketTypes.Values }
-Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.VacationAbsenceTypes" -ScriptBlock { [TANSS.Lookup]::VacationAbsenceTypes.Values }
+Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.VacationAbsenceSubTypes" -ScriptBlock { [TANSS.Lookup]::VacationAbsenceSubTypes.Values }

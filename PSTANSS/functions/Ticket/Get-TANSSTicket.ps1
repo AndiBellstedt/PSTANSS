@@ -179,8 +179,7 @@
             }
 
             Default {
-                Stop-PSFFunction -Message "Unhandeled ParameterSetName. Developers mistake." -EnableException $true
-                throw
+                Stop-PSFFunction -Message "Unhandeled ParameterSetName. Developers mistake." -EnableException $true -Cmdlet $pscmdlet
             }
         }
 

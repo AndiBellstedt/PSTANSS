@@ -29,4 +29,5 @@ Register-PSFTeppArgumentCompleter -Command New-TANSSEmployee -Parameter Departme
 Register-PSFTeppArgumentCompleter -Command New-TANSSEmployee -Parameter CompanyName -Name PSTANSS.CacheLookup.Companies
 
 
-Register-PSFTeppArgumentCompleter -Command Get-TANSSVacationType -Parameter Name -Name PSTANSS.CacheLookup.VacationAbsenceTypes
+Register-PSFTeppArgumentCompleter -Command Get-TANSSVacationType -Parameter Name -Name PSTANSS.CacheLookup.VacationAbsenceSubTypes
+Register-PSFTeppArgumentCompleter -Command New-TANSSVacationRequest -Parameter AbsenceSubTypeName -Name PSTANSS.CacheLookup.VacationAbsenceSubTypes

@@ -52,7 +52,8 @@
         'Find-TANSSObject',
         'Get-TANSSTechnican',
         'New-TANSSEmployee',
-        'Get-TANSSVacationAbsenceType'
+        'Get-TANSSVacationAbsenceSubType',
+        'New-TANSSVacationRequest'
     )
 
     # Cmdlets to export from this module

@@ -130,8 +130,7 @@
             try {
                 $response = Invoke-RestMethod @param
             } catch {
-                Stop-PSFFunction -Message "Error invoking rest call on service '$($Prefix)$($server)'. $($invokeError)" -Tag "Connection", "Authentication"
-                throw
+                Stop-PSFFunction -Message "Error invoking rest call on service '$($Prefix)$($server)'. $($invokeError)" -Tag "Connection", "Authentication" -EnableException $true -Cmdlet $pscmdlet
             }
 
             if ($response.meta.text -like "Unsuccesful login attempt") {
@@ -141,13 +140,11 @@
                 } else {
                     $msgText = "$($msgText) or LoginToken (OTP) wrong/expired"
                 }
-                Stop-PSFFunction -Message $msgText -Tag "Connection", "Authentication"
-                throw
+                Stop-PSFFunction -Message $msgText -Tag "Connection", "Authentication" -EnableException $true -Cmdlet $pscmdlet
             }
 
             if (-not $response.content.apiKey) {
-                Stop-PSFFunction -Message "Something went wrong on authenticating user $($userName). No apiKey found in response. Unable login to service '$($Prefix)$($server)'" -Tag "Connection", "Authentication"
-                throw
+                Stop-PSFFunction -Message "Something went wrong on authenticating user $($userName). No apiKey found in response. Unable login to service '$($Prefix)$($server)'" -Tag "Connection", "Authentication" -EnableException $true -Cmdlet $pscmdlet
             }
         }
 
@@ -174,7 +171,7 @@
             $tickets += Get-TANSSTicket -AllTechnician -Token $token
             Write-PSFMessage -Level Verbose -Message "Built cache from $($tickets.count) tickets" -Tag "Cache"
 
-            $null = Get-TANSSVacationAbsenceType
+            $null = Get-TANSSVacationAbsenceSubType
         }
 
         if (-not $DoNotRegisterConnection) {
