@@ -498,9 +498,6 @@ $response.content | Format-List
 
 #region Vacation API in beta
 # Get additional Vacationtypes
-$response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/salutations/1"
-$ApiPath = "backend/api/v1/salutations"
-
 $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/vacationRequests/planningAdditionalTypes"
 $response.content | Format-Table
 [TANSS.Lookup]::VacationTypes
@@ -539,7 +536,7 @@ $response.content.employeeSummaries.'2'.vacationDaysForYear
 
 
 
-# Query vacation information
+# Query vacation request information
 $vacationType = "VACATION"
 $vacationType = "ILLNESS"
 $vacationType = "ABSENCE"
@@ -565,8 +562,18 @@ $response.content.days
 
 
 
+# Create vacation request
+$_requestDate = [int][double]::Parse((Get-Date -UFormat %s))
+$response.content.requestReason = "Test $(get-date)"
+$response.content.requestDate = $_requestDate
+$response.content.planningAdditionalId = Get-TANSSVacationAbsenceSubType | Out-GridView -OutputMode Single | Select-Object -ExpandProperty id
+$body = $response.content | ConvertTo-PSFHashtable
+
+$vacationRequest = Invoke-TANSSRequest -Type POST -ApiPath "backend/api/v1/vacationRequests" -Body $body
+$vacationRequest.content
+$vacationRequest.content.days
+
 help New-TANSSVacationRequest
-# Vacation
 $vacationRequest = New-TANSSVacationRequest -Vacation -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
 $vacationRequest = New-TANSSVacationRequest -Illness -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
 $vacationRequest = New-TANSSVacationRequest -Standby -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
@@ -578,6 +585,26 @@ $vacationRequest = New-TANSSVacationRequest -Absence -AbsenceSubType (Get-TANSSV
 $vacationRequest | Format-Table
 $vacationRequest | Format-List
 
+$vacationRequest | Export-Clixml vacationRequest.xml
+$vacationRequest = import-Clixml vacationRequest.xml
+
+# shorten request
+$vacationRequest.Days = $vacationsDays[0..4]
+$vacationRequest
+
+# change day(s)
+$vacationsDays = $vacationRequest.Days
+$vacationsDay = $vacationsDays[0]
+$vacationsDay
+$vacationsDay | Get-Member
+$vacationsDay.BaseObject
+$vacationsDay.Date = "2000-11-11"
+$vacationsDay.VacationRequestId = 14
+$vacationsDay.Forenoon = $false
+$vacationsDay.Afternoon = $false
+$vacationsDay.StartTime = "08:30:00"
+$vacationsDay.EndTime = "10:15:00"
+$vacationsDay.Pause = 10
 
 # Errors
 New-TANSSVacationRequest
@@ -585,34 +612,16 @@ New-TANSSVacationRequest -Vacation -StartDate "2022-10-10" -EndDate "2022-10-01"
 New-TANSSVacationRequest -Absence -AbsenceSubTypeName "foo" -StartDate "2022-10-01" -EndDate "2022-10-10"
 
 
+
+
+
 Import-Module .\PSTANSS\PSTANSS\PSTANSS.psd1 -Force
 Register-TANSSAccessToken -Token $Token
 $Token = Get-TANSSRegisteredAccessToken
 Update-TANSSAccessToken
-Get-PSFMessage -Last 1 | Select-Object -Last 1 | Format-List  *
-
-[TANSS.Lookup]::VacationAbsenceSubTypes
-
-$result | Export-Clixml VactionRequest.xml
-$result = Import-Clixml VactionRequest.xml
-$r = [TANSS.Vacation.Request]@{
-    BaseObject = $result.content
-    Id         = $result.content.id
-}
-$r | Format-Table
-$r | Format-List
 
 
-# Create vacation request
-$_requestDate = [int][double]::Parse((Get-Date -UFormat %s))
-$response.content.requestReason = "Test $(get-date)"
-$response.content.requestDate = $_requestDate
-$response.content.planningAdditionalId = Get-TANSSVacationAbsenceSubType | Out-GridView -OutputMode Single | Select-Object -ExpandProperty id
-$body = $response.content | ConvertTo-PSFHashtable
 
-$vacationRequest = Invoke-TANSSRequest -Type POST -ApiPath "backend/api/v1/vacationRequests" -Body $body
-$vacationRequest.content
-$vacationRequest.content.days
 
 # Change vacation request
 $id = $vacationRequest.content.id
@@ -675,6 +684,8 @@ $response.content
 
 
 #regions API routes from JAR
+$ApiPath = "backend/api/v1/salutations"
+
 $ApiPath = "backend/api/v1/companies"
 $ApiPath = "backend/api/v1/companies/1"
 $ApiPath = "backend/api/v1/companies/1/employees"
