@@ -277,17 +277,119 @@
             
              </summary>
         </member>
-        <member name="T:TANSS.Vacation.Request">
-             <summary>
-            
-             </summary>
-        </member>
         <member name="T:TANSS.Vacation.Day">
              <summary>
             
              </summary>
         </member>
+        <member name="F:TANSS.Vacation.Day.BaseObject">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:TANSS.Vacation.Day.VacationRequestId">
+             <summary>
+            
+             </summary>
+            public int VacationRequestId;
+        </member>
+        <member name="P:TANSS.Vacation.Day.Date">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:TANSS.Vacation.Day.Forenoon">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:TANSS.Vacation.Day.Afternoon">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:TANSS.Vacation.Day.StartTime">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:TANSS.Vacation.Day.EndTime">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:TANSS.Vacation.Day.Pause">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:TANSS.Vacation.Day.IsFullDay">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:TANSS.Vacation.Day.ToString">
+            <summary>
+            Overrides the default ToString() method
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:TANSS.Vacation.DayBaseObject">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.DayBaseObject.vacationRequestId">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.DayBaseObject.date">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.DayBaseObject.forenoon">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.DayBaseObject.afternoon">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.DayBaseObject.startHour">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.DayBaseObject.startMinute">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.DayBaseObject.endHour">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.DayBaseObject.endMinute">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.DayBaseObject.pause">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:TANSS.Vacation.Entitlement">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.Vacation.Request">
              <summary>
             
              </summary>

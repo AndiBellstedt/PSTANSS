@@ -646,6 +646,104 @@
         </View>
 
 
+        <!-- TANSS.Vacation.Day -->
+        <View>
+            <Name>TANSS.Vacation.Day_Table</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Vacation.Day</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize/>
+                <TableHeaders>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Date</PropertyName>
+                                <FormatString>{0:yyyy}-{0:MM}-{0:dd}</FormatString>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>IsFullDay</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Forenoon</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Afternoon</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>StartTime</PropertyName>
+                                <FormatString>{0:HH}:{0:mm}</FormatString>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EndTime</PropertyName>
+                                <FormatString>{0:HH}:{0:mm}</FormatString>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Pause</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>VacationRequestId</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+        <View>
+            <Name>TANSS.Vacation.Day_List</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Vacation.Day</TypeName>
+            </ViewSelectedBy>
+            <ListControl>
+                <ListEntries>
+                    <ListEntry>
+                        <ListItems>
+                            <ListItem>
+                                <PropertyName>Date</PropertyName>
+                                <FormatString>{0:yyyy}-{0:MM}-{0:dd}</FormatString>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>IsFullDay</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Forenoon</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Afternoon</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>StartTime</PropertyName>
+                                <FormatString>{0:HH}:{0:mm}</FormatString>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>EndTime</PropertyName>
+                                <FormatString>{0:HH}:{0:mm}</FormatString>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Pause</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>VacationRequestId</PropertyName>
+                            </ListItem>
+                        </ListItems>
+                    </ListEntry>
+                </ListEntries>
+            </ListControl>
+        </View>
+
+
+
+
         <!-- TANSS.Vacation.Request -->
         <View>
             <Name>TANSS.Vacation.Request_Table</Name>

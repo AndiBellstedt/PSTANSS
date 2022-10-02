@@ -870,6 +870,7 @@
         </TypeConverter>
     </Type>
 
+
     <!-- TANSS.Vacation.Request -->
     <Type>
         <Name>Deserialized.TANSS.Vacation.Request</Name>
@@ -1041,8 +1042,20 @@
             <ScriptProperty>
                 <Name>Days</Name>
                 <GetScriptBlock>
-                    $this.BaseObject.days
+                    foreach ($day in $this.BaseObject.days) {
+                        [TANSS.Vacation.Day]@{
+                            BaseObject = [TANSS.Vacation.DayBaseObject]$day
+                        }
+                    }
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $collection = foreach ($day in ($args | Sort-Object Date)) {
+                        $day.BaseObject
+                    }
+                    $this.BaseObject.days = $collection
+                    $this.BaseObject.startDate = Get-Date -UFormat %s -Date ($this.days | Sort-Object Date)[0].Date.ToUniversalTime()
+                    $this.BaseObject.endDate = Get-Date -UFormat %s -Date ($this.days | Sort-Object Date)[-1].Date.ToUniversalTime()
+                </SetScriptBlock>
             </ScriptProperty>
 
             <CodeProperty IsHidden="true">
