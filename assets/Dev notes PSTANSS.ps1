@@ -534,6 +534,10 @@ $response.content | Format-List
 $response.content.vacationRequests
 $response.content.employeeSummaries.'2'.vacationDaysForYear
 
+Get-TANSSVacationRequest
+Get-TANSSVacationRequest -Id 9
+Get-TANSSVacationRequest -Year 2022
+Get-TANSSVacationRequest -Year 2022 -Month 8
 
 
 # Query vacation request information
