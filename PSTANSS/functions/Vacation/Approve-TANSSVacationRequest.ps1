@@ -1,0 +1,107 @@
+﻿function Approve-TANSSVacationRequest {
+    <#
+    .Synopsis
+        Approve-TANSSVacationRequest
+
+    .DESCRIPTION
+        Approve a vacation request within TANSS
+
+    .PARAMETER Token
+        AccessToken object to register as default connection for TANSS
+
+    .PARAMETER PassThru
+        Outputs the result to the console
+
+    .PARAMETER WhatIf
+        If this switch is enabled, no actions are performed but informational messages will be displayed that explain what would happen if the command were to run.
+
+    .PARAMETER Confirm
+        If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
+
+    .EXAMPLE
+        Get-TANSSVacationRequest -Id 10 | Approve-TANSSVacationRequest
+
+        Approve the VacationRequest Id 10
+
+    .EXAMPLE
+        Approve-TANSSVacationRequest -Id 10
+
+        Approve the VacationRequest Id 10
+
+    .EXAMPLE
+        $vacationRequests | Approve-TANSSVacationRequest -PassThru
+
+        Approve all requests in variable '$vacationrequests' and output the (approved) VacationRequests on the console
+
+        Assuming, the variable is build on something like:
+        PS C:\>$vacationrequests = Get-TANSSVacationRequest -Year 2022 -Month 8
+
+    .NOTES
+        Author: Andreas Bellstedt
+
+    .LINK
+        https://github.com/AndiBellstedt/PSTANSS
+    #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSShouldProcess", "")]
+    [CmdletBinding(
+        DefaultParameterSetName = "ById",
+        SupportsShouldProcess = $true,
+        PositionalBinding = $true,
+        ConfirmImpact = 'Medium'
+    )]
+    Param(
+        [Parameter(
+            ParameterSetName = "ByInputObject",
+            Mandatory = $true,
+            ValueFromPipeline = $true
+        )]
+        [TANSS.Vacation.Request[]]
+        $InputObject,
+
+        [Parameter(
+            ParameterSetName = "ById",
+            Mandatory = $true,
+            ValueFromPipeline = $true
+        )]
+        [Alias("RequestId", "VacationRequestId")]
+        [int[]]
+        $Id,
+
+        [switch]
+        $PassThru,
+
+        [TANSS.Connection]
+        $Token
+    )
+
+    begin {
+        try {
+            $outBuffer = $null
+            if ($PSBoundParameters.TryGetValue('OutBuffer', [ref]$outBuffer)) {
+                $PSBoundParameters['OutBuffer'] = 1
+            }
+            $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand('Set-TANSSVacationRequestStatus', [System.Management.Automation.CommandTypes]::Function)
+            $scriptCmd = {& $wrappedCmd -Status "Approve" @PSBoundParameters }
+            $steppablePipeline = $scriptCmd.GetSteppablePipeline()
+            $steppablePipeline.Begin($PSCmdlet)
+        } catch {
+            throw
+        }
+    }
+
+    process {
+        try {
+            $steppablePipeline.Process($_)
+        } catch {
+            throw
+        }
+    }
+
+    end {
+        try {
+            $steppablePipeline.End()
+        } catch {
+            throw
+        }
+    }
+}

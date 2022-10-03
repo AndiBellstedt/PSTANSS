@@ -54,7 +54,10 @@
         'New-TANSSEmployee',
         'Get-TANSSVacationAbsenceSubType',
         'Get-TANSSVacationRequest',
-        'New-TANSSVacationRequest'
+        'New-TANSSVacationRequest',
+        'Set-TANSSVacationRequestStatus',
+        'Approve-TANSSVacationRequest',
+        'Deny-TANSSVacationRequest'
     )
 
     # Cmdlets to export from this module
