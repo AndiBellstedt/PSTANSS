@@ -535,7 +535,7 @@ $response.content.vacationRequests
 $response.content.employeeSummaries.'2'.vacationDaysForYear
 
 Get-TANSSVacationRequest
-Get-TANSSVacationRequest -Id 9
+$vacationRequest = Get-TANSSVacationRequest -Id 9
 Get-TANSSVacationRequest -Year 2022
 Get-TANSSVacationRequest -Year 2022 -Month 8
 
@@ -616,17 +616,6 @@ New-TANSSVacationRequest -Vacation -StartDate "2022-10-10" -EndDate "2022-10-01"
 New-TANSSVacationRequest -Absence -AbsenceSubTypeName "foo" -StartDate "2022-10-01" -EndDate "2022-10-10"
 
 
-
-
-
-Import-Module .\PSTANSS\PSTANSS\PSTANSS.psd1 -Force
-Register-TANSSAccessToken -Token $Token
-$Token = Get-TANSSRegisteredAccessToken
-Update-TANSSAccessToken
-
-
-
-
 # Change vacation request
 $id = $vacationRequest.content.id
 $response.content.requestReason = "Test $(get-date) new"
@@ -634,6 +623,7 @@ $body = $response.content | ConvertTo-PSFHashtable
 $vacationRequest = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/vacationRequests/$($id)" -Body $body
 $vacationRequest
 $vacationRequest.content
+
 
 # Approve vacation request
 $id = $vacationRequest.content.id
@@ -643,9 +633,19 @@ $body = @{
 $body = @{
     "status" = "DECLINED"
 }
-
 $result = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/vacationRequests/$($id)" -Body $body
 $result.content
+
+Get-TANSSVacationRequest -Id 9 | Set-TANSSVacationRequestStatus -Status Decline -Verbose -PassThru
+Set-TANSSVacationRequestStatus -Id 9 -Status Approve -Verbose -PassThru
+
+Get-TANSSVacationRequest -Id 9 | Approve-TANSSVacationRequest -PassThru -Verbose
+Approve-TANSSVacationRequest -Id 9 -PassThru -Verbose
+
+Get-TANSSVacationRequest -Id 9 | Deny-TANSSVacationRequest -PassThru -Verbose
+Deny-TANSSVacationRequest -Id 9 -PassThru -Verbose
+
+
 
 # delete vacation request
 $id = $vacationRequest.content.id
