@@ -47,7 +47,7 @@
         $Id,
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet("Companies", "Contracts", "CostCenters", "Departments", "Employees", "OrderBys", "Phases", "Tags", "Tickets", "TicketStates", "TicketTypes")]
+        [ValidateSet("Companies", "Contracts", "CostCenters", "Departments", "Employees", "OrderBys", "Phases", "Tags", "Tickets", "TicketStates", "TicketTypes", "VacationAbsenceSubTypes", "VacationTypesPredefinedApi")]
         [string]
         $Type
 
@@ -67,7 +67,7 @@
                     }
                 }
             } else {
-                Write-PSFMessage -Level Error -Message "Unable to convert '$($Name)' of type '$($Type)' in ID. Name is not in present in cache and TANSS API can't be queried directly for $($Type)"
+                Write-PSFMessage -Level Error -Message "Unable to convert '$($Name)' of type '$($Type)' in ID. Name is not in present in cache."
             }
         }
 
@@ -78,7 +78,7 @@
                 Write-PSFMessage -Level Verbose -Message "Found '$output' with ID '$($Id)' of type '$($Type)'"
                 return $output
             } else {
-                Write-PSFMessage -Level Error -Message "Unable to convert '$($Id)' of type '$($Type)' into Name. Id is not in present in cache and TANSS API can't be queried directly for $($Type)"
+                Write-PSFMessage -Level Error -Message "Unable to convert '$($Id)' of type '$($Type)' into Name. Id is not in present in cache."
             }
         }
 
