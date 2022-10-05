@@ -1,7 +1,7 @@
-﻿function Remove-TANSSVacationRequestStatus {
+﻿function Remove-TANSSVacationRequest {
     <#
     .Synopsis
-        Remove-TANSSVacationRequestStatus
+        Remove-TANSSVacationRequest
 
     .DESCRIPTION
         Remove a vacation request
@@ -19,12 +19,12 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        Get-TANSSVacationRequest -Id 10 | Remove-TANSSVacationRequestStatus
+        Get-TANSSVacationRequest -Id 10 | Remove-TANSSVacationRequest
 
         Remove the VacationRequest Id 10
 
     .EXAMPLE
-        Remove-TANSSVacationRequestStatus -Id 10 -Force
+        Remove-TANSSVacationRequest -Id 10 -Force
 
         Remove the VacationRequest Id 10 without asking for confirmation
 
