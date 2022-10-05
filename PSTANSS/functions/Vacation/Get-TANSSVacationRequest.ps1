@@ -64,7 +64,6 @@
 
         [Parameter( ParameterSetName = "ListApiNativ" )]
         [Parameter( ParameterSetName = "ListUserFriendly" )]
-        [ValidateSet( { [TANSS.Lookup]::VacationTypesPredefinedApi.Values, [TANSS.Lookup]::VacationTypesPredefinedApi.Keys } )]
         [string[]]
         $Type,
 
