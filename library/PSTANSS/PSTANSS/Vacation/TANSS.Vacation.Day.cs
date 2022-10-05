@@ -119,6 +119,8 @@ namespace TANSS {
                         _returnValue = _returnValue + "/FullDay";
                     } else if (Forenoon == true || Afternoon == true) {
                         _returnValue = _returnValue + "/HalfDay";
+                    } else if (Forenoon == false || Afternoon == false) {
+                        _returnValue = _returnValue + "/None";
                     } else {
                         _returnValue = _returnValue + "/Custom";
                     }
