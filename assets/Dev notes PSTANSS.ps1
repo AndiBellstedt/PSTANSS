@@ -534,10 +534,13 @@ $response.content | Format-List
 $response.content.vacationRequests
 $response.content.employeeSummaries.'2'.vacationDaysForYear
 
-Get-TANSSVacationRequest
-$vacationRequest = Get-TANSSVacationRequest -Id 9
+$vacationRequests = Get-TANSSVacationRequest -Verbose | Sort-Object StartDate
+$vacationRequest = Get-TANSSVacationRequest -Id 16
 Get-TANSSVacationRequest -Year 2022
 Get-TANSSVacationRequest -Year 2022 -Month 8
+$vacationRequest = $vacationRequests[-1]
+$vacationRequest
+$vacationRequest.Days
 
 
 # Query vacation request information
@@ -546,6 +549,11 @@ $vacationType = "ILLNESS"
 $vacationType = "ABSENCE"
 $vacationType = "STAND_BY"
 $vacationType = "OVERTIME"
+
+$d = [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc)
+$d.AddSeconds(1663106400).ToLocalTime();
+
+[datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds(1663106400).ToLocalTime()
 
 $StartDate = (Get-Date -Date (Get-Date).AddDays( -4 ) -Format "dd.MM.yyyy")
 $EndDate = (Get-Date -Date (Get-Date).AddDays( -2 ) -Format "dd.MM.yyyy")
@@ -625,6 +633,8 @@ $vacationRequest
 $vacationRequest.content
 
 
+help Set-TANSSVacationRequest
+
 # Approve vacation request
 $id = $vacationRequest.content.id
 $body = @{
@@ -636,14 +646,14 @@ $body = @{
 $result = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/vacationRequests/$($id)" -Body $body
 $result.content
 
-Get-TANSSVacationRequest -Id 9 | Set-TANSSVacationRequestStatus -Status Decline -Verbose -PassThru
-Set-TANSSVacationRequestStatus -Id 9 -Status Approve -Verbose -PassThru
+Get-TANSSVacationRequest -Id 16 | Set-TANSSVacationRequestStatus -Status Decline -Verbose -PassThru
+Set-TANSSVacationRequestStatus -Id 16 -Status Approve -Verbose -PassThru
 
-Get-TANSSVacationRequest -Id 9 | Approve-TANSSVacationRequest -PassThru -Verbose
-Approve-TANSSVacationRequest -Id 9 -PassThru -Verbose
+Get-TANSSVacationRequest -Id 16 | Approve-TANSSVacationRequest -PassThru -Verbose
+Approve-TANSSVacationRequest -Id 16 -PassThru -Verbose
 
-Get-TANSSVacationRequest -Id 9 | Deny-TANSSVacationRequest -PassThru -Verbose
-Deny-TANSSVacationRequest -Id 9 -PassThru -Verbose
+Get-TANSSVacationRequest -Id 16 | Deny-TANSSVacationRequest -PassThru -Verbose
+Deny-TANSSVacationRequest -Id 16 -PassThru -Verbose
 
 $vacationRequest | Approve-TANSSVacationRequest
 
@@ -652,9 +662,9 @@ $id = $vacationRequest.content.id
 $result = Invoke-TANSSRequest -Type DELETE -ApiPath "backend/api/v1/vacationRequests/$($id)" -Body $body
 $result
 
-$vacationRequest | Remove-TANSSVacationRequestStatus -WhatIf
-$vacationRequest | Remove-TANSSVacationRequestStatus
-Remove-TANSSVacationRequestStatus -Id $vacationRequest.Id -Verbose -Force
+$vacationRequest | Remove-TANSSVacationRequest -WhatIf
+$vacationRequest | Remove-TANSSVacationRequest
+Remove-TANSSVacationRequest -Id $vacationRequest.Id -Verbose -Force
 
 # List vacation days of all employees
 $year = 2022
