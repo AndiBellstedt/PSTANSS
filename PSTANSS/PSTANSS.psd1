@@ -57,7 +57,8 @@
         'New-TANSSVacationRequest',
         'Set-TANSSVacationRequestStatus',
         'Approve-TANSSVacationRequest',
-        'Deny-TANSSVacationRequest'
+        'Deny-TANSSVacationRequest',
+        'Remove-TANSSVacationRequestStatus'
     )
 
     # Cmdlets to export from this module
