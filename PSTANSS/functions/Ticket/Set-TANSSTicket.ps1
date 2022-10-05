@@ -358,25 +358,25 @@
 
 
         if ($Deadline) {
-            $_deadlineDate = [int][double]::Parse((Get-Date -Date $Deadline -UFormat %s))
+            $_deadlineDate = [int][double]::Parse((Get-Date -Date $Deadline.ToUniversalTime() -UFormat %s))
         } else {
             $_deadlineDate = 0
         }
 
         if ($DueDate) {
-            $_dueDate = [int][double]::Parse((Get-Date -Date $DueDate -UFormat %s))
+            $_dueDate = [int][double]::Parse((Get-Date -Date $DueDate.ToUniversalTime() -UFormat %s))
         } else {
             $_dueDate = 0
         }
 
         if ($ResubmissionDate) {
-            $_resubmissionDate = [int][double]::Parse((Get-Date -Date $ResubmissionDate -UFormat %s))
+            $_resubmissionDate = [int][double]::Parse((Get-Date -Date $ResubmissionDate.ToUniversalTime() -UFormat %s))
         } else {
             $_resubmissionDate = 0
         }
 
         if ($Reminder) {
-            $_reminder = [int][double]::Parse((Get-Date -Date $Reminder -UFormat %s))
+            $_reminder = [int][double]::Parse((Get-Date -Date $Reminder.ToUniversalTime() -UFormat %s))
         } else {
             $_reminder = 0
         }

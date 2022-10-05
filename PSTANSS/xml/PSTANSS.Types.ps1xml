@@ -77,7 +77,7 @@
             <ScriptProperty>
                 <Name>DateCreated</Name>
                 <GetScriptBlock>
-                    ([datetime]'1/1/1970').AddSeconds($this.BaseObject.creationDate)
+                    [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.creationDate).ToLocalTime()
                 </GetScriptBlock>
             </ScriptProperty>
 
@@ -141,7 +141,7 @@
                 <Name>DateDeadline</Name>
                 <GetScriptBlock>
                     if($this.BaseObject.deadlineDate -gt 0) {
-                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.deadlineDate)
+                        [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.deadlineDate).ToLocalTime()
                     } else {
                         $null
                     }
@@ -201,7 +201,7 @@
                 <Name>DateReminder</Name>
                 <GetScriptBlock>
                     if($this.BaseObject.reminder -gt 0) {
-                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.reminder)
+                        [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.reminder).ToLocalTime()
                     } else {
                         $null
                     }
@@ -219,7 +219,7 @@
                 <Name>DateDueDate</Name>
                 <GetScriptBlock>
                     if($this.BaseObject.dueDate -gt 0) {
-                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.dueDate)
+                        [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.dueDate).ToLocalTime()
                     } else {
                         $null
                     }
@@ -230,7 +230,7 @@
                 <Name>DateResubmission</Name>
                 <GetScriptBlock>
                     if($this.BaseObject.resubmissionDate -gt 0) {
-                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.resubmissionDate)
+                        [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.resubmissionDate).ToLocalTime()
                     } else {
                         $null
                     }
@@ -311,7 +311,7 @@
                 <Name>DateLastChange</Name>
                 <GetScriptBlock>
                     if($this.BaseObject.lastStateChangeDate -gt 0) {
-                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.lastStateChangeDate)
+                        [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.lastStateChangeDate).ToLocalTime()
                     } else {
                         $null
                     }
@@ -336,7 +336,7 @@
                 <Name>DateModified</Name>
                 <GetScriptBlock>
                     if($this.BaseObject.modifiedTime -gt 0) {
-                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.modifiedTime)
+                        [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.modifiedTime).ToLocalTime()
                     } else {
                         $null
                     }
@@ -926,14 +926,14 @@
             <ScriptProperty>
                 <Name>StartDate</Name>
                 <GetScriptBlock>
-                    ([datetime]'1/1/1970').AddSeconds($this.BaseObject.startDate)
+                    [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.startDate).ToLocalTime()
                 </GetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
                 <Name>EndDate</Name>
                 <GetScriptBlock>
-                    ([datetime]'1/1/1970').AddSeconds($this.BaseObject.endDate)
+                    [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.endDate).ToLocalTime()
                 </GetScriptBlock>
             </ScriptProperty>
 
@@ -961,7 +961,7 @@
             <ScriptProperty>
                 <Name>Date</Name>
                 <GetScriptBlock>
-                    ([datetime]'1/1/1970').AddSeconds($this.BaseObject.requestDate)
+                    [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.requestDate).ToLocalTime()
                 </GetScriptBlock>
             </ScriptProperty>
 
@@ -992,7 +992,7 @@
                     if($this.BaseObject.supervisorDate -eq 0) {
                         $null
                     } else {
-                        ([datetime]'1/1/1970').AddSeconds($this.BaseObject.supervisorDate)
+                        [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.supervisorDate).ToLocalTime()
                     }
                 </GetScriptBlock>
             </ScriptProperty>

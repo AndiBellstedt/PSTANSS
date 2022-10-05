@@ -158,9 +158,10 @@
             RefreshToken      = ($response.content.refresh | ConvertTo-SecureString -AsPlainText -Force)
             Message           = $response.meta.text
             TimeStampCreated  = Get-Date
-            TimeStampExpires  = ([datetime]'1/1/1970').AddSeconds($response.content.expire)
+            TimeStampExpires  = [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($response.content.expire).ToLocalTime()
             TimeStampModified = Get-Date
         }
+
 
         if (-not $NoCacheInit) {
             Write-PSFMessage -Level Verbose -Message "Start creating lookup cache from current tickets in TANSS" -Tag "Cache"

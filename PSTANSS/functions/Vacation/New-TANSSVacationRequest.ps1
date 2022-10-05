@@ -150,9 +150,9 @@
 
         foreach ($requesterId in $EmployeeId) {
             # gathering absence object
-            $_startDate = [int][double]::Parse((Get-Date -Date $StartDate -UFormat %s))
-            $_endDate = [int][double]::Parse((Get-Date -Date $EndDate -UFormat %s))
-            $_requestDate = [int][double]::Parse((Get-Date -Date $Date -UFormat %s))
+            $_startDate = [int][double]::Parse((Get-Date -Date $StartDate.Date.ToUniversalTime() -UFormat %s))
+            $_endDate = [int][double]::Parse((Get-Date -Date $EndDate.Date.ToUniversalTime() -UFormat %s))
+            $_requestDate = [int][double]::Parse((Get-Date -Date $Date.ToUniversalTime() -UFormat %s))
 
             $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/properties"
             $body = @{

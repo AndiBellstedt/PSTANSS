@@ -47,7 +47,7 @@
         "typ"       = $tokenHeaderJSON.typ
         "kid"       = $tokenHeaderJSON.kid
         "sub"       = $tokenPayloadJSON.sub
-        "exp"       = ([datetime]'1/1/1970').AddSeconds($tokenPayloadJSON.exp)
+        "exp"       = [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($tokenPayloadJSON.exp).ToLocalTime()
         "type"      = $tokenPayloadJSON.type
         "signature" = $tokenSignature
     }
