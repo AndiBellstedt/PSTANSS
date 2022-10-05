@@ -645,13 +645,16 @@ Approve-TANSSVacationRequest -Id 9 -PassThru -Verbose
 Get-TANSSVacationRequest -Id 9 | Deny-TANSSVacationRequest -PassThru -Verbose
 Deny-TANSSVacationRequest -Id 9 -PassThru -Verbose
 
-
+$vacationRequest | Approve-TANSSVacationRequest
 
 # delete vacation request
 $id = $vacationRequest.content.id
 $result = Invoke-TANSSRequest -Type DELETE -ApiPath "backend/api/v1/vacationRequests/$($id)" -Body $body
 $result
 
+$vacationRequest | Remove-TANSSVacationRequestStatus -WhatIf
+$vacationRequest | Remove-TANSSVacationRequestStatus
+Remove-TANSSVacationRequestStatus -Id $vacationRequest.Id -Verbose -Force
 
 # List vacation days of all employees
 $year = 2022
