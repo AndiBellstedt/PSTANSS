@@ -9,6 +9,9 @@
     .PARAMETER Token
         AccessToken object to register as default connection for TANSS
 
+    .PARAMETER PassThru
+        Outputs the result to the console
+
     .PARAMETER WhatIf
         If this switch is enabled, no actions are performed but informational messages will be displayed that explain what would happen if the command were to run.
 
@@ -92,6 +95,9 @@
         [datetime]
         $Date,
 
+        [switch]
+        $PassThru,
+
         [TANSS.Connection]
         $Token
     )
@@ -117,6 +123,16 @@
                 }
             }
             Write-PSFMessage -Level System -Message "Using VacationRequestType '$($planningType)'"
+        }
+
+        if(($AbsenceSubType -or $AbsenceSubTypeName) -and ($Type -like "ABSENCE")) {
+            if($AbsenceSubTypeName) {
+                $AbsenceSubType = Get-TANSSVacationAbsenceSubType -Name $AbsenceSubTypeName
+            }
+        } else {
+            Write-PSFMessage -Level Important -Message "AbsenceSubType specified, but not valid for '$($Type)'! AbsenceSubTypes are only possible with Type 'Abwesenheit'/'ABSENCE'. Setting will be ignored" -Tag "VacationRequest", "AbsenceSubType"
+            $AbsenceSubType = $null
+            $AbsenceSubTypeName = $null
         }
     }
 
@@ -173,9 +189,11 @@
         foreach ($vacationRequest in $InputObject) {
             Write-PSFMessage -Level Verbose -Message "Working on '$($vacationRequest.TypeName)' VacationRequest '$($vacationRequest.Id)' ($($vacationRequest.EmployeeName)) for range '$($vacationRequest.StartDate) - $($vacationRequest.EndDate)'" -Tag "VacationRequest", "Set"
 
-            if ($startdate -lt $vacationRequest.StartDate) {
-                # earlier Startdate should be set --> VacationDay objects have to be added to days property
+            # earlier Startdate should be set --> VacationDay objects have to be added to days property
+            if ($StartDate -lt $vacationRequest.StartDate) {
+                Write-PSFMessage -Level System -Message "StartDate found, need to add $(($vacationRequest.EndDate - $StartDate).Days) days to VacationRequest" -Tag "VacationRequest", "Set", "AddDays"
 
+                # Set parameters to query addiontial days
                 $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/properties"
                 $_startDate = [int][double]::Parse((Get-Date -Date $StartDate.Date.ToUniversalTime() -UFormat %s))
                 $body = @{
@@ -184,6 +202,8 @@
                     "startDate"    = $_startDate
                     "endDate"      = $vacationRequest.BaseObject.endDate
                 }
+
+                # query planned vacation request object with additional days
                 $plannedVactionRequest = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false | Select-Object -ExpandProperty content
                 if ($plannedVactionRequest) {
                     Write-PSFMessage -Level Verbose -Message "Received VacationRequest object with $($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($planningType)'" -Tag "VacationRequest", "VactionRequestObject"
@@ -191,62 +211,118 @@
                     Stop-PSFFunction -Message "Unable gathering '$($planningType)' VacationRequest object for employeeId '$($requesterId)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')' from '$($Token.Server)'" -Cmdlet $pscmdlet
                     continue
                 }
+                $plannedVactionRequest = [TANSS.Vacation.Request]@{
+                    BaseObject = $plannedVactionRequest
+                    id = $plannedVactionRequest.id
+                }
+
+                # add days new days to vacation request
+                $vacationRequest.Days = $plannedVactionRequest.Days
+                Write-PSFMessage -Level System -Message "VacationRequest '$($vacationRequest.Id)' is modified with ne Startdate, new range '$($vacationRequest.StartDate) - $($vacationRequest.EndDate)'" -Tag "VacationRequest", "Set", "AddDays"
+
+                Remove-Variable -Name apiPath, _startDate, body, plannedVactionRequest -Force -WhatIf:$false -Confirm:$false -Verbose:$false -Debug:$false -ErrorAction:Ignore -WarningAction:Ignore -InformationAction:Ignore
             }
 
+            # Later Enddate should be set --> VacationDay objects have to be added to days property
             if ($EndDate -gt $vacationRequest.EndDate) {
-                # earlier Startdate should be set --> VacationDay objects have to be added to days property
-                # ToDo
+                Write-PSFMessage -Level System -Message "EndDate found, need to add $(($EndDate - $vacationRequest.EndDate).Days) days to VacationRequest" -Tag "VacationRequest", "Set", "AddDays"
+
+                # Set parameters to query addiontial days
+                $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/properties"
+                $_endDate = [int][double]::Parse((Get-Date -Date $EndDate.Date.ToUniversalTime() -UFormat %s))
+                $body = @{
+                    "requesterId"  = $vacationRequest.BaseObject.requesterId
+                    "planningType" = $vacationRequest.BaseObject.planningType
+                    "startDate"    = $vacationRequest.BaseObject.startDate
+                    "endDate"      = $_endDate
+                }
+
+                # query planned vacation request object with additional days
+                $plannedVactionRequest = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false | Select-Object -ExpandProperty content
+                if ($plannedVactionRequest) {
+                    Write-PSFMessage -Level Verbose -Message "Received VacationRequest object with $($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($planningType)'" -Tag "VacationRequest", "VactionRequestObject"
+                } else {
+                    Stop-PSFFunction -Message "Unable gathering '$($planningType)' VacationRequest object for employeeId '$($requesterId)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')' from '$($Token.Server)'" -Cmdlet $pscmdlet
+                    continue
+                }
+                $plannedVactionRequest = [TANSS.Vacation.Request]@{
+                    BaseObject = $plannedVactionRequest
+                    id = $plannedVactionRequest.id
+                }
+
+                # add days new days to vacation request
+                $vacationRequest.Days = $plannedVactionRequest.Days
+                Write-PSFMessage -Level System -Message "VacationRequest '$($vacationRequest.Id)' is modified with ne Startdate, new range '$($vacationRequest.StartDate) - $($vacationRequest.EndDate)'" -Tag "VacationRequest", "Set", "AddDays"
+
+                Remove-Variable -Name apiPath, _endDate, body, plannedVactionRequest -Force -WhatIf:$false -Confirm:$false -Verbose:$false -Debug:$false -ErrorAction:Ignore -WarningAction:Ignore -InformationAction:Ignore
             }
 
-            if ($StartDate) {
+            # Later StartDate should be set --> have to be remove days from VacationRequest objects
+            if ($StartDate -and ($StartDate -ne $vacationRequest.StartDate)) {
+                Write-PSFMessage -Level System -Message "StartDate found, need to remove $(($StartDate - $vacationRequest.StartDate).Days) day(s) from VacationRequest '$($vacationRequest.Id)'" -Tag "VacationRequest", "Set", "RemoveDays"
+
                 $_startDate = [int][double]::Parse((Get-Date -Date $StartDate.Date.ToUniversalTime() -UFormat %s))
                 $vacationRequest.BaseObject.startDate = $_startDate
                 $vacationRequest.Days = $vacationRequest.Days | Where-Object date -ge $StartDate
             }
 
-            if ($EndDate) {
+            # Earlier EndDate should be set --> have to be remove days from VacationRequest objects
+            if ($EndDate -and ($EndDate -ne $vacationRequest.EndDate)) {
+                Write-PSFMessage -Level System -Message "EndDate found, need to remove $(($EndDate - $vacationRequest.EndDate).Days * -1) day(s) from VacationRequest '$($vacationRequest.Id)'" -Tag "VacationRequest", "Set", "RemoveDays"
+
                 $_endDate = [int][double]::Parse((Get-Date -Date $EndDate.Date.ToUniversalTime() -UFormat %s))
                 $vacationRequest.BaseObject.endDate = $_endDate
                 $vacationRequest.Days = $vacationRequest.Days | Where-Object date -le $EndDate
             }
 
-            if ($vacationRequest.Days.count -ne (($EndDate - $startdate).Days + 1)) {
-                # missing day objects within request due to changed start-/enddates
-                # ToDo: think about, if this could happen and how to handle
-            }
-
+            # Set date
             if ($Date) {
+                Write-PSFMessage -Level System -Message "RequestDeate found, going to change Date from '$($vacationRequest.Date)' to '$($Date)'" -Tag "VacationRequest", "Set", "RequestDate"
+
                 $_requestDate = [int][double]::Parse((Get-Date -Date $Date.ToUniversalTime() -UFormat %s))
                 $vacationRequest.BaseObject.requestDate = $_requestDate
             }
 
+            # Set Description
             if ($Description) {
-                $vacationRequest.BaseObject.requestReason = $Description
+                Write-PSFMessage -Level System -Message "Description found, going to change description from '$($vacationRequest.Description)' to '$($Description)'" -Tag "VacationRequest", "Set", "RequestDate"
+                $vacationRequest.BaseObject.requestReason = "$($Description)"
             }
 
+            # Set type
+            if($planningType) {
+                Write-PSFMessage -Level System -Message "Type found, going to change Type from '$($vacationRequest.Type)' to '$($planningType)'" -Tag "VacationRequest", "Set", "Type"
+                $vacationRequest.BaseObject.planningType = $planningType
 
+                # remove additional planning type when change from absence so something else
+                if(($vacationRequest.BaseObject.planningType -notlike "ABSENCE") -and ($vacationRequest.BaseObject.planningAdditionalId -gt 0)) {
+                    $vacationRequest.BaseObject.planningAdditionalId = 0
+                }
+            }
 
-            Write-PSFMessage -Level Verbose -Message "Adding RequestDate and optional description to VacationRequest object" -Tag "VacationRequest", "VactionRequestObject"
-            $plannedVactionRequest.requestReason = "$($Description)"
-            $plannedVactionRequest.requestDate = $_requestDate
+            # Set AbsenceSubType
             if ($AbsenceSubType) {
-                Write-PSFMessage -Level Verbose -Message "Insert additionalAbsenceSubType '$($AbsenceSubType.Name)' to VacationRequest object" -Tag "VacationRequest", "VactionRequestObject", "AbsenceSubType"
-                $plannedVactionRequest.planningAdditionalId = $AbsenceSubType.Id
+                Write-PSFMessage -Level Verbose -Message "Set additionalAbsenceSubType '$($AbsenceSubType.Name)' to VacationRequest object" -Tag "VacationRequest", "Set", "AbsenceSubType"
+                $vacationRequest.BaseObject.planningAdditionalId = $AbsenceSubType.Id
             }
-            $body = $plannedVactionRequest | ConvertTo-PSFHashtable
-            $apiPath = Format-ApiPath -Path "api/v1/vacationRequests"
 
-            if ($pscmdlet.ShouldProcess("VacationRequest for employeeId '$($RequesterId)' with $($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($planningType)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')'", "Add")) {
-                Write-PSFMessage -Level Verbose -Message "Add VacationRequest for employeeId '$($RequesterId)' with $($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($planningType)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')'" -Tag "VacationRequest", "VactionRequestObject"
+            # Make the change effective within TANSS
+            $body = $vacationRequest.BaseObject | ConvertTo-PSFHashtable
+            $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/$($vacationRequest.Id)"
+
+            if ($pscmdlet.ShouldProcess("VacationRequest for employeeId '$($vacationRequest.EmployeeId)' with $($vacationRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($vacationRequest.Type)' on dates '$(Get-Date -Date $vacationRequest.StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $vacationRequest.EndDate -Format 'yyyy-MM-dd')'", "Set")) {
+                Write-PSFMessage -Level Verbose -Message "Set VacationRequest for employeeId '$($vacationRequest.EmployeeId)' with $($vacationRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($vacationRequest.Type)' on dates '$(Get-Date -Date $vacationRequest.StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $vacationRequest.EndDate -Format 'yyyy-MM-dd')'" -Tag "VacationRequest", "Set"
 
                 # Create the object within TANSS
-                $result = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token
+                $result = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token
                 Write-PSFMessage -Level Verbose -Message "$($result.meta.text) - RequestId '$($result.content.id)' with status '$($result.content.status)'" -Tag "VacationRequest", "VactionRequestObject", "VacationRequestResult"
 
                 # output the result
-                [TANSS.Vacation.Request]@{
-                    BaseObject = $result.content
-                    Id         = $result.content.id
+                if($result -and $PassThru) {
+                    [TANSS.Vacation.Request]@{
+                        BaseObject = $result.content
+                        Id         = $result.content.id
+                    }
                 }
             }
         }
