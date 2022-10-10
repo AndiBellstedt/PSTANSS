@@ -72,8 +72,14 @@
         [TANSS.Vacation.AbsenceSubType]
         $AbsenceSubType,
 
-        [Parameter(ParameterSetName = "ByInputObjectWithSubTypeName")]
-        [Parameter(ParameterSetName = "ByIdWithSubTypeName")]
+        [Parameter(
+            ParameterSetName = "ByInputObjectWithSubTypeName",
+            Mandatory = $true
+        )]
+        [Parameter(
+            ParameterSetName = "ByIdWithSubTypeName",
+            Mandatory = $true
+        )]
         [ValidateNotNullOrEmpty()]
         [string]
         $AbsenceSubTypeName,
@@ -89,11 +95,6 @@
         [Alias("Reason", "RequestReason")]
         [string]
         $Description,
-
-        [ValidateNotNullOrEmpty()]
-        [Alias("RequestDate")]
-        [datetime]
-        $Date,
 
         [switch]
         $PassThru,
@@ -123,16 +124,6 @@
                 }
             }
             Write-PSFMessage -Level System -Message "Using VacationRequestType '$($planningType)'"
-        }
-
-        if(($AbsenceSubType -or $AbsenceSubTypeName) -and ($Type -like "ABSENCE")) {
-            if($AbsenceSubTypeName) {
-                $AbsenceSubType = Get-TANSSVacationAbsenceSubType -Name $AbsenceSubTypeName
-            }
-        } else {
-            Write-PSFMessage -Level Important -Message "AbsenceSubType specified, but not valid for '$($Type)'! AbsenceSubTypes are only possible with Type 'Abwesenheit'/'ABSENCE'. Setting will be ignored" -Tag "VacationRequest", "AbsenceSubType"
-            $AbsenceSubType = $null
-            $AbsenceSubTypeName = $null
         }
     }
 
@@ -190,7 +181,7 @@
             Write-PSFMessage -Level Verbose -Message "Working on '$($vacationRequest.TypeName)' VacationRequest '$($vacationRequest.Id)' ($($vacationRequest.EmployeeName)) for range '$($vacationRequest.StartDate) - $($vacationRequest.EndDate)'" -Tag "VacationRequest", "Set"
 
             # earlier Startdate should be set --> VacationDay objects have to be added to days property
-            if ($StartDate -lt $vacationRequest.StartDate) {
+            if ($StartDate -and ($StartDate -lt $vacationRequest.StartDate)) {
                 Write-PSFMessage -Level System -Message "StartDate found, need to add $(($vacationRequest.EndDate - $StartDate).Days) days to VacationRequest" -Tag "VacationRequest", "Set", "AddDays"
 
                 # Set parameters to query addiontial days
@@ -213,7 +204,7 @@
                 }
                 $plannedVactionRequest = [TANSS.Vacation.Request]@{
                     BaseObject = $plannedVactionRequest
-                    id = $plannedVactionRequest.id
+                    id         = $plannedVactionRequest.id
                 }
 
                 # add days new days to vacation request
@@ -224,7 +215,7 @@
             }
 
             # Later Enddate should be set --> VacationDay objects have to be added to days property
-            if ($EndDate -gt $vacationRequest.EndDate) {
+            if ($EndDate -and ($EndDate -gt $vacationRequest.EndDate)) {
                 Write-PSFMessage -Level System -Message "EndDate found, need to add $(($EndDate - $vacationRequest.EndDate).Days) days to VacationRequest" -Tag "VacationRequest", "Set", "AddDays"
 
                 # Set parameters to query addiontial days
@@ -247,7 +238,7 @@
                 }
                 $plannedVactionRequest = [TANSS.Vacation.Request]@{
                     BaseObject = $plannedVactionRequest
-                    id = $plannedVactionRequest.id
+                    id         = $plannedVactionRequest.id
                 }
 
                 # add days new days to vacation request
@@ -275,14 +266,6 @@
                 $vacationRequest.Days = $vacationRequest.Days | Where-Object date -le $EndDate
             }
 
-            # Set date
-            if ($Date) {
-                Write-PSFMessage -Level System -Message "RequestDeate found, going to change Date from '$($vacationRequest.Date)' to '$($Date)'" -Tag "VacationRequest", "Set", "RequestDate"
-
-                $_requestDate = [int][double]::Parse((Get-Date -Date $Date.ToUniversalTime() -UFormat %s))
-                $vacationRequest.BaseObject.requestDate = $_requestDate
-            }
-
             # Set Description
             if ($Description) {
                 Write-PSFMessage -Level System -Message "Description found, going to change description from '$($vacationRequest.Description)' to '$($Description)'" -Tag "VacationRequest", "Set", "RequestDate"
@@ -290,20 +273,26 @@
             }
 
             # Set type
-            if($planningType) {
+            if ($planningType) {
                 Write-PSFMessage -Level System -Message "Type found, going to change Type from '$($vacationRequest.Type)' to '$($planningType)'" -Tag "VacationRequest", "Set", "Type"
                 $vacationRequest.BaseObject.planningType = $planningType
 
                 # remove additional planning type when change from absence so something else
-                if(($vacationRequest.BaseObject.planningType -notlike "ABSENCE") -and ($vacationRequest.BaseObject.planningAdditionalId -gt 0)) {
+                if (($vacationRequest.BaseObject.planningType -notlike "ABSENCE") -and ($vacationRequest.BaseObject.planningAdditionalId -gt 0)) {
                     $vacationRequest.BaseObject.planningAdditionalId = 0
                 }
             }
 
             # Set AbsenceSubType
-            if ($AbsenceSubType) {
-                Write-PSFMessage -Level Verbose -Message "Set additionalAbsenceSubType '$($AbsenceSubType.Name)' to VacationRequest object" -Tag "VacationRequest", "Set", "AbsenceSubType"
-                $vacationRequest.BaseObject.planningAdditionalId = $AbsenceSubType.Id
+            if ($AbsenceSubType -or $AbsenceSubTypeName) {
+                if (($planningType -like "ABSENCE") -and $AbsenceSubTypeName) {
+                    $AbsenceSubType = Get-TANSSVacationAbsenceSubType -Name $AbsenceSubTypeName
+
+                    Write-PSFMessage -Level Verbose -Message "Set additionalAbsenceSubType '$($AbsenceSubType.Name)' to VacationRequest object" -Tag "VacationRequest", "Set", "AbsenceSubType"
+                    $vacationRequest.BaseObject.planningAdditionalId = $AbsenceSubType.Id
+                } elseif (($planningType -notlike "ABSENCE") -and ($AbsenceSubType -or $AbsenceSubTypeName)) {
+                    Write-PSFMessage -Level Important -Message "AbsenceSubType specified, but not valid '$(if($planningType){"for '$($planningType)'"} else { "without Type"})'! AbsenceSubTypes are only possible with Type 'Abwesenheit'/'ABSENCE'. Setting will be ignored" -Tag "VacationRequest", "AbsenceSubType"
+                }
             }
 
             # Make the change effective within TANSS
@@ -318,7 +307,7 @@
                 Write-PSFMessage -Level Verbose -Message "$($result.meta.text) - RequestId '$($result.content.id)' with status '$($result.content.status)'" -Tag "VacationRequest", "VactionRequestObject", "VacationRequestResult"
 
                 # output the result
-                if($result -and $PassThru) {
+                if ($result -and $PassThru) {
                     [TANSS.Vacation.Request]@{
                         BaseObject = $result.content
                         Id         = $result.content.id
