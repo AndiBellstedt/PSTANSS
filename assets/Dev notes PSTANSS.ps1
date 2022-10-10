@@ -634,6 +634,17 @@ $vacationRequest.content
 
 
 help Set-TANSSVacationRequest
+$vacationRequest = Set-TANSSVacationRequest -Id 16 -Description "Test $(Get-Date)" -PassThru -Verbose; $vacationRequest
+$vacationRequest = $vacationRequest | Set-TANSSVacationRequest -Description "Test $(Get-Date)" -PassThru -Verbose; $vacationRequest
+$vacationRequest = $vacationRequest | Set-TANSSVacationRequest -StartDate "2022-09-13" -EndDate "2022-09-17" -PassThru -Verbose; $vacationRequest
+$vacationRequest = $vacationRequest | Set-TANSSVacationRequest -StartDate "2022-09-12" -PassThru -Verbose; $vacationRequest
+$vacationRequest = $vacationRequest | Set-TANSSVacationRequest -EndDate "2022-09-18" -PassThru -Verbose; $vacationRequest
+$vacationRequest = $vacationRequest | Set-TANSSVacationRequest -Type Abwesenheit -AbsenceSubTypeName Kur -PassThru -Verbose; $vacationRequest
+$vacationRequest = $vacationRequest | Set-TANSSVacationRequest -Type Abwesenheit -AbsenceSubType (Get-TANSSVacationAbsenceSubType -Id 4) -PassThru -Verbose; $vacationRequest
+$vacationRequest = $vacationRequest | Set-TANSSVacationRequest -Type Krankheit -PassThru -Verbose; $vacationRequest
+$vacationRequest = $vacationRequest | Set-TANSSVacationRequest -AbsenceSubTypeName Kur -PassThru -Verbose; $vacationRequest
+
+
 
 # Approve vacation request
 $id = $vacationRequest.content.id
