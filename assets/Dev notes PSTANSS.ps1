@@ -515,6 +515,7 @@ $response.content | Format-List
 $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/vacationRequests/planningAdditionalTypes"
 $response.content | Format-Table
 [TANSS.Lookup]::VacationTypes
+
 Get-TANSSVacationAbsenceSubType
 
 
@@ -557,6 +558,36 @@ $vacationRequest
 $vacationRequest.Days
 
 
+# if Vacation - query PDF
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/vacationRequests/16/pdf" -Pdf
+$response.content.url
+
+$header = @{
+    "apiToken" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Token.AccessToken))
+}
+$param = @{
+    "Uri"           = "$($Token.Server)/backend/$($response.content.url)"
+    "Headers"       = $header
+    "Body"          = $bodyData
+    "Method"        = $Type
+    "ContentType"   = 'application/json; charset=UTF-8'
+    "Verbose"       = $false
+    "Debug"         = $false
+    "ErrorAction"   = "Stop"
+    "ErrorVariable" = "invokeError"
+}
+Invoke-RestMethod @param -OutFile foo.pdf
+
+$vacationRequest | Out-TANSSVacationRequestPdf -Verbose -PassThru
+$vacationRequest.id | Out-TANSSVacationRequestPdf -Verbose -PassThru
+$vacationRequest | Out-TANSSVacationRequestPdf -Path "foo.pdf" -Verbose -PassThru
+# Warning, but ok
+$vacationRequest | Out-TANSSVacationRequestPdf -Path "noFile" -Verbose -PassThru
+# Error
+$vacationRequest | Out-TANSSVacationRequestPdf -Path ".\SomthingWrong" -Verbose -PassThru
+
+
+
 # Query vacation request information
 $vacationType = "VACATION"
 $vacationType = "ILLNESS"
@@ -586,6 +617,7 @@ $response.content | Format-Table
 $response.content | Format-List *
 $response.content.days
 
+Request-TANSSVacationRequestObject -Type ABSENCE -StartDate ([datetime]"2022-10-10") -EndDate ([datetime]"2022-10-14") -Verbose
 Request-TANSSVacationRequestObject -EmployeeId 3 -Type ABSENCE -StartDate ([datetime]"2022-10-10") -EndDate ([datetime]"2022-10-14") -Verbose
 Request-TANSSVacationRequestObject -EmployeeName 'Mitarbeiter, Technik' -Type ABSENCE -StartDate "2022-10-10" -EndDate "2022-10-14" -Verbose
 
@@ -603,7 +635,7 @@ $vacationRequest.content.days
 
 help New-TANSSVacationRequest
 $vacationRequest = New-TANSSVacationRequest -Vacation -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
-$vacationRequest = New-TANSSVacationRequest -Illness -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
+$vacationRequest = New-TANSSVacationRequest -Illness -StartDate "2022-09-01" -EndDate "2022-09-10" -Verbose -WhatIf
 $vacationRequest = New-TANSSVacationRequest -Standby -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
 $vacationRequest = New-TANSSVacationRequest -Overtime -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
 $vacationRequest = New-TANSSVacationRequest -Absence -StartDate "2022-10-01" -EndDate "2022-10-10" -Verbose -WhatIf
@@ -690,7 +722,7 @@ $result = Invoke-TANSSRequest -Type DELETE -ApiPath "backend/api/v1/vacationRequ
 $result
 
 $vacationRequest | Remove-TANSSVacationRequest -WhatIf
-$vacationRequest | Remove-TANSSVacationRequest
+$vacationRequest | Remove-TANSSVacationRequest -Verbose
 Remove-TANSSVacationRequest -Id $vacationRequest.Id -Verbose -Force
 
 # List vacation days of all employees
@@ -712,16 +744,6 @@ $response = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/vacationReque
 $response.content
 
 
-
-# not functional - query all vacation requests of employee
-$body = @{
-    "year"        = 2022
-    "employeeIds" = @(
-        2
-    )
-}
-$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/vacationRequests/vacationDays" -Body $body
-$response.content
 
 
 #endregion
