@@ -15,6 +15,9 @@
     .PARAMETER Body
         The body as a hashtable for the request
 
+    .PARAMETER Pdf
+        if a PDF should be queried, this switch must be specified
+
     .PARAMETER Token
         The TANSS.Connection token
 
@@ -54,6 +57,9 @@
         [hashtable]
         $Body,
 
+        [switch]
+        $Pdf,
+
         [TANSS.Connection]
         $Token
     )
@@ -70,11 +76,14 @@
             $bodyData = $null
         }
 
+        $header = @{
+            "apiToken" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Token.AccessToken))
+        }
+        if($Pdf) { $header.Add("Accept","pdf") }
+
         $param = @{
             "Uri"           = "$($Token.Server)/$($ApiPath)"
-            "Headers"       = @{
-                "apiToken" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Token.AccessToken))
-            }
+            "Headers"       = $header
             "Body"          = $bodyData
             "Method"        = $Type
             "ContentType"   = 'application/json; charset=UTF-8'

@@ -60,7 +60,8 @@
         'Deny-TANSSVacationRequest',
         'Remove-TANSSVacationRequest',
         'Set-TANSSVacationRequest',
-        'Request-TANSSVacationRequestObject'
+        'Request-TANSSVacationRequestObject',
+        'Out-TANSSVacationRequestPdf'
     )
 
     # Cmdlets to export from this module
