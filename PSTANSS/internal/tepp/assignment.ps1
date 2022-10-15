@@ -33,4 +33,6 @@ Register-PSFTeppArgumentCompleter -Command New-TANSSVacationRequest -Parameter A
 Register-PSFTeppArgumentCompleter -Command Get-TANSSVacationRequest -Parameter Type -Name "PSTANSS.Parameter.GetVacationRequest.Type"
 Register-PSFTeppArgumentCompleter -Command Set-TANSSVacationRequest -Parameter Type -Name "PSTANSS.Parameter.GetVacationRequest.Type"
 Register-PSFTeppArgumentCompleter -Command Set-TANSSVacationRequest -Parameter AbsenceSubTypeName -Name "PSTANSS.CacheLookup.VacationAbsenceSubTypes"
+Register-PSFTeppArgumentCompleter -Command Request-TANSSVacationRequestObject -Parameter Type -Name "PSTANSS.Parameter.GetVacationRequest.Type"
+Register-PSFTeppArgumentCompleter -Command Request-TANSSVacationRequestObject -Parameter EmployeeName -Name "PSTANSS.CacheLookup.Employees"
 
