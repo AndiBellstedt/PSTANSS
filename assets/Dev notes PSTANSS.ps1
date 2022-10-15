@@ -248,7 +248,13 @@ $response = Invoke-TANSSRequest -Type Put -ApiPath "backend/api/v1/companies/" -
     "fetchEmployees"   = $false
     "checkPermissions" = $false
 }
-$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/salutations"
+$response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/employees/salutations"
+$response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/employees/titles"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/roles/ticket/124092"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/tickets/history/124092"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/tickets/124092/documents"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/employees/avatars"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/employees/11667"
 $response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/properties"
 $response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/100000"
 $response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/100000/employees"
@@ -256,9 +262,17 @@ $response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/sea
 $response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/departments?withEmployees=true"
 $response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/technicianRecommendation/100000"
 $response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/companies/technicianRecommendation/100000"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/peripheries/types"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/tickets/status"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/tickets/types"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/tickets/waitingStates"
+$response = Invoke-TANSSRequest -Type Get -ApiPath "backend/api/v1/tickets/departmentOrder"
 $response
 $response.meta
+$response.meta.linkedEntities
 $response.content | Format-Table
+$response.content.supports | Format-Table
+$response.content | Format-List *
 
 #endregion company
 
@@ -572,6 +586,8 @@ $response.content | Format-Table
 $response.content | Format-List *
 $response.content.days
 
+Request-TANSSVacationRequestObject -EmployeeId 3 -Type ABSENCE -StartDate ([datetime]"2022-10-10") -EndDate ([datetime]"2022-10-14") -Verbose
+Request-TANSSVacationRequestObject -EmployeeName 'Mitarbeiter, Technik' -Type ABSENCE -StartDate "2022-10-10" -EndDate "2022-10-14" -Verbose
 
 
 # Create vacation request
