@@ -149,38 +149,26 @@
 
 
         foreach ($requesterId in $EmployeeId) {
-            # gathering absence object
-            $_startDate = [int][double]::Parse((Get-Date -Date $StartDate.Date.ToUniversalTime() -UFormat %s))
-            $_endDate = [int][double]::Parse((Get-Date -Date $EndDate.Date.ToUniversalTime() -UFormat %s))
             $_requestDate = [int][double]::Parse((Get-Date -Date $Date.ToUniversalTime() -UFormat %s))
 
-            $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/properties"
-            $body = @{
-                "requesterId"  = $requesterId
-                "planningType" = $planningType
-                "startDate"    = $_startDate
-                "endDate"      = $_endDate
-            }
-            $plannedVactionRequest = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false | Select-Object -ExpandProperty content
-            if ($plannedVactionRequest) {
-                Write-PSFMessage -Level Verbose -Message "Received VacationRequest object with $($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($planningType)'" -Tag "VacationRequest", "VactionRequestObject"
-            } else {
-                Stop-PSFFunction -Message "Unable gathering '$($planningType)' VacationRequest object for employeeId '$($requesterId)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')' from '$($Token.Server)'" -Cmdlet $pscmdlet
-                continue
-            }
+            # gathering absence object
+            $plannedVactionRequest = Request-TANSSVacationRequestObject -EmployeeId $requesterId -Type $planningType -StartDate $StartDate -EndDate $EndDate -Token $Token
+            if(-not $plannedVactionRequest) { continue }
 
             Write-PSFMessage -Level Verbose -Message "Adding RequestDate and optional description to VacationRequest object" -Tag "VacationRequest", "VactionRequestObject"
-            $plannedVactionRequest.requestReason = "$($Description)"
-            $plannedVactionRequest.requestDate = $_requestDate
+            $plannedVactionRequest.BaseObject.requestReason = "$($Description)"
+            $plannedVactionRequest.BaseObject.requestDate = $_requestDate
             if ($AbsenceSubType) {
                 Write-PSFMessage -Level Verbose -Message "Insert additionalAbsenceSubType '$($AbsenceSubType.Name)' to VacationRequest object" -Tag "VacationRequest", "VactionRequestObject", "AbsenceSubType"
-                $plannedVactionRequest.planningAdditionalId = $AbsenceSubType.Id
+                $plannedVactionRequest.BaseObject.planningAdditionalId = $AbsenceSubType.Id
             }
-            $body = $plannedVactionRequest | ConvertTo-PSFHashtable
+
+            $body = $plannedVactionRequest.BaseObject | ConvertTo-PSFHashtable
             $apiPath = Format-ApiPath -Path "api/v1/vacationRequests"
 
-            if ($pscmdlet.ShouldProcess("VacationRequest for employeeId '$($RequesterId)' with $($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($planningType)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')'", "Add")) {
-                Write-PSFMessage -Level Verbose -Message "Add VacationRequest for employeeId '$($RequesterId)' with $($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($planningType)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')'" -Tag "VacationRequest", "VactionRequestObject"
+            $daycount = 0 + ($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count)
+            if ($pscmdlet.ShouldProcess("VacationRequest for employeeId '$($RequesterId)' with $($daycount) days on planningType '$($planningType)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')'", "Add")) {
+                Write-PSFMessage -Level Verbose -Message "Add VacationRequest for employeeId '$($RequesterId)' with $($daycount) days on planningType '$($planningType)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')'" -Tag "VacationRequest", "VactionRequestObject"
 
                 # Create the object within TANSS
                 $result = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token

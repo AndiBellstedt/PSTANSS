@@ -184,28 +184,8 @@
             if ($StartDate -and ($StartDate -lt $vacationRequest.StartDate)) {
                 Write-PSFMessage -Level System -Message "StartDate found, need to add $(($vacationRequest.EndDate - $StartDate).Days) days to VacationRequest" -Tag "VacationRequest", "Set", "AddDays"
 
-                # Set parameters to query addiontial days
-                $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/properties"
-                $_startDate = [int][double]::Parse((Get-Date -Date $StartDate.Date.ToUniversalTime() -UFormat %s))
-                $body = @{
-                    "requesterId"  = $vacationRequest.BaseObject.requesterId
-                    "planningType" = $vacationRequest.BaseObject.planningType
-                    "startDate"    = $_startDate
-                    "endDate"      = $vacationRequest.BaseObject.endDate
-                }
-
-                # query planned vacation request object with additional days
-                $plannedVactionRequest = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false | Select-Object -ExpandProperty content
-                if ($plannedVactionRequest) {
-                    Write-PSFMessage -Level Verbose -Message "Received VacationRequest object with $($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($planningType)'" -Tag "VacationRequest", "VactionRequestObject"
-                } else {
-                    Stop-PSFFunction -Message "Unable gathering '$($planningType)' VacationRequest object for employeeId '$($requesterId)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')' from '$($Token.Server)'" -Cmdlet $pscmdlet
-                    continue
-                }
-                $plannedVactionRequest = [TANSS.Vacation.Request]@{
-                    BaseObject = $plannedVactionRequest
-                    id         = $plannedVactionRequest.id
-                }
+                $plannedVactionRequest = Request-TANSSVacationRequestObject -EmployeeId $vacationRequest.BaseObject.requesterId -Type $vacationRequest.BaseObject.planningType -StartDate $StartDate -EndDate $vacationRequest.EndDate -Token $Token
+                if(-not $plannedVactionRequest) { continue }
 
                 # add days new days to vacation request
                 $vacationRequest.Days = $plannedVactionRequest.Days
@@ -218,28 +198,9 @@
             if ($EndDate -and ($EndDate -gt $vacationRequest.EndDate)) {
                 Write-PSFMessage -Level System -Message "EndDate found, need to add $(($EndDate - $vacationRequest.EndDate).Days) days to VacationRequest" -Tag "VacationRequest", "Set", "AddDays"
 
-                # Set parameters to query addiontial days
-                $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/properties"
-                $_endDate = [int][double]::Parse((Get-Date -Date $EndDate.Date.ToUniversalTime() -UFormat %s))
-                $body = @{
-                    "requesterId"  = $vacationRequest.BaseObject.requesterId
-                    "planningType" = $vacationRequest.BaseObject.planningType
-                    "startDate"    = $vacationRequest.BaseObject.startDate
-                    "endDate"      = $_endDate
-                }
-
-                # query planned vacation request object with additional days
-                $plannedVactionRequest = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false | Select-Object -ExpandProperty content
-                if ($plannedVactionRequest) {
-                    Write-PSFMessage -Level Verbose -Message "Received VacationRequest object with $($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($planningType)'" -Tag "VacationRequest", "VactionRequestObject"
-                } else {
-                    Stop-PSFFunction -Message "Unable gathering '$($planningType)' VacationRequest object for employeeId '$($requesterId)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')' from '$($Token.Server)'" -Cmdlet $pscmdlet
-                    continue
-                }
-                $plannedVactionRequest = [TANSS.Vacation.Request]@{
-                    BaseObject = $plannedVactionRequest
-                    id         = $plannedVactionRequest.id
-                }
+                # Query addiontial days
+                $plannedVactionRequest = Request-TANSSVacationRequestObject -EmployeeId $vacationRequest.BaseObject.requesterId -Type $vacationRequest.BaseObject.planningType -StartDate $vacationRequest.StartDate -EndDate $EndDate -Token $Token
+                if(-not $plannedVactionRequest) { continue }
 
                 # add days new days to vacation request
                 $vacationRequest.Days = $plannedVactionRequest.Days

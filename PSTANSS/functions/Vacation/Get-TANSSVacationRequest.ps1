@@ -73,7 +73,7 @@
 
         [Parameter( ParameterSetName = "ListUserFriendly" )]
         [string[]]
-        $AbsenceSubType,
+        $AbsenceSubTypeName,
 
         [Parameter( ParameterSetName = "ListApiNativ" )]
         [Parameter( ParameterSetName = "ListUserFriendly" )]
@@ -192,10 +192,10 @@
 
 
                 # Parameter AbsenceSubType
-                if ($AbsenceSubType) {
-                    Write-PSFMessage -Level Verbose -Message "Processing lookup on filtering for AbsenceSubType '$( [string]::Join("', '", [array]$AbsenceSubType) )'"
+                if ($AbsenceSubTypeName) {
+                    Write-PSFMessage -Level Verbose -Message "Processing lookup on filtering for AbsenceSubType '$( [string]::Join("', '", [array]$AbsenceSubTypeName) )'"
 
-                    $AbsenceSubTypeId = foreach ($item in $AbsenceSubType) {
+                    $AbsenceSubTypeId = foreach ($item in $AbsenceSubTypeName) {
                         $result = ConvertFrom-NameCache -Name $item -Type VacationAbsenceSubTypes -Verbose:$false
                         if (-not $result) {
                             Stop-PSFFunction -Message "AbsenceSubType '$($item)' not found. Unable to query VacationRequests." -EnableException $true -Cmdlet $pscmdlet -Tag "VacationRequest", "VacationAbsenceSubTypes", "CacheException"

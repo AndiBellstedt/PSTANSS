@@ -22,7 +22,7 @@
         https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
-        DefaultParameterSetName = "UserFriendly",
+        DefaultParameterSetName = "ApiNative",
         SupportsShouldProcess = $false,
         PositionalBinding = $true,
         ConfirmImpact = 'Low'
@@ -31,8 +31,7 @@
         [Parameter(
             ValueFromPipelineByPropertyName = $true,
             ValueFromPipeline = $true,
-            ParameterSetName = "ApiNative",
-            Mandatory = $true
+            ParameterSetName = "ApiNative"
         )]
         [int[]]
         $EmployeeId,
@@ -89,8 +88,7 @@
         $parameterSetName = $pscmdlet.ParameterSetName
         Write-PSFMessage -Level Debug -Message "ParameterNameSet: $($parameterSetName)" -Tag "VacationRequest", "Request"
 
-
-        if($EmployeeName) {
+        if ($EmployeeName) {
             Write-PSFMessage -Level System -Message "Convert EmployeeId from EmployeeName" -Tag "VacationRequest", "Request", "EmployeeName"
             $EmployeeId = @()
 
@@ -98,13 +96,19 @@
                 Write-PSFMessage -Level System -Message "Working on employee name '$($name)'" -Tag "VacationRequest", "Request", "EmployeeName"
 
                 $id = ConvertFrom-NameCache -Name $name -Type "Employees"
-                if(-not $id) {
+                if (-not $id) {
                     Write-PSFMessage -Level Warning -Message "No Id for employee '$($name)' found" -Tag "VacationRequest", "Request", "EmployeeName", "Warning"
                 } else {
                     Write-PSFMessage -Level System -Message "Found id '$($id)' for employee '$($name)'" -Tag "VacationRequest", "Request", "EmployeeName"
                 }
                 $EmployeeId += $id
             }
+        }
+
+        # Fallback to employeeId from token if no requestorId is set
+        if (-not $EmployeeId) {
+            Write-PSFMessage -Level Verbose -Message "No Employee specified, using current logged in employee '$($Token.UserName)' (Id:$($Token.EmployeeId))" -Tag "VacationRequest", "Request", "EmployeeId"
+            $EmployeeId = $Token.EmployeeId
         }
 
         foreach ($requesterId in $EmployeeId) {
@@ -125,15 +129,14 @@
             $plannedVactionRequest = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token | Select-Object -ExpandProperty content
             if ($plannedVactionRequest) {
                 Write-PSFMessage -Level Verbose -Message "Received VacationRequest object with $($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($planningType)'" -Tag "VacationRequest", "VactionRequestObject"
+
+                # output object
+                [TANSS.Vacation.Request]@{
+                    BaseObject = $plannedVactionRequest
+                    Id         = $plannedVactionRequest.id
+                }
             } else {
                 Stop-PSFFunction -Message "Unable gathering '$($planningType)' VacationRequest object for employeeId '$($requesterId)' on dates '$(Get-Date -Date $StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $EndDate -Format 'yyyy-MM-dd')' from '$($Token.Server)'" -Cmdlet $pscmdlet
-                continue
-            }
-
-            # output object
-            [TANSS.Vacation.Request]@{
-                BaseObject = $plannedVactionRequest
-                Id         = $plannedVactionRequest.id
             }
         }
     }
