@@ -88,12 +88,37 @@
     }
 
     process {
-        #ToDo - Query Id from EmployeeName
+        $parameterSetName = $pscmdlet.ParameterSetName
+        Write-PSFMessage -Level Debug -Message "ParameterNameSet: $($parameterSetName)" -Tag "VacationEntitlement", "Set"
 
-        #ToDo - Query Entitlement from EmployeeId
+        if ($parameterSetName -notlike "ByInputObject") {
+            $tempWhatIf = $WhatIfPreference
+            $WhatIfPreference = $false
+            $InputObject = Get-TANSSVacationEntitlement -Year $Year -Token $Token
+            $WhatIfPreference = $tempWhatIf
+        }
 
+        # Filter on EmployeeName
+        if ($parameterSetName -like "ByName") {
+            $InputObject = foreach ($_employeeName in $EmployeeName) {
+                $InputObject | Where-Object EmployeeName -like $_employeeName
+            }
+            Write-PSFMessage -Level Verbose -Message "Select $(([array]$InputObject).Count) records, by employee name '$([string]::Join("', '", ([array]$EmployeeName)))'" -Tag "VacationEntitlement", "Set", "Filtering"
+        }
+
+        # Filter on EmployeeId
+        if ($parameterSetName -like "ById") {
+            $InputObject = foreach ($_employeeId in $EmployeeId) {
+                $InputObject | Where-Object EmployeeId -like $_employeeId
+            }
+            Write-PSFMessage -Level Verbose -Message "Select $(([array]$InputObject).Count) records, by employee id '$([string]::Join("', '", ([array]$EmployeeId)))'" -Tag "VacationEntitlement", "Set", "Filtering"
+        }
+
+        # Process VacationEntitlement modification
         foreach ($entitlement in $InputObject) {
             if ($pscmdlet.ShouldProcess("Vacation entitlement for '$($entitlement.EmployeeName)' to $($Days) days in $($Year)", "Set")) {
+                Write-PSFMessage -Level Verbose -Message "Set vacation entitlement for '$($entitlement.EmployeeName)' to $($Days) days in $($Year)" -Tag "VacationEntitlement", "Set"
+
                 # Prepare request
                 $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/vacationDays"
                 if ($TransferedDays) { $_transferred = $TransferedDays } else { $_transferred = 0 }
@@ -109,13 +134,13 @@
 
                 # Output result
                 if ($PassThru) {
-                    #Write-PSFMessage -Level Verbose -Message "$($response.meta.text): Received $($response.meta.properties.extras.count) VacationEntitlement records in year $($Year)" -Tag "VacationEntitlement", "Query"
+                    Write-PSFMessage -Level Verbose -Message "$($response.meta.text): Going to output $(([array]($response.content)).count) VacationEntitlement records in year $($Year)" -Tag "VacationEntitlement", "Query"
                     foreach ($newEntitlement in $response.content) {
                         $_baseObject = $entitlement.BaseObject
                         $_baseObject.numberOfDays = $newEntitlement.numberOfDays
                         if ($newEntitlement.transferred) {
                             $_transferred = $newEntitlement.transferred
-                            $_baseObject.TransferedDays = $_transferred
+                            if($_baseObject.TransferedDays) { $_baseObject.TransferedDays = $_transferred }
                         } else {
                             $_transferred = 0
                         }
