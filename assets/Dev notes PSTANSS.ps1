@@ -739,19 +739,27 @@ $VacationEntitlement = Get-TANSSVacationEntitlement
 
 # Set vacation days of all employees
 $body = @{
-    "employeeId"   = 3
+    "employeeId"   = 4
     "year"         = 2022
-    "numberOfDays" = 0.0
-    "transferred"  = 0.0
+    "numberOfDays" = 25
+    "transferred"  = 5
 }
 $response = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/vacationRequests/vacationDays" -Body $body
 $response.content
 
-$VacationEntitlement = $VacationEntitlement | where EmployeeId -like 3
+$VacationEntitlement = $VacationEntitlement | Where-Object EmployeeId -like 3
 help Set-TANSSVacationEntitlement
 $VacationEntitlement | Set-TANSSVacationEntitlement -Days 10 -PassThru -Verbose -WhatIf
 $VacationEntitlement = $VacationEntitlement | Set-TANSSVacationEntitlement -Days 10 -PassThru -Verbose; $VacationEntitlement
 $VacationEntitlement = $VacationEntitlement | Set-TANSSVacationEntitlement -Days 0 -PassThru -Verbose; $VacationEntitlement
+
+Set-TANSSVacationEntitlement -Days 10 -Year 2021 -PassThru -Verbose
+Set-TANSSVacationEntitlement -Days 0 -Year 2021 -PassThru -Verbose
+
+Set-TANSSVacationEntitlement -EmployeeId 4 -Days 10 -Year 2021 -PassThru -Verbose
+Set-TANSSVacationEntitlement -EmployeeName "*test*" -Days 0 -Year 2021 -PassThru -Verbose
+Set-TANSSVacationEntitlement -EmployeeName "*test*" -Days 35 -TransferedDays 5 -Year 2022 -PassThru -Verbose
+Set-TANSSVacationEntitlement -EmployeeName "*test*" -Days 0 -TransferedDays 0 -Year 2022 -PassThru -Verbose
 
 #endregion
 
