@@ -925,5 +925,83 @@
         </View>
 
 
+
+        <!-- TANSS.Vacation.Entitlement -->
+        <View>
+            <Name>TANSS.Vacation.Entitlement_Table</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Vacation.Entitlement</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize/>
+                <TableHeaders>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Year</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EmployeeId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EmployeeIsActive</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EmployeeName</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>NumberOfDays</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>TransferedDays</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+        <View>
+            <Name>TANSS.Vacation.Entitlement_List</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Vacation.Entitlement</TypeName>
+            </ViewSelectedBy>
+            <ListControl>
+                <ListEntries>
+                    <ListEntry>
+                        <ListItems>
+                            <ListItem>
+                                <PropertyName>Year</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>EmplyeeName</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>EmplyeeId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>EmployeeIsActive</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>NumberOfDays</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>TransferedDays</PropertyName>
+                            </ListItem>
+                        </ListItems>
+                    </ListEntry>
+                </ListEntries>
+            </ListControl>
+        </View>
+
+
+
     </ViewDefinitions>
 </Configuration>

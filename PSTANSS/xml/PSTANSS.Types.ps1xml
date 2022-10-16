@@ -1072,4 +1072,54 @@
     </Type>
 
 
+    <!-- TANSS.Vacation.Entitlement -->
+    <Type>
+        <Name>Deserialized.TANSS.Vacation.Entitlement</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.Vacation.Entitlement
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.Vacation.Entitlement</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>EmployeeName</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.employee.name
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeIsActive</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.employee.active )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
+
 </Types>

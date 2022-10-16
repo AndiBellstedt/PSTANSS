@@ -389,6 +389,37 @@
             
              </summary>
         </member>
+        <member name="F:TANSS.Vacation.Entitlement.BaseObject">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.Entitlement.EmployeeId">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.Entitlement.Year">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.Entitlement.NumberOfDays">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Vacation.Entitlement.TransferedDays">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:TANSS.Vacation.Entitlement.ToString">
+            <summary>
+            Overrides the default ToString() method
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:TANSS.Vacation.Request">
              <summary>
             
