@@ -731,20 +731,27 @@ $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/vacationReque
 $response.content | Format-Table
 $response.content[0].employee | Format-List
 
+help Get-TANSSVacationEntitlement
+Get-TANSSVacationEntitlement
+Get-TANSSVacationEntitlement -Year 2021
+$VacationEntitlement = Get-TANSSVacationEntitlement
 
 
 # Set vacation days of all employees
 $body = @{
-    "employeeId"   = 2
+    "employeeId"   = 3
     "year"         = 2022
-    "numberOfDays" = 30.0
+    "numberOfDays" = 0.0
     "transferred"  = 0.0
 }
 $response = Invoke-TANSSRequest -Type PUT -ApiPath "backend/api/v1/vacationRequests/vacationDays" -Body $body
 $response.content
 
-
-
+$VacationEntitlement = $VacationEntitlement | where EmployeeId -like 3
+help Set-TANSSVacationEntitlement
+$VacationEntitlement | Set-TANSSVacationEntitlement -Days 10 -PassThru -Verbose -WhatIf
+$VacationEntitlement = $VacationEntitlement | Set-TANSSVacationEntitlement -Days 10 -PassThru -Verbose; $VacationEntitlement
+$VacationEntitlement = $VacationEntitlement | Set-TANSSVacationEntitlement -Days 0 -PassThru -Verbose; $VacationEntitlement
 
 #endregion
 
