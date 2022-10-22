@@ -7,5 +7,9 @@ namespace TANSS {
     /// </summary>
     [Serializable]
     public class TicketMail : TANSS.Object {
+        /// <summary>
+        ///
+        /// </summary>
+        public int TicketId;
     }
 }

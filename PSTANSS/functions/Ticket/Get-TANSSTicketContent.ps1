@@ -71,10 +71,6 @@
             [array]$TicketID = $Ticket.id
         }
 
-        <#
-        $ticketIdItem = 98791
-        $ticketIdItem = 124861
-        #>
         foreach ($ticketIdItem in $TicketID) {
             Write-PSFMessage -Level Verbose -Message "Working on ticket ID $($ticketIdItem)"  -Tag "TicketContent", "Query"
             $content = @()
@@ -99,17 +95,23 @@
                         $responseDocumentUri = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token
 
                         # create output
-                        $output = [TANSS.TicketDocument]@{
+                        $object = [TANSS.TicketDocument]@{
                             BaseObject = $document
                             Id         = $document.id
                         }
                         if ($responseDocumentUri.content) {
-                            $output.Key = $responseDocumentUri.content.key
-                            $output.DownloadUri = Format-ApiPath -Path $responseDocumentUri.content.url
+                            $object.Key = $responseDocumentUri.content.key
+                            $object.DownloadUri = Format-ApiPath -Path $responseDocumentUri.content.url
                         }
 
-                        # Output object
-                        $output
+                        [TANSS.TicketContent]@{
+                            TicketId = $object.TicketId
+                            Type     = "Document"
+                            Id       = $object.Id
+                            Date     = $object.Date
+                            Text     = $object.Description
+                            Object   = $object
+                        }
                     }
                 } else {
                     Write-PSFMessage -Level Verbose -Message "No documents found"  -Tag "TicketContent", "Query", "QueryDocuments"
@@ -127,11 +129,20 @@
                 if ($response.content) {
                     Write-PSFMessage -Level Verbose -Message "Found $($response.content.count) images"  -Tag "TicketContent", "Query", "QueryImages"
                     $content += foreach ($image in $response.content) {
-                        # create output objects
-                        [TANSS.TicketImage]@{
+                        $object = [TANSS.TicketImage]@{
                             BaseObject = $image
                             Id         = $image.id
                         }
+
+                        [TANSS.TicketContent]@{
+                            TicketId = $object.TicketId
+                            Type     = "Image"
+                            Id       = $object.Id
+                            Date     = $object.Date
+                            Text     = $object.Description
+                            Object   = $object
+                        }
+
                     }
                 } else {
                     Write-PSFMessage -Level Verbose -Message "No images found"  -Tag "TicketContent", "Query", "QueryImages"
@@ -147,34 +158,71 @@
                 Push-DataToCacheRunspace -MetaData $response.meta
 
                 if ($response.content) {
+                    Write-PSFMessage -Level Verbose -Message "Found content in ticket $($ticketIdItem), going to parse content"  -Tag "TicketContent", "Query", "QueryHistory"
+
                     # Get comments
                     if ( ($Type | Where-Object { $_ -in @("All", "Comment") }) ) {
+                        Write-PSFMessage -Level Verbose -Message "Working through $($response.content.comments.count) comment$(if($response.content.comments.count -gt 1) {'s'})"  -Tag "TicketContent", "Query", "QueryHistory", "Comment"
+
                         $content += foreach ($comment in $response.content.comments) {
-                            [TANSS.TicketComment]@{
+                            $object = [TANSS.TicketComment]@{
                                 BaseObject = $comment
                                 ID         = $comment.id
                                 TicketId   = $ticketIdItem
+                            }
+
+                            [TANSS.TicketContent]@{
+                                TicketId = $object.TicketId
+                                Type     = "Comment"
+                                Id       = $object.Id
+                                Date     = $object.Date
+                                Text     = $object.Description
+                                Object   = $object
                             }
                         }
                     }
 
                     # Get activities
                     if ( ($Type | Where-Object { $_ -in @("All", "Activity") }) ) {
+                        Write-PSFMessage -Level Verbose -Message "Working through $($response.content.supports.count) $(if($response.content.supports.count -gt 1) {'Activities'} else {'Activity'})"  -Tag "TicketContent", "Query", "QueryHistory", "Activity"
+
                         $content += foreach ($activity in $response.content.supports) {
-                            [TANSS.TicketActivity]@{
+                            $object = [TANSS.TicketActivity]@{
                                 BaseObject = $activity
                                 ID         = $activity.id
+                            }
+
+                            [TANSS.TicketContent]@{
+                                TicketId = $object.TicketId
+                                Type     = "Activity"
+                                Id       = $object.Id
+                                Date     = $object.Date
+                                Text     = $object.Description
+                                Object   = $object
                             }
                         }
                     }
 
                     # Get mails
                     if ( ($Type | Where-Object { $_ -in @("All", "Mail") }) ) {
+                        Write-PSFMessage -Level Verbose -Message "Working through $($response.content.mails.count) mail$(if($response.content.mails.count -gt 1) {'s'})"  -Tag "TicketContent", "Query", "QueryHistory", "Mail"
+
                         $content += foreach ($mail in $response.content.mails) {
-                            [TANSS.TicketMail]@{
+                            $object = [TANSS.TicketMail]@{
                                 BaseObject = $mail
                                 ID         = $mail.id
+                                TicketId   = $ticketIdItem
                             }
+
+                            [TANSS.TicketContent]@{
+                                TicketId = $object.TicketId
+                                Type     = "Mail"
+                                Id       = $object.Id
+                                Date     = $object.Date
+                                Text     = $object.Subject
+                                Object   = $object
+                            }
+                            #>
                         }
                     }
                 } else {
@@ -188,40 +236,15 @@
                 }
             }
 
-            $content
-            <#
-            $content | Format-Table id, BaseObject
-            $content | ForEach-Object { $_.psobject.TypeNames[0] } | Group-Object
+            # Output result
+            if($content) {
+                Write-PSFMessage -Level Verbose -Message "Output $(([array]$content).count) content record$(if(([array]$content).count -gt 1){'s'}) from ticket $($ticketIdItem)" -Tag "TicketContent", "Query", "OutputResult"
 
-            $TicketDocument = $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketDocument" } | Select-Object -First 1
-            $TicketDocument | Format-List
-            $TicketDocument.BaseObject | Format-List
+                $content | Sort-Object Date
 
-            $TicketImage = $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketImage" } | Select-Object -First 1
-            $TicketImage | Format-List
-            $TicketImage.BaseObject | Format-List
-
-            $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketComment" } | Select-Object -ExpandProperty BaseObject | Out-GridView
-            $TicketComment = $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketComment" } | Select-Object -First 1
-            $TicketComment | Format-List
-            $TicketComment.BaseObject | Format-List
-
-            $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketActivity" } | Select-Object -ExpandProperty BaseObject | Out-GridView
-            $TicketActivity = $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketActivity" } | Select-Object -First 1
-            $TicketActivity | Format-List
-            $TicketActivity.BaseObject | Format-List
-
-            $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketMail" } | Select-Object -ExpandProperty BaseObject | Out-GridView
-            $TicketMail = $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketMail" } | Select-Object -First 1
-            $TicketMail | Format-List
-            $TicketMail.BaseObject | Format-List
-
-            #Stop-PSFFunction -Message "Error something" -EnableException $true -Cmdlet $pscmdlet -Tag "TicketContent", "What", "TypeException"
-            $response.content.comments | Format-Table
-            $response.meta.properties.extras.templates
-            $response.meta.linkedEntities.carNumberplate
-
-            #>
+            } else {
+                Write-PSFMessage -Level Significant -Message "No $(if($Type -notlike "All") {'matching'}) content found in ticket $($ticketIdItem)" -Tag "TicketContent", "Query", "OutputResult", "NoData"
+            }
         }
     }
 

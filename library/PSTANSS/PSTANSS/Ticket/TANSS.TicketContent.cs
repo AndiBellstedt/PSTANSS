@@ -17,12 +17,12 @@ namespace TANSS {
         /// <summary>
         ///
         /// </summary>
-        public int Id;
+        public string Type;
 
         /// <summary>
         ///
         /// </summary>
-        public string Type;
+        public int Id;
 
         /// <summary>
         ///

@@ -307,12 +307,12 @@
             
              </summary>
         </member>
-        <member name="F:TANSS.TicketContent.Id">
+        <member name="F:TANSS.TicketContent.Type">
              <summary>
             
              </summary>
         </member>
-        <member name="F:TANSS.TicketContent.Type">
+        <member name="F:TANSS.TicketContent.Id">
              <summary>
             
              </summary>
@@ -359,6 +359,11 @@
              </summary>
         </member>
         <member name="T:TANSS.TicketMail">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.TicketMail.TicketId">
              <summary>
             
              </summary>

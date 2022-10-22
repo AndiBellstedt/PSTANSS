@@ -1754,4 +1754,189 @@
     </Type>
 
 
+    <!-- TANSS.TicketMail -->
+    <Type>
+        <Name>Deserialized.TANSS.TicketMail</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.TicketMail
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.TicketMail</Name>
+        <Members>
+
+            <ScriptProperty>
+                <Name>Date</Name>
+                <GetScriptBlock>
+                    [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.receivers[0].sentDate).ToLocalTime()
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.senderId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeName</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.senderId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Attachments</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.attachments
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>BodyHtml</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.bodyHtml
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>BodyPlain</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.bodyPlain
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Headers</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.headers
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsInternal</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.internal )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsInbound</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.inbound )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>OriginalText</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.originalText
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsPlainTextOnly</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.plainTextOnly )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Receivers</Name>
+                <GetScriptBlock>
+                    [string]::Join(", ", ($this.BaseObject.receivers | Select-Object -Property @{n="Receiver";e={ "$($_.method):$($_.emailAddress)" }} | Select-Object -ExpandProperty Receiver))
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>SenderName</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.senderName
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>SenderEmail</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.senderEMail
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Subject</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.subject
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
+
+    <!-- TANSS.TicketContent -->
+    <Type>
+        <Name>Deserialized.TANSS.TicketContent</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.TicketContent
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.TicketContent</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>EmployeeName</Name>
+                <GetScriptBlock>
+                    $this.Object.EmployeeName
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
+
 </Types>
