@@ -7,5 +7,9 @@ namespace TANSS {
     /// </summary>
     [Serializable]
     public class TicketComment : TANSS.Object {
+        /// <summary>
+        ///
+        /// </summary>
+        public int TicketId;
     }
 }

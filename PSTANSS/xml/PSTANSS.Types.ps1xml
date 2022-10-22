@@ -1122,4 +1122,636 @@
     </Type>
 
 
+    <!-- TANSS.TicketDocument -->
+    <Type>
+        <Name>Deserialized.TANSS.TicketDocument</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.TicketDocument
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.TicketDocument</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>TicketId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.ticketId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>FileName</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.fileName
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>MimeType</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.mimeType
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.employeeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeName</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.employeeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Date</Name>
+                <GetScriptBlock>
+                    [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.date).ToLocalTime()
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsInternal</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.internal )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Description</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.description
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
+
+    <!-- TANSS.TicketImage -->
+    <Type>
+        <Name>Deserialized.TANSS.TicketImage</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.TicketImage
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.TicketImage</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>TicketId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.ticketId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>FileName</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.fileName
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Date</Name>
+                <GetScriptBlock>
+                    [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.date).ToLocalTime()
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.employeeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeName</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.employeeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsInternal</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.internal )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Description</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.description
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ImageData</Name>
+                <GetScriptBlock>
+                    [System.Convert]::FromBase64String($this.BaseObject.image)
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
+
+    <!-- TANSS.TicketComment -->
+    <Type>
+        <Name>Deserialized.TANSS.TicketComment</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.TicketComment
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.TicketComment</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>Date</Name>
+                <GetScriptBlock>
+                    [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.date).ToLocalTime()
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.employeeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeName</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.employeeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CategoryId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.categoryId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Title</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.title
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Description</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.content
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsInternal</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.internal )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
+
+    <!-- TANSS.TicketActivity -->
+    <Type>
+        <Name>Deserialized.TANSS.TicketActivity</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.TicketActivity
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.TicketActivity</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>LinkTypeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.linkTypeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>LinkType</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::LinkTypes["$($this.BaseObject.linkTypeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>LinkId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.linkId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CompanyId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.companyId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CompanyName</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Companies["$($this.BaseObject.companyId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.employeeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmployeeName</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.employeeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>TypeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.typeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Date</Name>
+                <GetScriptBlock>
+                    [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.date).ToLocalTime()
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Duration</Name>
+                <GetScriptBlock>
+                    [timespan]::new(0, $this.BaseObject.duration, 0)
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Text</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.text
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <AliasProperty>
+                <Name>Description</Name>
+                <ReferencedMemberName>Text</ReferencedMemberName>
+            </AliasProperty>
+
+            <ScriptProperty>
+                <Name>IsBooked</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.booked )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ERPNumber</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.erpNumber
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsInternal</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.internal )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Location</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.location
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ApproachDuration</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.durationApproach
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ApproachKM</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.kmApproach
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>DepartureDuration</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.durationDeparture
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>DepartureKM</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.kmDeparture
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>TicketId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.ticketId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ReasonNotChargedId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.reasonNotChargedId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsInstallationFee</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.installationFee )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>InstallationFeeTypeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.installationFeeTypeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CarId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.carId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CarPlate</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::CarNumberplate["$($this.BaseObject.carId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ClearanceStatus</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.clearanceStatus
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>AccountingTypeId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.accountingTypeId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>SupportIconType</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.supportIconType
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>VoucherId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.voucherId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>PriceHour</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.hourlyRate
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ContractId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.contractId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsExtern</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.extern )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>PlanningType</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.planningType
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>TextIntern</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.textIntern
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>BreakStart</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.startBreak
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>BreakDuration</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.durationBreak
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CreatorId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.durationBreak
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CreatorName</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Employees["$($this.BaseObject.createdEmployeeId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>InstallationFeeAmount</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.installationFeeAmount
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>VacationRequestId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.vacationRequestId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CostCenterId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.costCenterId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ExternalTicketId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.externalTicketId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Export</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.export
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>DepartmentId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.departmentId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Department</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Departments["$($this.BaseObject.departmentId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsOutlook</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.outlook )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
+
 </Types>

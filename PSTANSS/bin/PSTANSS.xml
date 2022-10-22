@@ -236,6 +236,21 @@
             
              </summary>
         </member>
+        <member name="F:TANSS.Lookup.CarNumberplate">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Lookup.SupportTypes">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.Lookup.NotChargedReasons">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:TANSS.Object">
              <summary>
             
@@ -273,6 +288,11 @@
              </summary>
         </member>
         <member name="T:TANSS.TicketComment">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.TicketComment.TicketId">
              <summary>
             
              </summary>

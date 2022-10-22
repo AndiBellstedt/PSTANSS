@@ -46,6 +46,7 @@
         [TANSS.Ticket[]]
         $Ticket,
 
+        [ValidateNotNullOrEmpty()]
         [ValidateSet("All", "Comment", "Activity", "Mail", "Document", "Image")]
         [string[]]
         $Type = "All",
@@ -151,7 +152,8 @@
                         $content += foreach ($comment in $response.content.comments) {
                             [TANSS.TicketComment]@{
                                 BaseObject = $comment
-                                ID = $comment.id
+                                ID         = $comment.id
+                                TicketId   = $ticketIdItem
                             }
                         }
                     }
@@ -161,17 +163,17 @@
                         $content += foreach ($activity in $response.content.supports) {
                             [TANSS.TicketActivity]@{
                                 BaseObject = $activity
-                                ID = $activity.id
+                                ID         = $activity.id
                             }
                         }
                     }
 
                     # Get mails
                     if ( ($Type | Where-Object { $_ -in @("All", "Mail") }) ) {
-                        $content += foreach ($mail in $response.content.supports) {
+                        $content += foreach ($mail in $response.content.mails) {
                             [TANSS.TicketMail]@{
                                 BaseObject = $mail
-                                ID = $mail.id
+                                ID         = $mail.id
                             }
                         }
                     }
@@ -186,10 +188,40 @@
                 }
             }
 
-            $content | ft id, BaseObject
+            $content
+            <#
+            $content | Format-Table id, BaseObject
+            $content | ForEach-Object { $_.psobject.TypeNames[0] } | Group-Object
+
+            $TicketDocument = $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketDocument" } | Select-Object -First 1
+            $TicketDocument | Format-List
+            $TicketDocument.BaseObject | Format-List
+
+            $TicketImage = $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketImage" } | Select-Object -First 1
+            $TicketImage | Format-List
+            $TicketImage.BaseObject | Format-List
+
+            $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketComment" } | Select-Object -ExpandProperty BaseObject | Out-GridView
+            $TicketComment = $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketComment" } | Select-Object -First 1
+            $TicketComment | Format-List
+            $TicketComment.BaseObject | Format-List
+
+            $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketActivity" } | Select-Object -ExpandProperty BaseObject | Out-GridView
+            $TicketActivity = $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketActivity" } | Select-Object -First 1
+            $TicketActivity | Format-List
+            $TicketActivity.BaseObject | Format-List
+
+            $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketMail" } | Select-Object -ExpandProperty BaseObject | Out-GridView
+            $TicketMail = $content | Where-Object { $_.psobject.TypeNames[0] -like "TANSS.TicketMail" } | Select-Object -First 1
+            $TicketMail | Format-List
+            $TicketMail.BaseObject | Format-List
 
             #Stop-PSFFunction -Message "Error something" -EnableException $true -Cmdlet $pscmdlet -Tag "TicketContent", "What", "TypeException"
+            $response.content.comments | Format-Table
+            $response.meta.properties.extras.templates
+            $response.meta.linkedEntities.carNumberplate
 
+            #>
         }
     }
 

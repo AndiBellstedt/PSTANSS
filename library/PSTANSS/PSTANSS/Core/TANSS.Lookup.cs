@@ -86,5 +86,20 @@ namespace TANSS {
         /// </summary>
         public static System.Collections.Hashtable VacationAbsenceSubTypes = new System.Collections.Hashtable();
 
+        /// <summary>
+        ///
+        /// </summary>
+        public static System.Collections.Hashtable CarNumberplate = new System.Collections.Hashtable();
+
+        /// <summary>
+        ///
+        /// </summary>
+        public static System.Collections.Hashtable SupportTypes = new System.Collections.Hashtable();
+
+        /// <summary>
+        ///
+        /// </summary>
+        public static System.Collections.Hashtable NotChargedReasons = new System.Collections.Hashtable();
+
     }
 }

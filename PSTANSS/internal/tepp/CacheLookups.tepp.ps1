@@ -1,8 +1,4 @@
-﻿<#
-# Example:
-Register-PSFTeppScriptblock -Name "PSTANSS.alcohol" -ScriptBlock { 'Beer','Mead','Whiskey','Wine','Vodka','Rum (3y)', 'Rum (5y)', 'Rum (7y)' }
-#>
-Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.Companies" -ScriptBlock { [TANSS.Lookup]::Companies.Values }
+﻿Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.Companies" -ScriptBlock { [TANSS.Lookup]::Companies.Values }
 Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.Client" -ScriptBlock { [TANSS.Lookup]::Employees.Values }
 Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.Contracts" -ScriptBlock { [TANSS.Lookup]::Contracts.Values }
 Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.CostCenters" -ScriptBlock { [TANSS.Lookup]::CostCenters.Values }
@@ -15,3 +11,6 @@ Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.Tickets" -ScriptBlock { [
 Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.TicketStates" -ScriptBlock { [TANSS.Lookup]::TicketStates.Values }
 Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.TicketTypes" -ScriptBlock { [TANSS.Lookup]::TicketTypes.Values }
 Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.VacationAbsenceSubTypes" -ScriptBlock { [TANSS.Lookup]::VacationAbsenceSubTypes.Values }
+Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.CarNumberPlate" -ScriptBlock { [TANSS.Lookup]::CarNumberplate.Values }
+Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.SupportTypes" -ScriptBlock { [TANSS.Lookup]::SupportTypes.Values }
+Register-PSFTeppScriptblock -Name "PSTANSS.CacheLookup.NotChargedReasons" -ScriptBlock { [TANSS.Lookup]::NotChargedReasons.Values }

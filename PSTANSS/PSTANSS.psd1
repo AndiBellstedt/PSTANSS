@@ -40,18 +40,26 @@
 
     # Functions to export from this module
     FunctionsToExport  = @(
-        'Invoke-TANSSRequest',
+        # Core
         'Connect-TANSS',
-        'New-TANSSTicket',
+        'Invoke-TANSSRequest',
         'Get-TANSSRegisteredAccessToken',
         'Register-TANSSAccessToken',
         'Update-TANSSAccessToken',
+        'Find-TANSSObject',
+
+        # Ticket
+        'New-TANSSTicket',
         'Get-TANSSTicket',
         'Set-TANSSTicket',
         'Remove-TANSSTicket',
-        'Find-TANSSObject',
+        'Get-TANSSTicketContent',
+
+        # Employees
         'Get-TANSSTechnican',
         'New-TANSSEmployee',
+
+        # Vacation
         'Get-TANSSVacationAbsenceSubType',
         'Get-TANSSVacationRequest',
         'New-TANSSVacationRequest',
