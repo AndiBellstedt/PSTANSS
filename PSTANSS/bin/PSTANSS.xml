@@ -267,6 +267,82 @@
             
              </summary>
         </member>
+        <member name="T:TANSS.TicketActivity">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.TicketComment">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.TicketContent">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.TicketContent.TicketId">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.TicketContent.Id">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.TicketContent.Type">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.TicketContent.Date">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.TicketContent.Text">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.TicketContent.Object">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:TANSS.TicketContent.ToString">
+            <summary>
+            Overrides the default ToString() method
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:TANSS.TicketDocument">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.TicketDocument.Key">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:TANSS.TicketDocument.DownloadUri">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.TicketImage">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.TicketMail">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:TANSS.TicketPreview">
              <summary>
             

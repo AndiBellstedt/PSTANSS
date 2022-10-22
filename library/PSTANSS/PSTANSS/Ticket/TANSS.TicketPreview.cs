@@ -6,6 +6,7 @@ namespace TANSS {
     ///
     /// </summary>
     [Serializable]
-    public class Ticket : TANSS.Object {
+    public class TicketPreview : TANSS.Object {
     }
+
 }

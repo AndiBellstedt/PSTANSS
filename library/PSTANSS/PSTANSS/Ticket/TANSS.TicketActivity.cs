@@ -6,6 +6,6 @@ namespace TANSS {
     ///
     /// </summary>
     [Serializable]
-    public class Ticket : TANSS.Object {
+    public class TicketActivity : TANSS.Object {
     }
 }
