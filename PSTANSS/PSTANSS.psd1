@@ -60,6 +60,7 @@
         'Get-TANSSTicketImage',
         'Get-TANSSTicketMail',
         'New-TANSSTicketComment',
+        'Remove-TANSSTicketComment',
 
         # Employees
         'Get-TANSSTechnican',
