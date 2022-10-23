@@ -54,6 +54,11 @@
         'Set-TANSSTicket',
         'Remove-TANSSTicket',
         'Get-TANSSTicketContent',
+        'Get-TANSSTicketActivity',
+        'Get-TANSSTicketComment',
+        'Get-TANSSTicketDocument',
+        'Get-TANSSTicketImage',
+        'Get-TANSSTicketMail',
 
         # Employees
         'Get-TANSSTechnican',
