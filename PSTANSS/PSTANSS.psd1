@@ -59,6 +59,7 @@
         'Get-TANSSTicketDocument',
         'Get-TANSSTicketImage',
         'Get-TANSSTicketMail',
+        'New-TANSSTicketComment',
 
         # Employees
         'Get-TANSSTechnican',
