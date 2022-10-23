@@ -1524,28 +1524,28 @@
             </ScriptProperty>
 
             <ScriptProperty>
-                <Name>ApproachDuration</Name>
+                <Name>DurationApproach</Name>
                 <GetScriptBlock>
                     $this.BaseObject.durationApproach
                 </GetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
-                <Name>ApproachKM</Name>
+                <Name>KMApproach</Name>
                 <GetScriptBlock>
                     $this.BaseObject.kmApproach
                 </GetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
-                <Name>DepartureDuration</Name>
+                <Name>DurationDeparture</Name>
                 <GetScriptBlock>
                     $this.BaseObject.durationDeparture
                 </GetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
-                <Name>DepartureKM</Name>
+                <Name>KMDeparture</Name>
                 <GetScriptBlock>
                     $this.BaseObject.kmDeparture
                 </GetScriptBlock>
@@ -1664,7 +1664,7 @@
             </ScriptProperty>
 
             <ScriptProperty>
-                <Name>BreakDuration</Name>
+                <Name>DurationBreak</Name>
                 <GetScriptBlock>
                     $this.BaseObject.durationBreak
                 </GetScriptBlock>
