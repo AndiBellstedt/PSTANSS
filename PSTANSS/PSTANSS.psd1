@@ -47,6 +47,7 @@
         'Register-TANSSAccessToken',
         'Update-TANSSAccessToken',
         'Find-TANSSObject',
+        'Get-TANSSDepartment',
 
         # Ticket
         'New-TANSSTicket',

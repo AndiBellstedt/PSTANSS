@@ -151,6 +151,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:TANSS.Department">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:TANSS.Lookup">
             <summary>
             Hashtables for lookups of linked data
