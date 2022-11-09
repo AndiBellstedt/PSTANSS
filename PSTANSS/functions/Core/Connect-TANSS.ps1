@@ -162,18 +162,7 @@
             TimeStampModified = Get-Date
         }
 
-
-        if (-not $NoCacheInit) {
-            Write-PSFMessage -Level Verbose -Message "Start creating lookup cache from current tickets in TANSS" -Tag "Cache"
-
-            $tickets = @()
-            $tickets += Get-TANSSTicket -MyTickets -Token $token
-            $tickets += Get-TANSSTicket -NotAssigned -Token $token
-            $tickets += Get-TANSSTicket -AllTechnician -Token $token
-            Write-PSFMessage -Level Verbose -Message "Built cache from $($tickets.count) tickets" -Tag "Cache"
-
-            $null = Get-TANSSVacationAbsenceSubType -Token $token
-        }
+        if (-not $NoCacheRefresh) { Invoke-CacheRefresh -Token $token }
 
         if (-not $DoNotRegisterConnection) {
             # Make the connection the default connection for further commands

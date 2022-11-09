@@ -156,6 +156,11 @@
             
              </summary>
         </member>
+        <member name="T:TANSS.Holiday">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:TANSS.Lookup">
             <summary>
             Hashtables for lookups of linked data
@@ -277,7 +282,22 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:TANSS.Salutation">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:TANSS.Employee">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.EmployeeTitle">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.PeripheryType">
              <summary>
             
              </summary>
@@ -374,6 +394,16 @@
              </summary>
         </member>
         <member name="T:TANSS.TicketPreview">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.TicketStatus">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.TicketType">
              <summary>
             
              </summary>

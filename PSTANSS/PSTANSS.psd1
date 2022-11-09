@@ -3,7 +3,7 @@
     RootModule         = 'PSTANSS.psm1'
 
     # Version number of this module.
-    ModuleVersion      = '0.2.0'
+    ModuleVersion      = '0.3.0'
 
     # ID used to uniquely identify this module
     GUID               = '1fc30b15-bde9-49ba-8763-d3b5060a99cd'
@@ -62,6 +62,8 @@
         'Get-TANSSTicketMail',
         'New-TANSSTicketComment',
         'Remove-TANSSTicketComment',
+        'Get-TANSSTicketStatus',
+        'Get-TANSSTicketType',
 
         # Employees
         'Get-TANSSTechnican',

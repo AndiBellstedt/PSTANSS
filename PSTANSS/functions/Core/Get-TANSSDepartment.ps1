@@ -57,23 +57,21 @@
 
         Assert-CacheRunspaceRunning
 
-        $apiPath = "backend/api/v1/employees/departments"
         $apiPath = Format-ApiPath -Path "api/v1/employees/departments"
-        $deparments = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token | Select-Object -ExpandProperty content
+        $departments = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token | Select-Object -ExpandProperty content
 
         if ($IncludeEmployeeId) {
             Write-PSFMessage -Level Verbose -Message "IncludeEmployeeId switch is specified, going to ask for linked IDs" -Tag "Department", "IncludeEmployeeId"
 
-            $apiPath = "backend/api/v1/companies/departments?withEmployees=true"
             $apiPath = Format-ApiPath -Path "api/v1/companies/departments?withEmployees=true"
             $deparmentsWithEmployeeId = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token | Select-Object -ExpandProperty content
 
-            $deparments = foreach ($deparment in $deparments) {
-                [array]$_employeeIds = $deparmentsWithEmployeeId | Where-Object id -like $deparment.id | Select-Object -ExpandProperty employeeIds
+            $departments = foreach ($department in $departments) {
+                [array]$_employeeIds = $deparmentsWithEmployeeId | Where-Object id -like $department.id | Select-Object -ExpandProperty employeeIds
 
-                $deparment | Add-Member -MemberType NoteProperty -Name employeeIds -Value $_employeeIds
+                $department | Add-Member -MemberType NoteProperty -Name employeeIds -Value $_employeeIds
 
-                $deparment
+                $department
             }
             Remove-Variable -Name deparmentsWithEmployeeId, _employeeIds, deparment -Force -WhatIf:$false -Confirm:$false -Verbose:$false -Debug:$false -ErrorAction:Ignore -WarningAction:Ignore -InformationAction:Ignore
         }
@@ -88,18 +86,18 @@
         switch ($parameterSetName) {
             "ById" {
                 foreach ($item in $Id) {
-                    $filteredDepartments += $deparments | Where-Object id -eq $item
+                    $filteredDepartments += $departments | Where-Object id -eq $item
                 }
             }
 
             "ByName" {
                 foreach ($item in $Name) {
-                    $filteredDepartments += $deparments | Where-Object name -like $item
+                    $filteredDepartments += $departments | Where-Object name -like $item
                 }
             }
 
             "All" {
-                $filteredDepartments = $deparments
+                $filteredDepartments = $departments
             }
 
             Default {
@@ -112,25 +110,16 @@
         $filteredDepartments = $filteredDepartments | Sort-Object name, id -Unique
         Write-PSFMessage -Level Verbose -Message "Going to return $($filteredDepartments.count) departments" -Tag "Department", "Output"
 
-        foreach ($deparment in $filteredDepartments) {
-            Write-PSFMessage -Level System -Message "Working on department '$($deparment.name)' with id '$($deparment.id)'" -Tag "Department"
+        foreach ($department in $filteredDepartments) {
+            Write-PSFMessage -Level System -Message "Working on department '$($department.name)' with id '$($department.id)'" -Tag "Department"
 
             # put id and name to cache lookups
-            $name = "Departments"
-            if ([TANSS.Lookup]::$name[$deparment.id] -notlike $deparment.name) {
-                if ([TANSS.Lookup]::$name[$deparment.id]) {
-                    Write-PSFMessage -Level Debug -Message "Update existing id '$($deparment.id)' in [TANSS.Lookup]::$($name) with value '$($deparment.name)'" -Tag "Cache"
-                    [TANSS.Lookup]::$name[$deparment.id] = $deparment.name
-                } else {
-                    Write-PSFMessage -Level Debug -Message "Insert in [TANSS.Lookup]::$($name): $($deparment.id) - '$($($deparment.name))'" -Tag "Cache"
-                    ([TANSS.Lookup]::$name).Add($deparment.id, $deparment.name)
-                }
-            }
+            Update-CacheLookup -LookupName "Departments" -Id $department.Id -Name $department.Name
 
             # output result
             [TANSS.Department]@{
-                Baseobject = $deparment
-                Id = $deparment.id
+                Baseobject = $department
+                Id = $department.id
             }
         }
     }
