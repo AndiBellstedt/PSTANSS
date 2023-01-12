@@ -88,28 +88,30 @@
                     if ($Name) {
                         $filterSuccess = $false
                         foreach ($filterName in $Name) {
-                            if($technican.Name -like $filterName) {
+                            if ($technican.Name -like $filterName) {
                                 $filterSuccess = $true
                             }
                         }
                         # if filter does not hit, continue with next technican
-                        if($filterSuccess -eq $false) { continue }
+                        if ($filterSuccess -eq $false) { continue }
                     }
 
                     # Do filtering on id
                     if ($Id) {
                         $filterSuccess = $false
                         foreach ($filterId in $Id) {
-                            if([int]($technican.id) -eq $filterId) {
+                            if ([int]($technican.id) -eq $filterId) {
                                 $filterSuccess = $true
                             }
                         }
                         # if filter does not hit, continue with next technican
-                        if($filterSuccess -eq $false) { continue }
+                        if ($filterSuccess -eq $false) { continue }
                     }
 
                     Write-PSFMessage -Level Verbose -Message "Getting details of '$($technican.name)' (Id $($technican.id))" -Tag "Technican"
-                    $employee = Find-TANSSObject -Employee -Text $technican.name -CompanyId 100000 -Status All -GetCategories $true -Token $Token | Where-Object id -eq $technican.id
+                    $employee = Find-TANSSObject -Employee -Text $technican.name -Status All -GetCategories $true -Token $Token | Where-Object id -eq $technican.id
+                    #$employee = Find-TANSSObject -Employee -Text $technican.name -CompanyId 100000 -Status All -GetCategories $true -Token $Token | Where-Object id -eq $technican.id
+                    Write-PSFMessage -Level Debug -Message "Found '$($employee.Name)' with id $($employee.id)"
 
                     if ($employee) {
                         # Outputting TANSS.Employee
