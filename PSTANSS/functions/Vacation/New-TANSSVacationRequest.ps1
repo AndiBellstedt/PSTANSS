@@ -83,6 +83,14 @@
         [datetime]
         $EndDate,
 
+        [Alias("StartHalfDay")]
+        [bool]
+        $HalfDayStart = $false,
+
+        [Alias("EndHalfDay")]
+        [bool]
+        $HalfDayEnd = $false,
+
         [Alias("Reason", "RequestReason")]
         [string]
         $Description,
@@ -163,7 +171,18 @@
                 $plannedVactionRequest.BaseObject.planningAdditionalId = $AbsenceSubType.Id
             }
 
+            $days = $plannedVactionRequest.Days
+            if($HalfDayStart) { $days[0].Forenoon = $false }
+            if($HalfDayEnd) { $days[-1].Afternoon = $false }
+            $plannedVactionRequest.Days = $days
+            Remove-Variable -Name days -Force -WhatIf:$false -Confirm:$false -Verbose:$false -Debug:$false -ErrorAction Ignore -WarningAction Ignore -InformationAction Ignore
+
             $body = $plannedVactionRequest.BaseObject | ConvertTo-PSFHashtable
+            # enforce types, due to some strange conversation behaviour sometimes
+            $body.days = [array]$body.days
+            $body.startDate = [int]$body.startDate
+            $body.endDate = [int]$body.endDate
+
             $apiPath = Format-ApiPath -Path "api/v1/vacationRequests"
 
             $daycount = 0 + ($plannedVactionRequest.days | Measure-Object | Select-Object -ExpandProperty Count)
