@@ -6,8 +6,11 @@
     .DESCRIPTION
         Push meta information to runspace cache
 
+    .PARAMETER MetaData
+        The metadata PSCusomobject to push to Cache
+
     .EXAMPLE
-        Push-DataToCacheRunspace -MetaData $response.meta
+        PS C:\> Push-DataToCacheRunspace -MetaData $response.meta
 
         Push meta information to runspace cache
 

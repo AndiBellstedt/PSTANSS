@@ -13,9 +13,6 @@
     .PARAMETER DoNotRegisterConnection
         Do not register the connection as default connection
 
-    .PARAMETER Token
-        AccessToken object to register as default connection for TANSS
-
     .PARAMETER PassThru
         Outputs the new token to the console
 
@@ -26,7 +23,7 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        Update-TANSSAccessToken
+        PS C:\> Update-TANSSAccessToken
 
         Updates the AccessToken from the default connection and register it as new
         AccessToken on default Connection

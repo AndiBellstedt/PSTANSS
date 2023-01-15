@@ -34,7 +34,7 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        Connect-TANSS -Server "tanss.company.com" -Credential (Get-Credential "username")
+        PS C:\> Connect-TANSS -Server "tanss.company.com" -Credential (Get-Credential "username")
 
         Connects to "tanss.company.com" via HTTPS protocol and the specified credentials.
         Connection will be set as default connection for any further action.

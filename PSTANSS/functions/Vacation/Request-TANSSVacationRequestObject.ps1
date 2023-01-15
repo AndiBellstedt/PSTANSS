@@ -8,10 +8,12 @@
         This object can be used to create a new VacationRequest
 
     .PARAMETER Token
-        AccessToken object to register as default connection for TANSS
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        Verb-Noun
+        PS C:\> Verb-Noun
 
         Description
 

@@ -7,7 +7,9 @@
         Add a comment to a ticket
 
     .PARAMETER Token
-        AccessToken object to register as default connection for TANSS
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .PARAMETER PassThru
         Outputs the result to the console
@@ -19,7 +21,7 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        Verb-Noun
+        PS C:\> Verb-Noun
 
         Description
 

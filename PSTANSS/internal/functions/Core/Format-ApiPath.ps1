@@ -13,7 +13,7 @@
         A hashtable for all the parameters to the api route
 
     .EXAMPLE
-        Format-ApiPath -Path $ApiPath
+        PS C:\> Format-ApiPath -Path $ApiPath
 
         Api path data from variable $ApiPath will be tested and formatted.
 

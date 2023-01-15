@@ -10,7 +10,9 @@
         Process the removal quietly.
 
     .PARAMETER Token
-        AccessToken object to register as default connection for TANSS
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .PARAMETER WhatIf
         If this switch is enabled, no actions are performed but informational messages will be displayed that explain what would happen if the command were to run.
@@ -19,7 +21,7 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        Verb-Noun
+        PS C:\> Verb-Noun
 
         Description
 

@@ -6,8 +6,17 @@
     .DESCRIPTION
         Update a cache lookup hashtable with an object
 
+    .PARAMETER LookupName
+        Name of LokkupClass where to update
+
+    .PARAMETER Id
+        The Id to of the record to cache
+
+    .PARAMETER Name
+        The name of the record to cache
+
     .EXAMPLE
-        Update-CacheLookup -LookupName "Departments" -Id $department.Id -Name $department.Name
+        PS C:\> Update-CacheLookup -LookupName "Departments" -Id $department.Id -Name $department.Name
 
         Update or insert the key from variable $department.Id of the cache-lookup-hashtable [TANSS.Lookup]::Departments with the name $department.Name
 

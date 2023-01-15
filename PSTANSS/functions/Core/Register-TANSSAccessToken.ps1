@@ -10,9 +10,9 @@
         AccessToken object to register as default connection for TANSS
 
     .EXAMPLE
-        Register-TANSSAccessToken
+        PS C:\> Register-TANSSAccessToken -Token $Token
 
-        Retrieve the registered LoginToken for TANSS
+        Register the LoginToken from variable $Token as a default connection for TANSS
 
     .NOTES
         Author: Andreas Bellstedt

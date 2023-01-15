@@ -7,7 +7,7 @@
         Retrieve the registered LoginToken for default TANSS connection
 
     .EXAMPLE
-        Get-TANSSRegisteredAccessToken
+        PS C:\> Get-TANSSRegisteredAccessToken
 
         Retrieve the registered LoginToken for TANSS
 

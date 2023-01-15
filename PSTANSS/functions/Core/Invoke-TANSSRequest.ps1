@@ -22,7 +22,9 @@
         if a PDF should be queried, this switch must be specified
 
     .PARAMETER Token
-        The TANSS.Connection token
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .PARAMETER WhatIf
         If this switch is enabled, no actions are performed but informational messages will be displayed that explain what would happen if the command were to run.
@@ -31,9 +33,14 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        Invoke-TANSSRequest -Server $Server
+        PS C:\> Invoke-TANSSRequest -Type GET -ApiPath "api/v1/something"
 
-        Invoke a web request to API
+        Invoke a GET request to API with path api/v1/something by using the default registered token within the module
+
+    .EXAMPLE
+        PS C:\> Invoke-TANSSRequest -Type GET -ApiPath "api/v1/something" -Token $Token
+
+        Invoke a GET request to API with path api/v1/something by using the explicit token from the variale $Token
 
     .NOTES
         Author: Andreas Bellstedt

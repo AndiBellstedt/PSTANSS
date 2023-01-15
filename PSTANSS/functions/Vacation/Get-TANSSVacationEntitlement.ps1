@@ -7,7 +7,9 @@
         Description
 
     .PARAMETER Token
-        AccessToken object to register as default connection for TANSS
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
         PS C:\> Get-VacationEntitlement -Year 2022

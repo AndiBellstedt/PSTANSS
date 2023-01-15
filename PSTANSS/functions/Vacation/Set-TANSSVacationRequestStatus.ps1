@@ -7,7 +7,9 @@
         Approve or decline a vacation request within TANSS
 
     .PARAMETER Token
-        AccessToken object to register as default connection for TANSS
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .PARAMETER PassThru
         Outputs the result to the console
@@ -19,17 +21,17 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        Get-TANSSVacationRequest -Id 10 | Set-TANSSVacationRequestStatus -Status "Approve"
+        PS C:\> Get-TANSSVacationRequest -Id 10 | Set-TANSSVacationRequestStatus -Status "Approve"
 
         Approve the VacationRequest Id 10
 
     .EXAMPLE
-        Set-TANSSVacationRequestStatus -Id 10 -Status "Decline"
+        PS C:\> Set-TANSSVacationRequestStatus -Id 10 -Status "Decline"
 
         Decline the VacationRequest Id 10
 
     .EXAMPLE
-        $vacationRequests | Set-TANSSVacationRequestStatus -Status "Approve" -PassThru
+        PS C:\> $vacationRequests | Set-TANSSVacationRequestStatus -Status "Approve" -PassThru
 
         Approve all requests in variable '$vacationrequests' and output the (approved) VacationRequests on the console
 

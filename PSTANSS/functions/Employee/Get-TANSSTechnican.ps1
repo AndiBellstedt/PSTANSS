@@ -18,10 +18,12 @@
         If this parameter is given, also fetches the freelancers of this company
 
     .PARAMETER Token
-        The TANSS.Connection token
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        Get-TANSSTechnican
+        PS C:\> Get-TANSSTechnican
 
         Gets all technicians of this system
 
@@ -134,8 +136,6 @@
                     }
 
                     $employeeResponse = Invoke-TANSSRequest @invokeParam
-                    #$employee = Find-TANSSObject -Employee -Text $technican.name -Status All -GetCategories $true -Token $Token | Where-Object id -eq $technican.id
-                    #$employee = Find-TANSSObject -Employee -Text $technican.name -CompanyId 100000 -Status All -GetCategories $true -Token $Token | Where-Object id -eq $technican.id
 
                     if ($employeeResponse) {
                         Push-DataToCacheRunspace -MetaData $employeeResponse.meta

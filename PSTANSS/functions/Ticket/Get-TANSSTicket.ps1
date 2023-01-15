@@ -4,15 +4,57 @@
         Get-TANSSTicket
 
     .DESCRIPTION
-        Retrieve the registered LoginToken for default TANSS connection
+        Gat a ticket from TANSS service
+
+    .PARAMETER Id
+        The ticket Id (one or more) to query
+
+    .PARAMETER CompanyId
+        Get all tickets of company Id
+
+    .PARAMETER MyTickets
+        Get all tickets assigned to the authenticated account
+
+    .PARAMETER NotAssigned
+        Get all tickets not assigned to somebody
+
+    .PARAMETER AllTechnician
+        Get all tickets assigned to somebody
+
+    .PARAMETER RepairTickets
+        Get tickets marked as repair tickets
+
+    .PARAMETER NotIdentified
+        Get all unidentified tickets
+
+    .PARAMETER Projects
+        Get tickets marked as a project
+
+    .PARAMETER LocalTicketAdmin
+        Get all tickets specified for a ticket admin
+
+    .PARAMETER TicketWithTechnicanRole
+        Get all tickets with a technican role
 
     .PARAMETER Token
-        The TANSS.Connection token
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        Get-TANSSTicket
+        PS C:\> Get-TANSSTicket
 
-        Get tickets
+        Get all tickets assinged to the authenticated user
+
+    .EXAMPLE
+        PS C:\> Get-TANSSTicket -Id 100
+
+        Get ticket with Id 100
+
+    .EXAMPLE
+        PS C:\> Get-TANSSTicket -CompanyId 12345
+
+        Get all tickets of company Id 12345
 
     .NOTES
         Author: Andreas Bellstedt
@@ -21,7 +63,7 @@
         https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
-        DefaultParameterSetName = 'TicketId',
+        DefaultParameterSetName = 'MyTickets',
         SupportsShouldProcess = $false,
         ConfirmImpact = 'Low'
     )]
@@ -37,7 +79,7 @@
 
         [Parameter(
             Mandatory = $true,
-            ValueFromPipeline = $true,
+            ValueFromPipeline = $false,
             ValueFromPipelineByPropertyName = $true,
             ParameterSetName = "CompanyId"
         )]
@@ -46,7 +88,7 @@
 
 
         [Parameter(
-            Mandatory = $true,
+            Mandatory = $false,
             ParameterSetName = "MyTickets"
         )]
         [Alias("Own", "OwnTickets", "MyOwn", "NyOwnTickets")]
@@ -106,8 +148,6 @@
         [switch]
         $TicketWithTechnicanRole,
 
-
-
         [TANSS.Connection]
         $Token
     )
@@ -127,23 +167,15 @@
             "TicketId" {
                 # in case of "Query by Id" -> Do the query now
                 $response += foreach ($ticketId in $Id) {
-                    $apiPath = Format-ApiPath -Path "api/v1/tickets/$($ticketId)"
-                    Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token
+                    Invoke-TANSSRequest -Type GET -ApiPath "api/v1/tickets/$($ticketId)" -Token $Token
                 }
-
-                # Clear variable apiPath to indicate, that the query is already done
-                $apiPath = ""
             }
 
             "CompanyId" {
                 # in case of "Query by CompanyId" -> Do the query now
                 $response += foreach ($_companyId in $CompanyId) {
-                    $apiPath = Format-ApiPath -Path "api/v1/tickets/company/$($_companyId)"
-                    Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token
+                    Invoke-TANSSRequest -Type GET -ApiPath "api/v1/tickets/company/$($_companyId)" -Token $Token
                 }
-
-                # Clear variable apiPath to indicate, that the query is already done
-                $apiPath = ""
             }
 
             "MyTickets" {

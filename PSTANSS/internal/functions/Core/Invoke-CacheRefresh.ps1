@@ -10,7 +10,7 @@
         AccessToken object to register as default connection for TANSS
 
     .EXAMPLE
-        Invoke-CacheRefresh -Token $token
+        PS C:\> Invoke-CacheRefresh -Token $token
 
         Example
 

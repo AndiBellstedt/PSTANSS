@@ -7,7 +7,9 @@
         Decline a vacation request within TANSS
 
     .PARAMETER Token
-        AccessToken object to register as default connection for TANSS
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .PARAMETER PassThru
         Outputs the result to the console
@@ -19,17 +21,17 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        Get-TANSSVacationRequest -Id 10 | Deny-TANSSVacationRequest
+        PS C:\> Get-TANSSVacationRequest -Id 10 | Deny-TANSSVacationRequest
 
         Decline the VacationRequest Id 10
 
     .EXAMPLE
-        Deny-TANSSVacationRequest -Id 10
+        PS C:\> Deny-TANSSVacationRequest -Id 10
 
         Decline the VacationRequest Id 10
 
     .EXAMPLE
-        $vacationRequests | Deny-TANSSVacationRequest -PassThru
+        PS C:\> $vacationRequests | Deny-TANSSVacationRequest -PassThru
 
         Decline all requests in variable '$vacationrequests' and output the new (declined) VacationRequests on the console
 

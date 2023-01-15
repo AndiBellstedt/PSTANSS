@@ -10,7 +10,9 @@
         Process the removal quietly.
 
     .PARAMETER Token
-        AccessToken object to register as default connection for TANSS
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .PARAMETER WhatIf
         If this switch is enabled, no actions are performed but informational messages will be displayed that explain what would happen if the command were to run.
@@ -19,12 +21,12 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        Get-TANSSVacationRequest -Id 10 | Remove-TANSSVacationRequest
+        PS C:\> Get-TANSSVacationRequest -Id 10 | Remove-TANSSVacationRequest
 
         Remove the VacationRequest Id 10
 
     .EXAMPLE
-        Remove-TANSSVacationRequest -Id 10 -Force
+        PS C:\> Remove-TANSSVacationRequest -Id 10 -Force
 
         Remove the VacationRequest Id 10 without asking for confirmation
 

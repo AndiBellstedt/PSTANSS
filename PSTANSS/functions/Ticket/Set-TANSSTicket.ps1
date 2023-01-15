@@ -7,7 +7,9 @@
         Modify a ticket in TANSS
 
     .PARAMETER Token
-        The TANSS.Connection token
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .PARAMETER PassThru
         Outputs the token to the console, even when the register switch is set
@@ -19,7 +21,7 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        Set-TANSSTicket -ID 10 -NewTitle "New ticket title"
+        PS C:\> Set-TANSSTicket -ID 10 -NewTitle "New ticket title"
 
         Update title to "New ticket title" of ticket with ticketID 10
 

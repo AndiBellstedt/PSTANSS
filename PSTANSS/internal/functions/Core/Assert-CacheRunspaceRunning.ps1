@@ -7,7 +7,7 @@
         Check cache validation runspace on status
 
     .EXAMPLE
-        Assert-CacheRunspaceRunning
+        PS C:\> Assert-CacheRunspaceRunning
 
         Check cache validation runspace on status
 

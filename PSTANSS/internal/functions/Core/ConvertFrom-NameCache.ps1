@@ -16,7 +16,7 @@
         Lookup type where the name should convert from
 
     .EXAMPLE
-        ConvertFrom-NameCache -Name "User X" -Type "Employee"
+        PS C:\> ConvertFrom-NameCache -Name "User X" -Type "Employee"
 
         Example
 

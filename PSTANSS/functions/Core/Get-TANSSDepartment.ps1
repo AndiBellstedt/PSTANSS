@@ -4,15 +4,26 @@
         Get-TANSSDepartment
 
     .DESCRIPTION
-        Get department from tanss
+        Get department from TANSS
+
+    .PARAMETER Id
+        Id of the department to get
+
+    .PARAMETER Name
+        Name of the department to get
+
+    .PARAMETER IncludeEmployeeId
+        Include assigned employees
 
     .PARAMETER Token
-        AccessToken object to register as default connection for TANSS
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        Verb-Noun
+        PS C:\> Get-TANSSDepartment
 
-        Description
+        Get departments from TANSS
 
     .NOTES
         Author: Andreas Bellstedt
@@ -57,14 +68,10 @@
 
         Assert-CacheRunspaceRunning
 
-        $apiPath = Format-ApiPath -Path "api/v1/employees/departments"
-        $departments = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token | Select-Object -ExpandProperty content
-
         if ($IncludeEmployeeId) {
             Write-PSFMessage -Level Verbose -Message "IncludeEmployeeId switch is specified, going to ask for linked IDs" -Tag "Department", "IncludeEmployeeId"
 
-            $apiPath = Format-ApiPath -Path "api/v1/companies/departments?withEmployees=true"
-            $deparmentsWithEmployeeId = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token | Select-Object -ExpandProperty content
+            $deparmentsWithEmployeeId = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/companies/departments?withEmployees=true" -Token $Token | Select-Object -ExpandProperty content
 
             $departments = foreach ($department in $departments) {
                 [array]$_employeeIds = $deparmentsWithEmployeeId | Where-Object id -like $department.id | Select-Object -ExpandProperty employeeIds
@@ -74,6 +81,8 @@
                 $department
             }
             Remove-Variable -Name deparmentsWithEmployeeId, _employeeIds, deparment -Force -WhatIf:$false -Confirm:$false -Verbose:$false -Debug:$false -ErrorAction:Ignore -WarningAction:Ignore -InformationAction:Ignore
+        } else {
+            $departments = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/employees/departments" -Token $Token | Select-Object -ExpandProperty content
         }
 
         [array]$filteredDepartments = @()

@@ -7,21 +7,34 @@
         Description
 
     .PARAMETER Token
-        AccessToken object to register as default connection for TANSS
+        The TANSS.Connection token to access api
 
-    .PARAMETER PassThru
-        Outputs the result to the console
-
-    .PARAMETER WhatIf
-        If this switch is enabled, no actions are performed but informational messages will be displayed that explain what would happen if the command were to run.
-
-    .PARAMETER Confirm
-        If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
+        If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Get-TANSSEmployee
+        PS C:\> Get-TANSSEmployee -EmployeeId 2
 
-        Description
+        Get the employee with ID 2 (usually the first employee created in TANSS)
+
+    .EXAMPLE
+        PS C:\> $employee | Get-TANSSEmployee
+
+        Query the employee from variable $employee again
+
+    .EXAMPLE
+        PS C:\> Get-TANSSEmployee -CompanyId 100000
+
+        Get all employees from company ID 100000 (your own company)
+
+    .EXAMPLE
+        PS C:\> $company | Get-TANSSEmployee
+
+        Get all employees from company $company
+
+    .EXAMPLE
+        PS C:\> Get-TANSSEmployee -CompanyName "Company X"
+
+        Get all employees from "Company X"
 
     .NOTES
         Author: Andreas Bellstedt
@@ -73,6 +86,15 @@
         [tanss.company]
         $Company,
 
+        [Parameter(
+            ParameterSetName = "Company_UserFriendlyByName",
+            ValueFromPipelineByPropertyName = $true,
+            ValueFromPipeline = $true,
+            Mandatory = $true
+        )]
+        [string[]]
+        $CompanyName,
+
         [TANSS.Connection]
         $Token
     )
@@ -90,18 +112,23 @@
         switch ($parameterSetName) {
             "Employee_UserFriendly" { $EmployeeId = $Employee.Id }
             "Company_UserFriendly" { $CompanyId = $Company.Id }
+            "Company_UserFriendlyByName" {
+                $CompanyId = foreach ($_name in $CompanyName) {
+                    Find-TANSSObject -Company -Text $_name -Token $Token -ShowLocked | Where-Object name -like $_name | Select-Object -ExpandProperty Id
+                }
+            }
         }
 
         switch ($parameterSetName) {
             { $_ -like "Employee_*" } {
                 Write-PSFMessage -Level System -Message "Query personal employee record. $(([array]$EmployeeId).count) record(s)"
 
-                foreach($id in $EmployeeId) {
+                foreach ($id in $EmployeeId) {
                     Write-PSFMessage -Level Verbose -Message "Working on employee id $($id)"
 
                     $response = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/employees/$($id)" -Token $Token
 
-                    if($response.meta.text -like "Object found") {
+                    if ($response.meta.text -like "Object found") {
 
                         # Cache refresh
                         Push-DataToCacheRunspace -MetaData $response.meta
@@ -109,7 +136,7 @@
                         Write-PSFMessage -Level Verbose -Message "Output employee $($response.content.name)"
                         $output = [TANSS.Employee]@{
                             BaseObject = $response.content
-                            Id = $response.content.id
+                            Id         = $response.content.id
                         }
 
                         # ToDo: Filtering - add parameters (Isactive, FilterName, )
@@ -127,22 +154,22 @@
             { $_ -like "Company_*" } {
                 Write-PSFMessage -Level System -Message "Query corporate employee record. $(([array]$CompanyId).count) record(s)"
 
-                foreach($id in $CompanyId) {
+                foreach ($id in $CompanyId) {
                     Write-PSFMessage -Level Verbose -Message "Query employee(s) for company id $($id)"
 
                     $response = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/companies/$($id)/employees" -Token $Token
 
-                    if($response.meta.text -like "Object found") {
+                    if ($response.meta.text -like "Object found") {
 
                         # Cache refresh
                         Push-DataToCacheRunspace -MetaData $response.meta
 
-                        foreach($responseItem in $response.content) {
+                        foreach ($responseItem in $response.content) {
 
                             Write-PSFMessage -Level Verbose -Message "Output corporate employee $($responseItem.name)"
                             $output = [TANSS.Employee]@{
                                 BaseObject = $responseItem
-                                Id = $responseItem.id
+                                Id         = $responseItem.id
                             }
 
                             # ToDo: Filtering - add parameters (Isactive, FilterName, )
