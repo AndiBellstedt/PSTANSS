@@ -984,7 +984,7 @@
             </ScriptProperty>
 
             <ScriptProperty>
-                <Name>Telephone</Name>
+                <Name>Phone</Name>
                 <GetScriptBlock>
                     $this.BaseObject.telephoneNumber
                 </GetScriptBlock>
@@ -994,7 +994,7 @@
             </ScriptProperty>
 
             <ScriptProperty>
-                <Name>Telephone2</Name>
+                <Name>Phone2</Name>
                 <GetScriptBlock>
                     $this.BaseObject.telephoneNumberTwo
                 </GetScriptBlock>
@@ -1155,6 +1155,21 @@
                     }
                 </GetScriptBlock>
             </ScriptProperty>
+
+            <AliasProperty>
+                <Name>Fullname</Name>
+                <ReferencedMemberName>Name</ReferencedMemberName>
+            </AliasProperty>
+
+            <AliasProperty>
+                <Name>GivenName</Name>
+                <ReferencedMemberName>Firstname</ReferencedMemberName>
+            </AliasProperty>
+
+            <AliasProperty>
+                <Name>Surname</Name>
+                <ReferencedMemberName>Lastname</ReferencedMemberName>
+            </AliasProperty>
 
             <CodeProperty IsHidden="true">
                 <Name>SerializationData</Name>
