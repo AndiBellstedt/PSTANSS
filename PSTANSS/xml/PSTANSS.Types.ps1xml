@@ -647,9 +647,9 @@
     </Type>
 
 
-    <!-- TANSS.Employee -->
+    <!-- TANSS.EmployeeSearched -->
     <Type>
-        <Name>Deserialized.TANSS.Employee</Name>
+        <Name>Deserialized.TANSS.EmployeeSearched</Name>
         <Members>
             <MemberSet>
                 <Name>PSStandardMembers</Name>
@@ -659,7 +659,7 @@
                             TargetTypeForDeserialization
                         </Name>
                         <Value>
-                            TANSS.Employee
+                            TANSS.EmployeeSearched
                         </Value>
                     </NoteProperty>
                 </Members>
@@ -667,49 +667,56 @@
         </Members>
     </Type>
     <Type>
-        <Name>TANSS.Employee</Name>
+        <Name>TANSS.EmployeeSearched</Name>
         <Members>
             <ScriptProperty>
                 <Name>Name</Name>
                 <GetScriptBlock>
                     $this.BaseObject.name
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.name = $args[0]
+                </SetScriptBlock>
             </ScriptProperty>
-
-            <AliasProperty>
-                <Name>Fullname</Name>
-                <ReferencedMemberName>Name</ReferencedMemberName>
-            </AliasProperty>
 
             <ScriptProperty>
                 <Name>Firstname</Name>
                 <GetScriptBlock>
                     $this.BaseObject.firstname
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.firstName = $args[0]
+                </SetScriptBlock>
             </ScriptProperty>
-
-            <AliasProperty>
-                <Name>GivenName</Name>
-                <ReferencedMemberName>Firstname</ReferencedMemberName>
-            </AliasProperty>
 
             <ScriptProperty>
                 <Name>Lastname</Name>
                 <GetScriptBlock>
                     $this.BaseObject.lastname
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.lastName = $args[0]
+                </SetScriptBlock>
             </ScriptProperty>
 
-            <AliasProperty>
-                <Name>Surname</Name>
-                <ReferencedMemberName>Lastname</ReferencedMemberName>
-            </AliasProperty>
+            <ScriptProperty>
+                <Name>Salutationid</Name>
+                <GetScriptBlock>
+                    [int]::Parse( $this.BaseObject.salutationId )
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.salutationId = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
 
             <ScriptProperty>
-                <Name>DepartmentId</Name>
+                <Name>Departmentid</Name>
                 <GetScriptBlock>
-                    $this.BaseObject.departmentId
+                    [int]::Parse( $this.BaseObject.departmentId )
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.departmentId = $args[0]
+                </SetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
@@ -724,6 +731,9 @@
                 <GetScriptBlock>
                     $this.BaseObject.role
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.role = $args[0]
+                </SetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
@@ -731,6 +741,9 @@
                 <GetScriptBlock>
                     $this.BaseObject.phoneNr
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.phoneNr = $args[0]
+                </SetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
@@ -738,6 +751,9 @@
                 <GetScriptBlock>
                     $this.BaseObject.phoneNr2
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.phoneNr2 = $args[0]
+                </SetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
@@ -745,6 +761,9 @@
                 <GetScriptBlock>
                     $this.BaseObject.email
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.email = $args[0]
+                </SetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
@@ -752,6 +771,9 @@
                 <GetScriptBlock>
                     $this.BaseObject.mobileNr
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.mobileNr = $args[0]
+                </SetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
@@ -759,6 +781,9 @@
                 <GetScriptBlock>
                     $this.BaseObject.mobileNr2
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.mobileNr2 = $args[0]
+                </SetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
@@ -766,6 +791,9 @@
                 <GetScriptBlock>
                     $this.BaseObject.privateNr
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.privateNr = $args[0]
+                </SetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
@@ -773,6 +801,9 @@
                 <GetScriptBlock>
                     [bool]::Parse( $this.BaseObject.active )
                 </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.active = "$($args[0])"
+                </SetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
@@ -807,6 +838,21 @@
                 </GetScriptBlock>
             </ScriptProperty>
 
+            <AliasProperty>
+                <Name>Fullname</Name>
+                <ReferencedMemberName>Name</ReferencedMemberName>
+            </AliasProperty>
+
+            <AliasProperty>
+                <Name>GivenName</Name>
+                <ReferencedMemberName>Firstname</ReferencedMemberName>
+            </AliasProperty>
+
+            <AliasProperty>
+                <Name>Surname</Name>
+                <ReferencedMemberName>Lastname</ReferencedMemberName>
+            </AliasProperty>
+
             <CodeProperty IsHidden="true">
                 <Name>SerializationData</Name>
                 <GetCodeReference>
@@ -819,6 +865,310 @@
             <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
         </TypeConverter>
     </Type>
+
+
+    <!-- TANSS.Employee -->
+    <Type>
+        <Name>Deserialized.TANSS.Employee</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.Employee
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.Employee</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>Name</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.name
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.name = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Firstname</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.firstName
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.firstName = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Lastname</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.lastName
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.lastName = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>SalutationId</Name>
+                <GetScriptBlock>
+                    [int]::Parse( $this.BaseObject.salutationId )
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.salutationId = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>DepartmentId</Name>
+                <GetScriptBlock>
+                    [int]::Parse( $this.BaseObject.departmentId )
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.departmentId = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Department</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Departments["$($this.BaseObject.departmentId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Room</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.room
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.room = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EmailAddress</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.emailAddress
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.emailAddress = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CarId</Name>
+                <GetScriptBlock>
+                    [int]::Parse( $this.BaseObject.carId )
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.carId = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CarPlate</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::CarNumberplate["$($this.BaseObject.carId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Telephone</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.telephoneNumber
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.telephoneNumber = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Telephone2</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.telephoneNumberTwo
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.telephoneNumberTwo = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Mobile</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.mobilePhone
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.mobilePhone = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Mobile2</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.mobileNumberTwo
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.mobileNumberTwo = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>PersonalFAX</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.personalFaxNumber
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.personalFaxNumber = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>PrivatePhone</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.privatePhoneNumber
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.privatePhoneNumber = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Initials</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.initials
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.initials = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>WorkingHourModelId</Name>
+                <GetScriptBlock>
+                    [int]::Parse( $this.BaseObject.workingHourModelId )
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.workingHourModelId = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>AccountingTypeId</Name>
+                <GetScriptBlock>
+                    [int]::Parse( $this.BaseObject.accountingTypeId )
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.accountingTypeId = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>IsActive</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.active )
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.active = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Remark</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.remark
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.remark = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Role</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.role
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.role = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>TitleId</Name>
+                <GetScriptBlock>
+                    [int]::Parse( $this.BaseObject.titleId )
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.titleId = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Language</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.language
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.language = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Birthday</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.birthday
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.birthday = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CompanyAssignment</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.companyAssignments
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>CompanyId</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.companyAssignments.companyId
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Company</Name>
+                <GetScriptBlock>
+                    foreach($item in $this.BaseObject.companyAssignments.companyId) {
+                        [TANSS.Lookup]::Companies["$($item)"]
+                    }
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
 
 
     <!-- TANSS.Vacation.AbsenceSubType -->

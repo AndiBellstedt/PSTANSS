@@ -45,6 +45,9 @@
         [int[]]
         $FreelancerCompanyId,
 
+        [switch]
+        $ExcludeRestrictedLicenseUser,
+
         [TANSS.Connection]
         $Token
     )
@@ -60,21 +63,28 @@
         $response = @()
 
         $response += foreach ($companyId in $FreelancerCompanyId) {
+            $queryParameter = @{}
+
+            if($MyInvocation.BoundParameters['ExcludeRestrictedLicenseUser'] -and $ExcludeRestrictedLicenseUser) {
+                $queryParameter.Add("restrictedLicenses", $false)
+            } else {
+                $queryParameter.Add("restrictedLicenses", $true)
+            }
+
             if ($companyId -ne 0) {
                 Write-PSFMessage -Level System -Message "FreelancerCompanyId specified, compiling body to query freelancers of company '$($companyId)'" -Tag "Technican", "Freelancer"
-                $body = @{
-                    "FreelancerCompanyId" = $companyId
-                }
+                $queryParameter.Add("FreelancerCompanyId", $companyId)
             }
 
             $invokeParam = @{
                 "Type"    = "GET"
-                "ApiPath" = $apiPath
+                "ApiPath" = (Format-ApiPath -Path $apiPath -QueryParameter $queryParameter)
                 "Token"   = $Token
             }
-            if ($body) { $invokeParam.Add("Body", $body) }
 
             Invoke-TANSSRequest @invokeParam
+
+            Remove-Variable -Name queryParameter, invokeParam -Force -WhatIf:$false -Confirm:$false -Verbose:$false -Debug:$false -ErrorAction Ignore -WarningAction Ignore -InformationAction Ignore
         }
 
 
@@ -82,43 +92,65 @@
             Write-PSFMessage -Level Verbose -Message "Found $(($response.content).count) technicans" -Tag "Technican"
 
             foreach ($responseItem in $response) {
+
                 # Output result
                 foreach ($technican in $responseItem.content) {
+
                     # Do filtering on name
-                    if ($Name) {
+                    if ($MyInvocation.BoundParameters['Name'] -and $Name) {
                         $filterSuccess = $false
                         foreach ($filterName in $Name) {
                             if ($technican.Name -like $filterName) {
                                 $filterSuccess = $true
                             }
                         }
+
                         # if filter does not hit, continue with next technican
                         if ($filterSuccess -eq $false) { continue }
                     }
 
+
                     # Do filtering on id
-                    if ($Id) {
+                    if ($MyInvocation.BoundParameters['Id'] -and $Id) {
                         $filterSuccess = $false
                         foreach ($filterId in $Id) {
                             if ([int]($technican.id) -eq $filterId) {
                                 $filterSuccess = $true
                             }
                         }
+
                         # if filter does not hit, continue with next technican
                         if ($filterSuccess -eq $false) { continue }
                     }
 
+
+                    # Query details
                     Write-PSFMessage -Level Verbose -Message "Getting details of '$($technican.name)' (Id $($technican.id))" -Tag "Technican"
-                    $employee = Find-TANSSObject -Employee -Text $technican.name -Status All -GetCategories $true -Token $Token | Where-Object id -eq $technican.id
+
+                    $invokeParam = @{
+                        "Type"    = "GET"
+                        "ApiPath" = (Format-ApiPath -Path "api/v1/employees/$($technican.id)")
+                        "Token"   = $Token
+                    }
+
+                    $employeeResponse = Invoke-TANSSRequest @invokeParam
+                    #$employee = Find-TANSSObject -Employee -Text $technican.name -Status All -GetCategories $true -Token $Token | Where-Object id -eq $technican.id
                     #$employee = Find-TANSSObject -Employee -Text $technican.name -CompanyId 100000 -Status All -GetCategories $true -Token $Token | Where-Object id -eq $technican.id
-                    Write-PSFMessage -Level Debug -Message "Found '$($employee.Name)' with id $($employee.id)"
 
-                    if ($employee) {
-                        # Outputting TANSS.Employee
-                        $employee
+                    if ($employeeResponse) {
+                        Push-DataToCacheRunspace -MetaData $employeeResponse.meta
 
+                        foreach ($employeeItem in $employeeResponse.content) {
+                            Write-PSFMessage -Level Debug -Message "Found '$($employeeItem.Name)' with id $($employeeItem.id)"
+
+                            # Output data
+                            [TANSS.Employee]@{
+                                BaseObject = $employeeItem
+                                Id         = $employeeItem.id
+                            }
+                        }
                     } else {
-                        Stop-PSFFunction -Message "Unexpected error searching '$($technican.name)' with ID '$($technican.id)'. TANSS is unable to find details of employee" -EnableException $true -Cmdlet $pscmdlet
+                        Stop-PSFFunction -Message "Unexpected error searching '$($employeeResponse.content.name)' with ID '$($technican.id)'. TANSS is unable to find details of employee" -EnableException $true -Cmdlet $pscmdlet
                     }
                 }
             }

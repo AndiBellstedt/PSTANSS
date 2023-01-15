@@ -216,6 +216,7 @@
         </View>
 
 
+
         <!-- TANSS.TicketPreview -->
         <View>
             <Name>TANSS.TicketPreview_Table</Name>
@@ -297,6 +298,7 @@
                 </ListEntries>
             </ListControl>
         </View>
+
 
 
         <!-- TANSS.Company -->
@@ -445,11 +447,12 @@
         </View>
 
 
-        <!-- TANSS.Employee -->
+
+        <!-- TANSS.EmployeeSearched -->
         <View>
-            <Name>TANSS.Employee_Table</Name>
+            <Name>TANSS.EmployeeSearched_Table</Name>
             <ViewSelectedBy>
-                <TypeName>TANSS.Employee</TypeName>
+                <TypeName>TANSS.EmployeeSearched</TypeName>
             </ViewSelectedBy>
             <TableControl>
                 <AutoSize/>
@@ -528,9 +531,9 @@
             </TableControl>
         </View>
         <View>
-            <Name>TANSS.Employee_List</Name>
+            <Name>TANSS.EmployeeSearched_List</Name>
             <ViewSelectedBy>
-                <TypeName>TANSS.Employee</TypeName>
+                <TypeName>TANSS.EmployeeSearched</TypeName>
             </ViewSelectedBy>
             <ListControl>
                 <ListEntries>
@@ -591,6 +594,238 @@
         </View>
 
 
+
+        <!-- TANSS.Employee -->
+        <View>
+            <Name>Table_TANSS.Employee</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Employee</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize />
+                <TableHeaders>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                    <TableColumnHeader></TableColumnHeader>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Id</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>IsActive</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Name</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>CompanyId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Company</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Firstname</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Lastname</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Initials</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>SalutationId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Department</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Room</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EmailAddress</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Telephone</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Telephone2</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Mobile</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Mobile2</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>PersonalFAX</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>PrivatePhone</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Remark</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Role</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Language</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Birthday</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>TitleId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>CarPlate</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>WorkingHourModelId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>AccountingTypeId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>DepartmentId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>CarId</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+        <View>
+            <Name>List_TANSS.Employee</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.Employee</TypeName>
+            </ViewSelectedBy>
+            <ListControl>
+                <ListEntries>
+                    <ListEntry>
+                        <ListItems>
+                            <ListItem>
+                                <PropertyName>Id</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>IsActive</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Name</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>CompanyId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Company</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Firstname</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Lastname</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Initials</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>SalutationId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>DepartmentId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Department</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Room</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>EmailAddress</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Telephone</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Telephone2</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Mobile</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Mobile2</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>PersonalFAX</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>PrivatePhone</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Remark</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Role</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Language</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Birthday</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>TitleId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>CarId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>CarPlate</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>WorkingHourModelId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>AccountingTypeId</PropertyName>
+                            </ListItem>
+                        </ListItems>
+                    </ListEntry>
+                </ListEntries>
+            </ListControl>
+        </View>
+
+
+
         <!-- TANSS.Vacation.AbsenceSubType -->
         <View>
             <Name>TANSS.Vacation.AbsenceSubType_Table</Name>
@@ -644,6 +879,7 @@
                 </ListEntries>
             </ListControl>
         </View>
+
 
 
         <!-- TANSS.Vacation.Day -->
@@ -740,7 +976,6 @@
                 </ListEntries>
             </ListControl>
         </View>
-
 
 
 
