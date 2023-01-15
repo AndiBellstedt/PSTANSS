@@ -12,6 +12,9 @@
     .PARAMETER ApiPath
         Uri path for the REST call in the API
 
+    .PARAMETER QueryParameter
+        A hashtable for all the parameters to the api route
+
     .PARAMETER Body
         The body as a hashtable for the request
 
@@ -55,7 +58,13 @@
         $ApiPath,
 
         [hashtable]
+        $QueryParameter,
+
+        [hashtable]
         $Body,
+
+        [hashtable]
+        $AdditionalHeader,
 
         [switch]
         $Pdf,
@@ -65,22 +74,39 @@
     )
 
     begin {
-        if(-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
-        $ApiPath = Format-ApiPath -Path $ApiPath
     }
 
     process {
+    }
+
+    end {
+        if(-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
+
+        $ApiPath = Format-ApiPath -Path $ApiPath -QueryParameter $QueryParameter
+
+        # Body
         if ($Body) {
             $bodyData = $Body | ConvertTo-Json
         } else {
             $bodyData = $null
         }
 
+
+        # Header
         $header = @{
             "apiToken" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Token.AccessToken))
         }
+
         if($Pdf) { $header.Add("Accept","pdf") }
 
+        if ($MyInvocation.BoundParameters['AdditionalHeader'] -and $AdditionalHeader) {
+            foreach ($key in $AdditionalHeader.Keys) {
+                $header.Add($key, $AdditionalHeader[$key])
+            }
+        }
+
+
+        # Invoke request
         $param = @{
             "Uri"           = "$($Token.Server)/$($ApiPath)"
             "Headers"       = $header
@@ -99,22 +125,22 @@
             try {
                 $response = Invoke-RestMethod @param
                 Write-PSFMessage -Level System -Message "API Response: $($response.meta.text)"
-
-                $response
-                <#
-                $output = $response.content
-                foreach($name in ($response.psobject.Properties.name | where { $_ -notlike "content" })) {
-                    $output | Add-Member -MemberType NoteProperty -Name $name -Value $response.$name -Force
-                }
-                $output
-                #>
             } catch {
-                $response = $invokeError.Message | ConvertFrom-Json
-                Write-PSFMessage -Level Error -Message "$($response.Error.text) - $($response.Error.localizedText)" -Exception $response.Error.type -Tag "REST call $($Type)"
-            }
-        }
-    }
+                if($invokeError[0].Message.StartsWith("{")) {
+                    $response = $invokeError[0].Message | ConvertFrom-Json -ErrorAction SilentlyContinue
+                }
 
-    end {
+                if($response) {
+                    Write-PSFMessage -Level Error -Message "$($response.Error.text) - $($response.Error.localizedText)" -Exception $response.Error.type -Tag "REST call $($Type)"
+                } else {
+                    Write-PSFMessage -Level Error -Message "$($invokeError[0].Source) ($($invokeError[0].HResult)): $($invokeError[0].Message)" -Exception $invokeError[0].InnerException -Tag "REST call $($Type)" -ErrorRecord $invokeError[0].ErrorRecord
+                }
+
+                return
+            }
+
+            # Output
+            $response
+        }
     }
 }
