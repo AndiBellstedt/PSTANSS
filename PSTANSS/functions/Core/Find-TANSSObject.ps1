@@ -234,7 +234,7 @@
 
                         foreach ($employeeItem in $response.content.employees) {
                             # Output data
-                            [TANSS.Employee]@{
+                            [TANSS.EmployeeSearched]@{
                                 BaseObject = $employeeItem
                                 Id         = $employeeItem.id
                             }
