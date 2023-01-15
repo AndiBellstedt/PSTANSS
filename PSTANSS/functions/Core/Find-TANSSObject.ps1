@@ -5,16 +5,85 @@
 
     .DESCRIPTION
         Find a object via global search in TANSS
+        The search has to be initiated on one of three areas. (Company, Employees, Tickets)
+
+    .PARAMETER Company
+        Initiate a search in the company area of TANSS
+
+    .PARAMETER Employee
+        Initiate a search within the employee/person database of TANSS
+
+    .PARAMETER TicketPreview
+        Initiate a search in the tickets of TANSS
+
+    .PARAMETER Text
+        The Text (id or name) to seach for
+
+    .PARAMETER ShowInactive
+        Search company records that are marked as inactive
+        By default, only companies that are marked as "active"
+
+        This is bound to company search only
+
+    .PARAMETER ShowLocked
+        Search company records that are marked as locked
+        By default, only companies that are marked as "Unlocked"
+
+        This is bound to company search only
+
+    .PARAMETER CompanyId
+        Return tickets or employees of the specified company id
+
+        This is bound to ticket- and employee-search only
+
+    .PARAMETER CompanyName
+        Return tickets or employees of the specified company name
+
+        This is bound to ticket- and employee-search only
+
+    .PARAMETER Status
+        Return "All", only "Active" or only "Inactive" employees.
+
+    .PARAMETER GetCategories
+        If true, categories will be fetches as well.
+        The names are given in the "linked entities"-"employeeCategories"
+
+        Default is $false
+
+    .PARAMETER GetCallbacks
+        If true, expected callbacks will be fetched as well
+
+        Default is $false
+
+    .PARAMETER PreviewContentMaxChars
+        If defined, it overrides the to preview the content
+
+        Default values within the api is 60
 
     .PARAMETER ResultSize
         The amount of objects the query will return
         To avoid long waitings while query a large number of items, the api
         by default only query an amount of 100 items within one call
 
+    .PARAMETER Token
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
+
     .EXAMPLE
-        Find-TANSSObject -Company -Text "Customer X"
+        PS C:\> Find-TANSSObject -Company -Text "Customer X"
 
         Search for "Customer X" within all company data
+
+    .EXAMPLE
+        PS C:\> Find-TANSSObject -TicketPreview -Text "Issue Y"
+
+        Search for "Issue Y" within all tickets
+
+    .EXAMPLE
+        PS C:\> "Mister T" | Find-TANSSObject -Employee
+
+        Search "Mister T" in the employee records of all companies
 
     .NOTES
         Author: Andreas Bellstedt
@@ -29,25 +98,21 @@
         ConfirmImpact = 'Low'
     )]
     Param(
-        # Specify to search for company data
         [Parameter(ParameterSetName = "Company")]
         [switch]
         $Company,
 
-        # Specify to search for company data
         [Parameter(ParameterSetName = "Employee-UserFriendly")]
         [Parameter(ParameterSetName = "Employee-ApiNative")]
         [switch]
         $Employee,
 
-        # Specify to search for company data
         [Parameter(ParameterSetName = "Ticket-UserFriendly")]
         [Parameter(ParameterSetName = "Ticket-ApiNative")]
         [Alias("Ticket")]
         [switch]
         $TicketPreview,
 
-        # Text to search for
         [Parameter(ParameterSetName = "Company", Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "Employee-UserFriendly", Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "Employee-ApiNative", Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
@@ -57,54 +122,40 @@
         [string[]]
         $Text,
 
-        # By default, only companies that are marked as "active"
-        # If this switch is specified, inactive companies are also outputted
         [Parameter(ParameterSetName = "Company")]
         [switch]
         $ShowInactive,
 
-        # By default, only companies that are marked as "Unlocked"
-        # If this switch is specified, locked companies are also outputted
         [Parameter(ParameterSetName = "Company")]
         [switch]
         $ShowLocked,
 
-        # The Id of the company where to search for data in.
-        # Applies only if you search for employees or tickets
         [Parameter(ParameterSetName = "Employee-ApiNative")]
         [Parameter(ParameterSetName = "Ticket-ApiNative")]
         [int]
         $CompanyId,
 
-        # The Id of the company where to search for data in.
-        # Applies only if you search for employees or tickets
         [Parameter(ParameterSetName = "Employee-UserFriendly", Mandatory = $true)]
         [Parameter(ParameterSetName = "Ticket-UserFriendly", Mandatory = $true)]
         [string]
         $CompanyName,
 
-        # Specify if inactive users are filtered out
-        # By default "all" employees are gathered
         [Parameter(ParameterSetName = "Employee-UserFriendly")]
         [Parameter(ParameterSetName = "Employee-ApiNative")]
         [ValidateSet("All", "Active", "Inactive")]
         [string]
         $Status = "All",
 
-        # if true, categories will be fetches as well. The names are given in the
-        # "linked entities" - "employeeCategories" (default = false)
         [Parameter(ParameterSetName = "Employee-UserFriendly")]
         [Parameter(ParameterSetName = "Employee-ApiNative")]
         [bool]
         $GetCategories = $false,
 
-        # if true, expected callbacks will be fetched as well (default = false)
         [Parameter(ParameterSetName = "Employee-UserFriendly")]
         [Parameter(ParameterSetName = "Employee-ApiNative")]
         [bool]
         $GetCallbacks = $false,
 
-        # if defined, overrides the to preview the content (default values is 60)
         [Parameter(ParameterSetName = "Ticket-UserFriendly")]
         [Parameter(ParameterSetName = "Ticket-ApiNative")]
         [int]
@@ -147,8 +198,8 @@
             }
         }
 
-        if($Company) {
-            $CompanyId = ConvertFrom-NameCache -Name $Company -Type "Companies"
+        if($MyInvocation.BoundParameters['CompanyName'] -and $CompanyName) {
+            $CompanyId = ConvertFrom-NameCache -Name CompanyName -Type "Companies"
             if(-not $CompanyId) {
                 Write-PSFMessage -Level Warning -Message "No Id for company '$($Company)' found. Ticket will be created with blank value on CompanyId"
             }
@@ -165,7 +216,7 @@
                 foreach ($textItem in $Text) {
                     $body = @{
                         areas   = @("COMPANY")
-                        query   = $textItem
+                        query   = $textItem.replace("*", "")
                         configs = @{
                             company = @{
                                 maxResults = $ResultSize
