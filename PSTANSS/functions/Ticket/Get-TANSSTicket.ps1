@@ -27,7 +27,7 @@
     .PARAMETER NotIdentified
         Get all unidentified tickets
 
-    .PARAMETER Projects
+    .PARAMETER Project
         Get tickets marked as a project
 
     .PARAMETER LocalTicketAdmin
@@ -62,11 +62,13 @@
     .LINK
         https://github.com/AndiBellstedt/PSTANSS
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "")]
     [CmdletBinding(
         DefaultParameterSetName = 'MyTickets',
         SupportsShouldProcess = $false,
         ConfirmImpact = 'Low'
     )]
+    [OutputType([TANSS.Ticket])]
     Param(
         [Parameter(
             Mandatory = $true,
@@ -131,7 +133,7 @@
         )]
         [switch]
         [Alias("AllProjects")]
-        $Projects,
+        $Project,
 
         [Parameter(
             Mandatory = $true,

@@ -37,6 +37,7 @@
         PositionalBinding = $true,
         ConfirmImpact = 'Medium'
     )]
+    [OutputType([TANSS.TicketComment])]
     Param(
         [Parameter(
             ParameterSetName = "ByTicketId",

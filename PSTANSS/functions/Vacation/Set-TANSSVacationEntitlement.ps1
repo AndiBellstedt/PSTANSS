@@ -37,6 +37,7 @@
         PositionalBinding = $true,
         ConfirmImpact = 'Medium'
     )]
+    [OutputType([TANSS.Vacation.Entitlement])]
     Param(
         [Parameter(
             ParameterSetName = "ByInputObject",

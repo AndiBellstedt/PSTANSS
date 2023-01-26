@@ -34,6 +34,7 @@
     .LINK
         https://github.com/AndiBellstedt/PSTANSS
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
     [CmdletBinding(
         SupportsShouldProcess = $true,
         PositionalBinding = $true,

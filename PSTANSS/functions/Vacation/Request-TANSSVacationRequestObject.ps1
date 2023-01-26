@@ -29,6 +29,7 @@
         PositionalBinding = $true,
         ConfirmImpact = 'Low'
     )]
+    [OutputType([TANSS.Vacation.Request])]
     Param(
         [Parameter(
             ValueFromPipelineByPropertyName = $true,

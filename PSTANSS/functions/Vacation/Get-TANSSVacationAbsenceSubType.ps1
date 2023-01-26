@@ -31,11 +31,13 @@
     .LINK
         https://github.com/AndiBellstedt/PSTANSS
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseOutputTypeCorrectly", "")]
     [CmdletBinding(
         SupportsShouldProcess = $false,
         PositionalBinding = $true,
         ConfirmImpact = 'Low'
     )]
+    [OutputType([TANSS.Vacation.AbsenceSubType])]
     Param(
         [string[]]
         $Name,

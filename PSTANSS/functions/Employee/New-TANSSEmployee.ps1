@@ -34,6 +34,7 @@
         PositionalBinding = $true,
         ConfirmImpact = 'Medium'
     )]
+    [OutputType([TANSS.Employee])]
     param (
         # Fullname of the employee
         [Parameter(

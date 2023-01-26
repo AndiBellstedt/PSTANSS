@@ -37,6 +37,7 @@
         SupportsShouldProcess = $false,
         ConfirmImpact = 'Low'
     )]
+    [OutputType([TANSS.Employee])]
     Param(
         [String[]]
         $Name,

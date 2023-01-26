@@ -97,6 +97,7 @@
         SupportsShouldProcess = $false,
         ConfirmImpact = 'Low'
     )]
+    [OutputType([TANSS.TicketPreview], [TANSS.Company], [TANSS.EmployeeSearched])]
     Param(
         [Parameter(ParameterSetName = "Company")]
         [switch]

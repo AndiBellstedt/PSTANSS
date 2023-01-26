@@ -28,6 +28,7 @@
         PositionalBinding = $true,
         ConfirmImpact = 'Low'
     )]
+    [OutputType([TANSS.Vacation.Entitlement])]
     Param(
         [ValidateNotNullOrEmpty()]
         [int]

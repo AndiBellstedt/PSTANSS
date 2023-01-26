@@ -48,6 +48,7 @@
         PositionalBinding = $true,
         ConfirmImpact = 'Low'
     )]
+    [OutputType([TANSS.Employee])]
     Param(
         [Parameter(
             ParameterSetName = "Employee_ApiNative",

@@ -27,9 +27,6 @@
     .PARAMETER PassThru
         Outputs the token to the console, even when the register switch is set
 
-    .PARAMETER WhatIf
-        If this switch is enabled, no actions are performed but informational messages will be displayed that explain what would happen if the command were to run.
-
     .PARAMETER Confirm
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
@@ -52,6 +49,7 @@
         PositionalBinding = $true,
         ConfirmImpact = 'Medium'
     )]
+    [OutputType([TANSS.Connection])]
     Param(
         [Parameter(
             Mandatory = $true,
@@ -162,7 +160,7 @@
             TimeStampModified = Get-Date
         }
 
-        if (-not $NoCacheRefresh) { Invoke-CacheRefresh -Token $token }
+        if (-not $NoCacheInit) { Invoke-CacheRefresh -Token $token }
 
         if (-not $DoNotRegisterConnection) {
             # Make the connection the default connection for further commands

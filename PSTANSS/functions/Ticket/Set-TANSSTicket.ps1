@@ -31,12 +31,15 @@
     .LINK
         https://github.com/AndiBellstedt/PSTANSS
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidMultipleTypeAttributes", "")]
     [CmdletBinding(
         DefaultParameterSetName = 'UserFriendly-ByInputObject',
         SupportsShouldProcess = $true,
         PositionalBinding = $true,
         ConfirmImpact = 'Medium'
     )]
+    [OutputType([TANSS.Ticket])]
     param (
         # TANSS Ticket object to modify
         [Parameter(

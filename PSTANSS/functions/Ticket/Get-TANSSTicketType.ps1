@@ -28,6 +28,7 @@
         PositionalBinding = $true,
         ConfirmImpact = 'Low'
     )]
+    [OutputType([TANSS.TicketType])]
     Param(
         [Parameter(
             Mandatory = $true,

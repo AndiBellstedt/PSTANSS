@@ -28,12 +28,14 @@
     .LINK
         https://github.com/AndiBellstedt/PSTANSS
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidMultipleTypeAttributes", "")]
     [CmdletBinding(
         DefaultParameterSetName = "Userfriendly",
         SupportsShouldProcess = $true,
         PositionalBinding = $true,
         ConfirmImpact = 'Medium'
     )]
+    [OutputType([TANSS.Ticket])]
     param (
         # Company id of the ticket. Name is stored in the "linked entities" - "companies". Can only be set if the user has access to the company
         [Parameter(ParameterSetName="ApiNative")]
@@ -277,7 +279,7 @@
         # if the ticket is assigned to a local ticket admin, this represents the name of the employee (local ticket admin) who is assigned for this ticket
         [Parameter(ParameterSetName="Userfriendly")]
         [ValidateNotNullOrEmpty]
-        [String]
+        [string]
         $EmployeeTicketAdmin,
 
         # Sets the order number

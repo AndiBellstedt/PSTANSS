@@ -38,11 +38,13 @@
     .LINK
         https://github.com/AndiBellstedt/PSTANSS
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "")]
     [CmdletBinding(
         SupportsShouldProcess = $true,
         PositionalBinding = $true,
         ConfirmImpact = 'Medium'
     )]
+    [OutputType([TANSS.Vacation.Request])]
     Param(
         [Parameter(ParameterSetName = "Vacation", Mandatory = $true)]
         [switch]
@@ -174,8 +176,8 @@
             }
 
             $days = $plannedVactionRequest.Days
-            if($HalfDayStart) { $days[0].Forenoon = $false }
-            if($HalfDayEnd) { $days[-1].Afternoon = $false }
+            if($HalfDayStart) { $days[0].Afternoon = $false }
+            if($HalfDayEnd) { $days[-1].Forenoon = $false }
             $plannedVactionRequest.Days = $days
             Remove-Variable -Name days -Force -WhatIf:$false -Confirm:$false -Verbose:$false -Debug:$false -ErrorAction Ignore -WarningAction Ignore -InformationAction Ignore
 

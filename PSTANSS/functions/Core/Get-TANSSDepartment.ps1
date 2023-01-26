@@ -37,6 +37,7 @@
         PositionalBinding = $true,
         ConfirmImpact = 'Low'
     )]
+    [OutputType([TANSS.Department])]
     Param(
         [Parameter(
             Mandatory = $true,
