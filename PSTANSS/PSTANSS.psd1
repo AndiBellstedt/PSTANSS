@@ -3,7 +3,7 @@
     RootModule         = 'PSTANSS.psm1'
 
     # Version number of this module.
-    ModuleVersion      = '0.4.0'
+    ModuleVersion      = '0.5.0'
 
     # ID used to uniquely identify this module
     GUID               = '1fc30b15-bde9-49ba-8763-d3b5060a99cd'
@@ -108,7 +108,7 @@
 
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags         = @(
-                "TANSS", "API"
+                "TANSS", "API", "PSTANSS"
             )
 
             # A URL to the license for this module.
@@ -118,7 +118,7 @@
             ProjectUri   = 'https://github.com/AndiBellstedt/PSTANSS'
 
             # A URL to an icon representing this module.
-            # IconUri = ''
+            IconUri      = 'https://github.com/AndiBellstedt/PSTANSS/raw/main/assets/PSTANSS_128x128.png'
 
             # ReleaseNotes of this module
             ReleaseNotes = 'https://github.com/AndiBellstedt/PSTANSS/blob/main/PSTANSS/changelog.md'
