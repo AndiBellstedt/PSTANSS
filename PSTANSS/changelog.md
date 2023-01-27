@@ -1,5 +1,45 @@
 ﻿# Changelog
-## 1.0.0 (2022-07-29)
- - New: Some Stuff
- - Upd: Moar Stuff
- - Fix: Much Stuff
+## 0.5.0 Frist release (2023-01-27)
+ - New: Frist Version with commands
+    - API core service commands
+        - Connect-TANSS
+        - Invoke-TANSSRequest
+        - Get-TANSSRegisteredAccessToken
+        - Register-TANSSAccessToken
+        - Update-TANSSAccessToken
+        - Find-TANSSObject
+        - Get-TANSSDepartment
+    - Tickets
+        - New-TANSSTicket
+        - Get-TANSSTicket
+        - Set-TANSSTicket
+        - Remove-TANSSTicket
+        - Get-TANSSTicketContent
+        - Get-TANSSTicketActivity
+        - Get-TANSSTicketComment
+        - Get-TANSSTicketDocument
+        - Get-TANSSTicketImage
+        - Get-TANSSTicketMail
+        - New-TANSSTicketComment
+        - Remove-TANSSTicketComment
+        - Get-TANSSTicketStatus
+        - Get-TANSSTicketType
+    - Employees
+        - Get-TANSSTechnican
+        - Get-TANSSEmployee
+        - New-TANSSEmployee
+    - Vacation
+        - Get-TANSSVacationAbsenceSubType
+        - Get-TANSSVacationRequest
+        - New-TANSSVacationRequest
+        - Set-TANSSVacationRequestStatus
+        - Approve-TANSSVacationRequest
+        - Deny-TANSSVacationRequest
+        - Remove-TANSSVacationRequest
+        - Set-TANSSVacationRequest
+        - Request-TANSSVacationRequestObject
+        - Out-TANSSVacationRequestPdf
+        - Get-TANSSVacationEntitlement
+        - Set-TANSSVacationEntitlemen
+ - Upd: ---
+ - Fix: ---
