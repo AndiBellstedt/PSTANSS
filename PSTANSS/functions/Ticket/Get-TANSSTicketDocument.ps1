@@ -6,15 +6,26 @@
     .DESCRIPTION
         Retreive documents within a ticket
 
+    .PARAMETER TicketID
+        The ID of the ticket to receive documents of
+
+    .PARAMETER Ticket
+        TANSS.Ticket object to receive documents of
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
         If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Get-TANSSTicketDocument -TicketID 555
 
-        Description
+        Get all documents from ticket 555
+
+    .EXAMPLE
+        PS C:\> $tickets | Get-TANSSTicketDocument
+
+        Get all documents from all tickets from variable $tickets
 
     .NOTES
         Author: Andreas Bellstedt

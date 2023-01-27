@@ -6,21 +6,33 @@
     .DESCRIPTION
         Retreive support activities within a ticket
 
+    .PARAMETER TicketID
+        The ID of the ticket to receive activities of
+
+    .PARAMETER Ticket
+        TANSS.Ticket object to receive activities of
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
         If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Get-TANSSTicketActivity -TicketID 555
 
-        Description
+        Get all support activities from ticket 555
+
+    .EXAMPLE
+        PS C:\> $tickets | Get-TANSSTicketActivity
+
+        Get all support activities from all tickets from variable $tickets
 
     .NOTES
         Author: Andreas Bellstedt
 
     .LINK
         https://github.com/AndiBellstedt/PSTANSS
+
     #>
     [CmdletBinding(
         DefaultParameterSetName = "ByTicketId",

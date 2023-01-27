@@ -6,6 +6,18 @@
     .DESCRIPTION
         Approve or decline a vacation request within TANSS
 
+    .PARAMETER InputObject
+        TANSS.Vacation.Request object to modify
+
+    .PARAMETER Id
+        The id of the vacation request to modify
+
+    .PARAMETER Status
+        Status to set for the request
+
+        Available values are: "Approve", "Decline"
+        Values can be tabcompleted, so you don't have to type
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 

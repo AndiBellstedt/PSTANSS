@@ -4,7 +4,12 @@
         Get-VacationEntitlement
 
     .DESCRIPTION
-        Description
+        Get the available days of vacation within a year
+
+        By default the current year is queried
+
+    .PARAMETER Year
+        The year to query.
 
     .PARAMETER Token
         The TANSS.Connection token to access api

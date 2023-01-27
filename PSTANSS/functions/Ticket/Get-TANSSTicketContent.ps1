@@ -7,15 +7,37 @@
         Retreive the various entries from a ticket.
         Entries can be a comment, activity, mail, document, image
 
+    .PARAMETER TicketID
+        The ID of the ticket to receive comments of
+
+    .PARAMETER Ticket
+        TANSS.Ticket object to receive comments of
+
+    .PARAMETER Type
+        Specifies the type of content you want to get
+
+        Available types:
+            "All" = everthing within the ticket
+            "Comment" = only comments within the ticket
+            "Activity" = only activites within the ticket
+            "Mail" = = only mails within the ticket
+            "Document" = uploaded documents within the ticket
+            "Image" = uploaded images within the ticket
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
         If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Get-TANSSTicketContent -TicketID 555
 
-        Description
+        Get everthing out of ticket 555
+
+    .EXAMPLE
+        PS C:\> $tickets | Get-TANSSTicketContent -Type "Mail"
+
+        Get only malis out of all tickets from variable $tickets
 
     .NOTES
         Author: Andreas Bellstedt

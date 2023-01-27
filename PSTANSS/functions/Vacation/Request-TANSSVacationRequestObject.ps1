@@ -7,15 +7,33 @@
         Retrieve a vacation request object from TANSS.
         This object can be used to create a new VacationRequest
 
+    .PARAMETER EmployeeId
+        The ID of the employee to request for
+
+    .PARAMETER EmployeeName
+        The name of the employee to request for
+
+    .PARAMETER StartDate
+        The start date
+
+    .PARAMETER EndDate
+        The end date
+
+    .PARAMETER Type
+        Name of the request type
+        Values can be tabcompleted, so you don't have to type
+
+        Available: "Urlaub", "Krankheit", "Abwesenheit", "Bereitschaft", "Überstunden abfeiern", "VACATION", "ILLNESS", "ABSENCE", "STAND_BY", "OVERTIME"
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
         If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Request-TANSSVacationRequestObject -EmployeeId 10 -Type "Urlaub" -Start "01/02/2023" -End "01/03/2023"
 
-        Description
+        Request a object to create a new vacation request in the database for employee with ID 10. The output will be of type and from 2.1.2023 to 03.01.2023
 
     .NOTES
         Author: Andreas Bellstedt

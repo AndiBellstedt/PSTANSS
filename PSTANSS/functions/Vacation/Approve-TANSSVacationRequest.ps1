@@ -6,6 +6,12 @@
     .DESCRIPTION
         Approve a vacation request within TANSS
 
+    .PARAMETER InputObject
+        TANSS.Vacation.Request object to approve
+
+    .PARAMETER Id
+        Id of the vacation request to approve
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 

@@ -15,6 +15,9 @@
     .PARAMETER QueryParameter
         A hashtable for all the parameters to the api route
 
+    .PARAMETER AdditionalHeader
+        Hashtable with additional values to put in the header of the request
+
     .PARAMETER Body
         The body as a hashtable for the request
 

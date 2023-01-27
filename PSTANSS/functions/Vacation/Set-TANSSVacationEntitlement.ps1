@@ -4,7 +4,25 @@
         Set-TANSSVacationEntitlement
 
     .DESCRIPTION
-        Description
+        Modifies yearly entitlements for employees
+
+    .PARAMETER InputObject
+        TANSS.Vacation.Entitlement object to modify
+
+    .PARAMETER EmployeeId
+        The id of the employee to modfiy
+
+    .PARAMETER EmployeeName
+        The name of the employee to modfiy
+
+    .PARAMETER Year
+        The year to modify
+
+    .PARAMETER Days
+        Amount of days to set
+
+    .PARAMETER TransferedDays
+        Amount of days transfered from the last year
 
     .PARAMETER Token
         The TANSS.Connection token to access api

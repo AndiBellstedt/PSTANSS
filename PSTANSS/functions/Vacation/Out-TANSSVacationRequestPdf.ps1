@@ -7,6 +7,18 @@
         Write a PDF for a vacation request from Tanss.
         This is only available for VacataRequest of Type "vacation"
 
+    .PARAMETER InputObject
+        TANSS.Vacation.Request object to output pdf file for
+
+    .PARAMETER Id
+        The Id of the vacation request
+
+    .PARAMETER Path
+        The path to output the pdf to
+
+    .PARAMETER PassThru
+        Switch parameter. If specified, the file object will be thrown out to the console
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
@@ -22,7 +34,7 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Out-TANSSVacationRequestPdf
 
         Description
 

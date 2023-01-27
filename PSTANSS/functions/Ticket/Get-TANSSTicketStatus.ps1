@@ -6,15 +6,26 @@
     .DESCRIPTION
         Get the various status types of a ticket from tanss
 
+    .PARAMETER Id
+        The Id of the status type to get
+
+    .PARAMETER Name
+        The name of the status type to get
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
         If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Get-TANSSTicketStatus
 
-        Description
+        Get the available status types of a ticket
+
+    .EXAMPLE
+        PS C:\> Get-TANSSTicketStatus -Id 2
+
+        Get the status types with Id 2
 
     .NOTES
         Author: Andreas Bellstedt

@@ -6,15 +6,26 @@
     .DESCRIPTION
         Retreive images within a ticket
 
+    .PARAMETER TicketID
+        The ID of the ticket to receive images of
+
+    .PARAMETER Ticket
+        TANSS.Ticket object to receive images of
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
         If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Get-TANSSTicketImage -TicketID 555
 
-        Description
+        Get all images from ticket 555
+
+    .EXAMPLE
+        PS C:\> $tickets | Get-TANSSTicketImage
+
+        Get all images from all tickets from variable $tickets
 
     .NOTES
         Author: Andreas Bellstedt

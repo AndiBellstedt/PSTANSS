@@ -1,10 +1,29 @@
 ﻿function Get-TANSSEmployee {
     <#
     .Synopsis
-        Verb-Noun
+        Get-TANSSEmployee
 
     .DESCRIPTION
-        Description
+        Get employees out of TANSS service.
+
+        You can pipe in IDs o employee objects to get refreshed data out of the service
+
+        You can also pipe in company objects to receive employees of that company
+
+    .PARAMETER EmployeeId
+        The ID of the employee to get from TANSS service
+
+    .PARAMETER Employee
+        A TANSS.Employee object to query again from the service
+
+    .PARAMETER CompanyId
+        The ID of the company to get employees from
+
+    .PARAMETER Company
+        A passed in TANSS.Company object to query employees from
+
+    .PARAMETER CompanyName
+        The name of the company to query employees from
 
     .PARAMETER Token
         The TANSS.Connection token to access api
@@ -72,7 +91,6 @@
         [Parameter(
             ParameterSetName = "Company_ApiNative",
             ValueFromPipelineByPropertyName = $true,
-            ValueFromPipeline = $true,
             Mandatory = $true
         )]
         [int[]]

@@ -6,21 +6,33 @@
     .DESCRIPTION
         Retreive the ticket comments
 
+    .PARAMETER TicketID
+        The ID of the ticket to receive comments of
+
+    .PARAMETER Ticket
+        TANSS.Ticket object to receive comments of
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
         If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Get-TANSSTicketComment -TicketID 555
 
-        Description
+        Get all comments from ticket 555
+
+    .EXAMPLE
+        PS C:\> $tickets | Get-TANSSTicketComment
+
+        Get all comments from all tickets from variable $tickets
 
     .NOTES
         Author: Andreas Bellstedt
 
     .LINK
         https://github.com/AndiBellstedt/PSTANSS
+
     #>
     [CmdletBinding(
         DefaultParameterSetName = "ByTicketId",

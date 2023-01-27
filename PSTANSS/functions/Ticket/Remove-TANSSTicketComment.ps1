@@ -6,6 +6,15 @@
     .DESCRIPTION
         Remove a comment from a ticket
 
+    .PARAMETER TicketID
+        The ID of the ticket where to remove a comment from
+
+    .PARAMETER Id
+        The id of the comment to remove
+
+    .PARAMETER Comment
+        TANSS.TicketComment object to remove
+
     .PARAMETER Force
         Process the removal quietly.
 
@@ -21,7 +30,7 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Remove-TANSSTicketComment
 
         Description
 

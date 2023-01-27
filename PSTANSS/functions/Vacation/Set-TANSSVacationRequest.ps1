@@ -6,6 +6,36 @@
     .DESCRIPTION
         Modfiy a vacation/absence record within TANSS
 
+    .PARAMETER InputObject
+        TANSS.Vacation.Request object passed in to modify
+
+    .PARAMETER Id
+        The Id of the VacationRequest within TANSS service
+
+    .PARAMETER Type
+        Name of the request type
+        Values can be tabcompleted, so you don't have to type
+
+        Available: "Urlaub", "Krankheit", "Abwesenheit", "Bereitschaft", "Überstunden abfeiern", "VACATION", "ILLNESS", "ABSENCE", "STAND_BY", "OVERTIME"
+
+    .PARAMETER AbsenceSubType
+        TANSS.Vacation.AbsenceSubType object to set on the absense record
+
+    .PARAMETER AbsenceSubTypeName
+        For type "Abwesenheit", "ABSENCE" there are subtypes available
+        This one specifies the name of the subtype to set on the absense record
+
+        Values can be tabcompleted, so you don't have to type
+
+    .PARAMETER StartDate
+        Starting date for the record to modify
+
+    .PARAMETER EndDate
+        End date for the record to modify
+
+    .PARAMETER Description
+        Description to set on the record
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
@@ -21,9 +51,14 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Set-TANSSVacationRequest -Id 123 -Description "new description"
 
-        Description
+        Change the description of the VacationRequest 123 to "new description"
+
+    .EXAMPLE
+        PS C:\> $vacationRequest | Set-TANSSVacationRequest -EndDate "01/31/2023"
+
+        Set enddate to "01/31/2023" the request in variable $vacationRequest
 
     .NOTES
         Author: Andreas Bellstedt

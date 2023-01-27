@@ -6,15 +6,26 @@
     .DESCRIPTION
         Retreive mail objects within a ticket
 
+    .PARAMETER TicketID
+        The ID of the ticket to receive mails of
+
+    .PARAMETER Ticket
+        TANSS.Ticket object to receive mails of
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
         If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Get-TANSSTicketMail -TicketID 555
 
-        Description
+        Get all mails from ticket 555
+
+    .EXAMPLE
+        PS C:\> $tickets | Get-TANSSTicketMail
+
+        Get all mails from all tickets from variable $tickets
 
     .NOTES
         Author: Andreas Bellstedt

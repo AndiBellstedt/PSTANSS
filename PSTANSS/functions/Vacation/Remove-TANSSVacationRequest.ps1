@@ -6,6 +6,12 @@
     .DESCRIPTION
         Remove a vacation request
 
+    .PARAMETER InputObject
+        TANSS.Vacation.Request to remove
+
+    .PARAMETER Id
+        The Id of the VacationRequest record to remove
+
     .PARAMETER Force
         Process the removal quietly.
 

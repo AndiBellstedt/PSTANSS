@@ -6,7 +6,7 @@
     .DESCRIPTION
         Converts access tokens to readable objects
 
-    .PARAMETER Token
+    .PARAMETER TokenText
         The Token to convert
 
     .EXAMPLE

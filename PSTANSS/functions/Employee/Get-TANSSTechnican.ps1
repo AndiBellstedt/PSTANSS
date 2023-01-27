@@ -15,7 +15,11 @@
         (client side filtering)
 
     .PARAMETER FreelancerCompanyId
-        If this parameter is given, also fetches the freelancers of this company
+        If this parameter is given, also fetches the freelancers of this company.
+        By default all users with a license are treated as "TANSS technicans".
+
+    .PARAMETER ExcludeRestrictedLicenseUser
+        Do not show account/ users / technicans with limited licenses
 
     .PARAMETER Token
         The TANSS.Connection token to access api

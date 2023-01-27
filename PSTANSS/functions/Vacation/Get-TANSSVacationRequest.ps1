@@ -4,7 +4,60 @@
         Get-TANSSVacationRequest
 
     .DESCRIPTION
-        Query Vacation requests of any state from TANSS
+        Query vacation requests of any state from TANSS
+
+        By default the current year is queried
+
+    .PARAMETER Id
+        The explicit ID of the vacation request to get from TANSS
+
+    .PARAMETER Year
+        The year to list vacation requests for
+
+    .PARAMETER Month
+        The month of the year to list vacation requests
+
+    .PARAMETER EmployeeId
+        The Id of the employee to list vacation requests from
+
+    .PARAMETER EmployeeName
+        The name of the employee to list vacation requests from
+
+    .PARAMETER DepartmentId
+        Department Id filter
+
+    .PARAMETER DepartmentName
+        Department name filter
+
+    .PARAMETER Type
+        Name of the request type
+        Values can be tabcompleted, so you don't have to type
+
+        Available: "Urlaub", "Krankheit", "Abwesenheit", "Bereitschaft", "Überstunden abfeiern", "VACATION", "ILLNESS", "ABSENCE", "STAND_BY", "OVERTIME"
+
+    .PARAMETER AbsenceSubTypeId
+        For type "Abwesenheit", "ABSENCE" there are subtypes available.
+        This one specifies the Id of the subtype to use
+
+    .PARAMETER AbsenceSubTypeName
+        For type "Abwesenheit", "ABSENCE" there are subtypes available.
+        This one specifies the name of the subtype to use
+
+        Values can be tabcompleted, so you don't have to type
+
+    .PARAMETER ExcludeVacationRequestId
+        Exclude filter on specific IDs
+
+    .PARAMETER State
+        The status for requests to list.
+
+        Available values: "NEW", "REQUESTED", "APPROVED", "DECLINED"
+
+    .PARAMETER CheckPermission
+        Boolean value from the api wether to check permission or not
+
+    .PARAMETER AddFrontendValue
+        Boolean value to add request object on
 
     .PARAMETER Token
         The TANSS.Connection token to access api
@@ -12,9 +65,19 @@
         If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Get-TANSSVacationRequest
 
-        Description
+        Get all requests from the current year
+
+    .EXAMPLE
+        PS C:\> Get-TANSSVacationRequest -Year ((Get-Date).Year - 1)
+
+        Get all requests from last year
+
+    .EXAMPLE
+        PS C:\> Get-TANSSVacationRequest -Type ILLNESS
+
+        Get all illness records from the current year
 
     .NOTES
         Author: Andreas Bellstedt

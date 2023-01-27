@@ -6,6 +6,24 @@
     .DESCRIPTION
         Add a comment to a ticket
 
+    .PARAMETER TicketID
+        ID of the ticket where to put comment in
+
+    .PARAMETER Ticket
+        TANSS.Ticket object where to put comment in
+
+    .PARAMETER Title
+        Optional. A comment can have a title text.
+
+    .PARAMETER Text
+        The text to put within the comment
+
+    .PARAMETER IsInternal
+        Boolean, that specifies if the comment will be internal or public visible to customers
+
+    .PARAMETER Pinned
+        Switch parameter. If specified, the comment will be pinned at the top of the ticket
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
@@ -21,9 +39,9 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> New-TANSSTicketComment -TicketID 555 -Title "very important info" -Text "Please note this important information" -IsInternal $true
 
-        Description
+        Put a comment with text "Please note this important information" within ticket 555
 
     .NOTES
         Author: Andreas Bellstedt

@@ -7,11 +7,16 @@
         Updates the AccessToken from a refreshToken for TANSS connection
         By defaault, the new Access is registered to as default connection
 
-    .PARAMETER NoCacheInit
+    .PARAMETER NoCacheRefresh
         Do not requery tickets and various types to fill cache data for lookup types
 
     .PARAMETER DoNotRegisterConnection
         Do not register the connection as default connection
+
+    .PARAMETER Token
+        The TANSS.Connection token to access api
+
+        If not specified, the registered default token from within the module is going to be used
 
     .PARAMETER PassThru
         Outputs the new token to the console

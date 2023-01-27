@@ -6,15 +6,26 @@
     .DESCRIPTION
         Get the various types of a ticket from tanss
 
+    .PARAMETER Id
+        The Id of the ticket type to get
+
+    .PARAMETER Name
+        The name of the ticket type to get
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
         If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> Get-TANSSTicketType
 
-        Description
+        Get the available ticket types
+
+    .EXAMPLE
+        PS C:\> Get-TANSSTicketType -Id 2
+
+        Get the tiket types with Id 2
 
     .NOTES
         Author: Andreas Bellstedt

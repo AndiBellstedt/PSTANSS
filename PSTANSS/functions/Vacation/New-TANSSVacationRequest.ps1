@@ -16,6 +16,49 @@
         The type "Absence" can have a subset of additional types. They can be specified by name (Tabcompletion is available),
         or by a TANSS.Vacation.AbsenceSubType object. The additional absence types can be queried by the command "Get-TANSSVacationAbsenceSubType"
 
+    .PARAMETER Vacation
+        Switch parameter to command the creation of a vacation request
+
+    .PARAMETER Illness
+        Switch parameter to command the creation of a Illness record
+
+    .PARAMETER Absence
+        Switch parameter to command the creation of a absence record
+
+    .PARAMETER AbsenceSubType
+        TANSS.Vacation.AbsenceSubType object to specify what kind of absence subtype to create
+
+    .PARAMETER AbsenceSubTypeName
+        The name of the absence subtype to create
+
+    .PARAMETER Standby
+        Switch parameter to command the creation of a Standby record
+
+    .PARAMETER Overtime
+        Switch parameter to command the creation of a Overtime record
+
+    .PARAMETER EmployeeId
+        The ID of the employee to create to request/record for
+
+    .PARAMETER StartDate
+        The start date
+
+    .PARAMETER EndDate
+        The end date
+
+    .PARAMETER HalfDayStart
+        Boolean to specify if the first day is created as a half day (forenoon not in the absence)
+
+    .PARAMETER HalfDayEnd
+        Boolean to specify if the last day is created as a half day (afternoon not in the absence)
+
+    .PARAMETER Description
+        Optional description for the request/record
+
+    .PARAMETER Date
+        The creation of the request/record
+        By default this is the current date.
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
@@ -28,9 +71,9 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        PS C:\> Verb-Noun
+        PS C:\> New-TANSSVacationRequest -Illness -EmployeeId 10 -Start "01/02/2023" -End "01/03/2023"
 
-        Description
+        Creates an illness record for employee with ID 10 for second of january 2023 to third of january 2023
 
     .NOTES
         Author: Andreas Bellstedt
