@@ -72,7 +72,7 @@
                             $filterSuccess = $true
                         }
                     }
-                    # if filter does not hit, continue with next technican
+                    # if filter does not hit, continue with next technician
                     if ($filterSuccess -eq $false) { continue }
                 }
 
@@ -84,7 +84,7 @@
                             $filterSuccess = $true
                         }
                     }
-                    # if filter does not hit, continue with next technican
+                    # if filter does not hit, continue with next technician
                     if ($filterSuccess -eq $false) { continue }
                 }
 
@@ -106,7 +106,7 @@
                 }
             }
         } else {
-            Write-PSFMessage -Level Warning -Message "No technicans found." -Tag "Technican"
+            Write-PSFMessage -Level Warning -Message "No technicians found." -Tag "Technician"
         }
     }
 

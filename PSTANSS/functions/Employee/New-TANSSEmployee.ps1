@@ -20,7 +20,7 @@
     .EXAMPLE
         New-TANSSEmployee -Name "User, Test"
 
-        Create a new employee (as technican) in your own company
+        Create a new employee (as technician) in your own company
 
     .NOTES
         Author: Andreas Bellstedt
@@ -251,7 +251,7 @@
 
         if (-not $CompanyId) {
             $_name = ConvertFrom-NameCache -Id 100000 -Type "Companies"
-            Write-PSFMessage -Level Important -Message "No company specified. Employee will be created within your own company $(if($_name) { "($($_name)) "})as a technican"
+            Write-PSFMessage -Level Important -Message "No company specified. Employee will be created within your own company $(if($_name) { "($($_name)) "})as a technician"
 
             $CompanyId = 100000
 
