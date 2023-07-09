@@ -1,5 +1,5 @@
 ﻿![logo][]
-# PSTANSS - interacting with the Personio api
+# PSTANSS - interacting with the TANSS api
 | Plattform | Information |
 | --------- | ----------- |
 | PowerShell gallery | [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/PSTANSS?label=psgallery)](https://www.powershellgallery.com/packages/PSTANSS) [![PowerShell Gallery](https://img.shields.io/powershellgallery/p/PSTANSS)](https://www.powershellgallery.com/packages/PSTANSS) [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/PSTANSS?style=plastic)](https://www.powershellgallery.com/packages/PSTANSS) |
@@ -7,7 +7,7 @@
 <br>
 
 ## Description
-PowerShell Module for interacting with APP of 3rd party application TANSS<br>
+PowerShell Module for interacting with API of 3rd party application TANSS<br>
 <br>
 All cmdlets are build with
 - powershell regular verbs

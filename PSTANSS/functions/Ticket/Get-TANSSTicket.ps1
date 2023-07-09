@@ -33,8 +33,8 @@
     .PARAMETER LocalTicketAdmin
         Get all tickets specified for a ticket admin
 
-    .PARAMETER TicketWithTechnicanRole
-        Get all tickets with a technican role
+    .PARAMETER TicketWithTechnicianRole
+        Get all tickets with a technician role
 
     .PARAMETER Token
         The TANSS.Connection token to access api
@@ -145,10 +145,10 @@
 
         [Parameter(
             Mandatory = $true,
-            ParameterSetName = "TicketWithTechnicanRole"
+            ParameterSetName = "TicketWithTechnicianRole"
         )]
         [switch]
-        $TicketWithTechnicanRole,
+        $TicketWithTechnicianRole,
 
         [TANSS.Connection]
         $Token
@@ -208,7 +208,7 @@
                 $apiPath = Format-ApiPath -Path "api/v1/tickets/localAdminOverview"
             }
 
-            "TicketWithTechnicanRole" {
+            "TicketWithTechnicianRole" {
                 $apiPath = Format-ApiPath -Path "api/v1/tickets/withRole"
             }
 

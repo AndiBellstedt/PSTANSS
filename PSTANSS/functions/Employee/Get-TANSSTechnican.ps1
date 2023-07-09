@@ -1,25 +1,25 @@
-﻿function Get-TANSSTechnican {
+﻿function Get-TANSSTechnician {
     <#
     .Synopsis
-        Get-TANSSTechnican
+        Get-TANSSTechnician
 
     .DESCRIPTION
         Gets all technicians of this system from default TANSS connection
 
     .PARAMETER Id
-        ID of the technican to get
+        ID of the technician to get
         (client side filtering)
 
     .PARAMETER Name
-        Name of the technican to get
+        Name of the technician to get
         (client side filtering)
 
     .PARAMETER FreelancerCompanyId
         If this parameter is given, also fetches the freelancers of this company.
-        By default all users with a license are treated as "TANSS technicans".
+        By default all users with a license are treated as "TANSS technicians".
 
     .PARAMETER ExcludeRestrictedLicenseUser
-        Do not show account/ users / technicans with limited licenses
+        Do not show account/ users / technicians with limited licenses
 
     .PARAMETER Token
         The TANSS.Connection token to access api
@@ -27,7 +27,7 @@
         If not specified, the registered default token from within the module is going to be used
 
     .EXAMPLE
-        PS C:\> Get-TANSSTechnican
+        PS C:\> Get-TANSSTechnician
 
         Gets all technicians of this system
 
@@ -79,7 +79,7 @@
             }
 
             if ($companyId -ne 0) {
-                Write-PSFMessage -Level System -Message "FreelancerCompanyId specified, compiling body to query freelancers of company '$($companyId)'" -Tag "Technican", "Freelancer"
+                Write-PSFMessage -Level System -Message "FreelancerCompanyId specified, compiling body to query freelancers of company '$($companyId)'" -Tag "Technician", "Freelancer"
                 $queryParameter.Add("FreelancerCompanyId", $companyId)
             }
 
@@ -96,23 +96,23 @@
 
 
         if ($response) {
-            Write-PSFMessage -Level Verbose -Message "Found $(($response.content).count) technicans" -Tag "Technican"
+            Write-PSFMessage -Level Verbose -Message "Found $(($response.content).count) technicians" -Tag "Technician"
 
             foreach ($responseItem in $response) {
 
                 # Output result
-                foreach ($technican in $responseItem.content) {
+                foreach ($technician in $responseItem.content) {
 
                     # Do filtering on name
                     if ($MyInvocation.BoundParameters['Name'] -and $Name) {
                         $filterSuccess = $false
                         foreach ($filterName in $Name) {
-                            if ($technican.Name -like $filterName) {
+                            if ($technician.Name -like $filterName) {
                                 $filterSuccess = $true
                             }
                         }
 
-                        # if filter does not hit, continue with next technican
+                        # if filter does not hit, continue with next technician
                         if ($filterSuccess -eq $false) { continue }
                     }
 
@@ -121,22 +121,22 @@
                     if ($MyInvocation.BoundParameters['Id'] -and $Id) {
                         $filterSuccess = $false
                         foreach ($filterId in $Id) {
-                            if ([int]($technican.id) -eq $filterId) {
+                            if ([int]($technician.id) -eq $filterId) {
                                 $filterSuccess = $true
                             }
                         }
 
-                        # if filter does not hit, continue with next technican
+                        # if filter does not hit, continue with next technician
                         if ($filterSuccess -eq $false) { continue }
                     }
 
 
                     # Query details
-                    Write-PSFMessage -Level Verbose -Message "Getting details of '$($technican.name)' (Id $($technican.id))" -Tag "Technican"
+                    Write-PSFMessage -Level Verbose -Message "Getting details of '$($technician.name)' (Id $($technician.id))" -Tag "Technician"
 
                     $invokeParam = @{
                         "Type"    = "GET"
-                        "ApiPath" = (Format-ApiPath -Path "api/v1/employees/$($technican.id)")
+                        "ApiPath" = (Format-ApiPath -Path "api/v1/employees/$($technician.id)")
                         "Token"   = $Token
                     }
 
@@ -155,12 +155,12 @@
                             }
                         }
                     } else {
-                        Stop-PSFFunction -Message "Unexpected error searching '$($employeeResponse.content.name)' with ID '$($technican.id)'. TANSS is unable to find details of employee" -EnableException $true -Cmdlet $pscmdlet
+                        Stop-PSFFunction -Message "Unexpected error searching '$($employeeResponse.content.name)' with ID '$($technician.id)'. TANSS is unable to find details of employee" -EnableException $true -Cmdlet $pscmdlet
                     }
                 }
             }
         } else {
-            Write-PSFMessage -Level Warning -Message "No technicans found." -Tag "Technican"
+            Write-PSFMessage -Level Warning -Message "No technicians found." -Tag "Technician"
         }
     }
 

@@ -1,4 +1,10 @@
 ﻿# Changelog
+## 0.5.1 BugFix version
+ - Fix: typo in command "technican" -> "technician"
+ - Update:
+    - Get-TANSSTechnican - Rename commandto "Get-TANSSTechnician"
+    - Get-TANSSTicket - Pename parameter "TicketWithTechnicanRole" to "TicketWithTechnicianRole"
+
 ## 0.5.0 Frist release (2023-01-27)
  - New: Frist Version with commands
     - API core service commands

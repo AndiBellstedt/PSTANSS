@@ -66,7 +66,7 @@
         'Get-TANSSTicketType',
 
         # Employees
-        'Get-TANSSTechnican',
+        'Get-TANSSTechnician',
         'Get-TANSSEmployee',
         'New-TANSSEmployee',
 
