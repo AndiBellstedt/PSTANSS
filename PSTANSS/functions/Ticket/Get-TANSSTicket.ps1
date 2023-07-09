@@ -68,7 +68,7 @@
         SupportsShouldProcess = $false,
         ConfirmImpact = 'Low'
     )]
-    [OutputType([TANSS.Ticket])]
+    [OutputType([TANSS.Ticket], [TANSS.Project])]
     Param(
         [Parameter(
             Mandatory = $true,
@@ -231,9 +231,16 @@
 
                 # Output result
                 foreach($ticket in $responseItem.content) {
-                    [TANSS.Ticket]@{
-                        BaseObject = $ticket
-                        Id = $ticket.id
+                    if($parameterSetName -like "Projects") {
+                        [TANSS.Project]@{
+                            BaseObject = $ticket
+                            Id = $ticket.id
+                        }
+                    } else {
+                        [TANSS.Ticket]@{
+                            BaseObject = $ticket
+                            Id = $ticket.id
+                        }
                     }
                 }
 

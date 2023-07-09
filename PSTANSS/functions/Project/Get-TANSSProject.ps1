@@ -27,7 +27,7 @@
         SupportsShouldProcess = $false,
         ConfirmImpact = 'Low'
     )]
-    [OutputType([TANSS.Ticket])]
+    [OutputType([TANSS.Project])]
     param (
         [TANSS.Connection]
         $Token

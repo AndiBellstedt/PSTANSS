@@ -87,7 +87,8 @@
         # Projects
         'Get-TANSSProject',
         'New-TANSSProject',
-        'Remove-TANSSProject'
+        'Remove-TANSSProject',
+        'Get-TANSSProjectPhase'
     )
 
     # Cmdlets to export from this module

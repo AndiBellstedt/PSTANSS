@@ -2527,4 +2527,131 @@
     </Type>
 
 
+    <!-- TANSS.ProjectPhase -->
+    <Type>
+        <Name>Deserialized.TANSS.ProjectPhase</Name>
+        <Members>
+            <MemberSet>
+                <Name>PSStandardMembers</Name>
+                <Members>
+                    <NoteProperty>
+                        <Name>
+                            TargetTypeForDeserialization
+                        </Name>
+                        <Value>
+                            TANSS.ProjectPhase
+                        </Value>
+                    </NoteProperty>
+                </Members>
+            </MemberSet>
+        </Members>
+    </Type>
+    <Type>
+        <Name>TANSS.ProjectPhase</Name>
+        <Members>
+            <ScriptProperty>
+                <Name>ProjectId</Name>
+                <GetScriptBlock>
+                    [int]::Parse( $this.BaseObject.projectId )
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Project</Name>
+                <GetScriptBlock>
+                    [TANSS.Lookup]::Tickets["$($this.BaseObject.projectId)"]
+                </GetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Rank</Name>
+                <GetScriptBlock>
+                    [int]::Parse( $this.BaseObject.rank )
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.rank = [int]$args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>Name</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.name
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.name = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>StartDate</Name>
+                <GetScriptBlock>
+                    if($this.BaseObject.startDate -eq 0){
+                        $null
+                    } else {
+                        [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.startDate).ToLocalTime()
+                    }
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.startDate = Get-Date -UFormat %s -Date $args[0].Date.ToUniversalTime()
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>EndDate</Name>
+                <GetScriptBlock>
+                    if($this.BaseObject.endDate -eq 0){
+                        $null
+                    } else {
+                        [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.endDate).ToLocalTime()
+                    }
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.endDate = Get-Date -UFormat %s -Date $args[0].Date.ToUniversalTime()
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ClosedPrePhasesRequired</Name>
+                <GetScriptBlock>
+                    [bool]::Parse( $this.BaseObject.closedPrePhasesRequired )
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.closedPrePhasesRequired = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>BillingType</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.billingType
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.billingType = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <ScriptProperty>
+                <Name>ClearanceMode</Name>
+                <GetScriptBlock>
+                    $this.BaseObject.clearanceMode
+                </GetScriptBlock>
+                <SetScriptBlock>
+                    $this.BaseObject.clearanceMode = $args[0]
+                </SetScriptBlock>
+            </ScriptProperty>
+
+            <CodeProperty IsHidden="true">
+                <Name>SerializationData</Name>
+                <GetCodeReference>
+                    <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+                    <MethodName>GetSerializationData</MethodName>
+                </GetCodeReference>
+            </CodeProperty>
+        </Members>
+        <TypeConverter>
+            <TypeName>PSFramework.Serialization.SerializationTypeConverter</TypeName>
+        </TypeConverter>
+    </Type>
+
 </Types>

@@ -307,6 +307,16 @@
             
              </summary>
         </member>
+        <member name="T:TANSS.Project">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:TANSS.ProjectPhase">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:TANSS.Ticket">
              <summary>
             
