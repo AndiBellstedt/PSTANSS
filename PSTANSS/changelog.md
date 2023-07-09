@@ -1,5 +1,5 @@
 ﻿# Changelog
-## 0.5.1 BugFix version
+## 0.5.1 BugFix version (2023-07-09)
  - Fix: typo in command "technican" -> "technician"
  - Update:
     - Get-TANSSTechnican - Rename commandto "Get-TANSSTechnician"
