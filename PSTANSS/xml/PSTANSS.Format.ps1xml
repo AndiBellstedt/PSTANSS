@@ -2518,5 +2518,120 @@
                 </WideEntries>
             </WideControl>
         </View>
+
+
+        <!-- TANSS.TimeStamp -->
+        <View>
+            <Name>Table_TANSS.TimeStamp</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.TimeStamp</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize />
+                <TableHeaders>
+                    <TableColumnHeader><Label>Id</Label></TableColumnHeader>
+                    <TableColumnHeader><Label>Date</Label></TableColumnHeader>
+                    <TableColumnHeader><Label>DayOfWeek</Label></TableColumnHeader>
+                    <TableColumnHeader><Label>EmployeeName</Label></TableColumnHeader>
+                    <TableColumnHeader><Label>State</Label></TableColumnHeader>
+                    <TableColumnHeader><Label>Type</Label></TableColumnHeader>
+                    <TableColumnHeader><Label>CreationDate</Label></TableColumnHeader>
+                    <TableColumnHeader><Label>CreationMode</Label></TableColumnHeader>
+                    <TableColumnHeader><Label>EmployeeId</Label></TableColumnHeader>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Id</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Date</PropertyName>
+                                <FormatString>yyyy-MM-dd HH:mm:ss</FormatString>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>DayOfWeek</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EmployeeName</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>State</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Type</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>CreationDate</PropertyName>
+                                <FormatString>yyyy-MM-dd</FormatString>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>CreationMode</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EmployeeId</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+        <View>
+            <Name>List_TANSS.TimeStamp</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.TimeStamp</TypeName>
+            </ViewSelectedBy>
+            <ListControl>
+                <ListEntries>
+                    <ListEntry>
+                        <ListItems>
+                            <ListItem>
+                                <PropertyName>Id</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Date</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>DayOfWeek</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>EmployeeName</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>EmployeeId</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>State</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Type</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>CreationDate</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>CreationMode</PropertyName>
+                            </ListItem>
+                        </ListItems>
+                    </ListEntry>
+                </ListEntries>
+            </ListControl>
+        </View>
+        <View>
+            <Name>Wide_TANSS.TimeStamp</Name>
+            <ViewSelectedBy>
+                <TypeName>TANSS.TimeStamp</TypeName>
+            </ViewSelectedBy>
+            <WideControl>
+                <AutoSize />
+                <WideEntries>
+                    <WideEntry>
+                        <WideItem>
+                            <PropertyName>Id</PropertyName>
+                        </WideItem>
+                    </WideEntry>
+                </WideEntries>
+            </WideControl>
+        </View>
     </ViewDefinitions>
 </Configuration>

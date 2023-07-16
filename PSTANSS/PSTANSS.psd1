@@ -88,7 +88,11 @@
         'Get-TANSSProject',
         'New-TANSSProject',
         'Remove-TANSSProject',
-        'Get-TANSSProjectPhase'
+        'Get-TANSSProjectPhase',
+
+        # TimeStamps
+        'New-TANSSTimeStamp',
+        'Get-TANSSTimeStamp'
     )
 
     # Cmdlets to export from this module
