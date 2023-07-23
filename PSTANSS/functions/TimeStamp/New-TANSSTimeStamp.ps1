@@ -6,6 +6,32 @@
     .DESCRIPTION
         Add a new timestamp into the service
 
+    .PARAMETER State
+        The state to stamp. Has to be one of the value:
+        "Coming", "Leaving", "StartPause", "EndPause"
+        (Tabcompletaion available)
+
+    .PARAMETER Type
+        The type of record for you stamp a state.
+        Available types:
+        "Work", "Inhouse", "Errand", "Vacation", "Illness", "PaidAbsence", "UnpaidAbsence", "Overtime", "Support"
+        Default type is: "Work"
+
+    .PARAMETER Date
+        The date of the timestamp
+
+    .PARAMETER EmployeeId
+        ID of the employee to timestamp for.
+        If nothing is specified the currently logged in employee will be used
+
+    .PARAMETER EmployeeName
+        The name of the employee to timestamp for.
+        Tabcompletion available for all known employees
+        If nothing is specified the currently logged in employee will be used
+
+    .PARAMETER AutoPause
+        Tells the api to set autoPause to true
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
@@ -38,18 +64,23 @@
         ConfirmImpact = 'Medium'
     )]
     Param(
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true, Position = 0)]
         [ValidateSet("Coming", "Leaving", "StartPause", "EndPause")]
         [string]
         $State,
 
+        [Parameter(Position = 1)]
         [ValidateSet("Work", "Inhouse", "Errand", "Vacation", "Illness", "PaidAbsence", "UnpaidAbsence", "Overtime", "Support")]
         [ValidateNotNullOrEmpty()]
         [String]
         $Type = "Work",
 
+        [Parameter(Position = 2)]
         [datetime]
-        $Date,
+        $Date,# = (Get-Date),
+
+        [bool]
+        $AutoPause,
 
         [Parameter(
             ParameterSetName = "ById",
@@ -65,8 +96,16 @@
         [string[]]
         $EmployeeName,
 
-        [bool]
-        $AutoPause,
+        [Parameter(
+            ParameterSetName = "ById",
+            Mandatory = $true
+        )]
+        [Parameter(
+            ParameterSetName = "ByName",
+            Mandatory = $true
+        )]
+        [TANSS.Connection]
+        $ServiceToken,
 
         [TANSS.Connection]
         $Token
@@ -101,6 +140,10 @@
                 }
             }
 
+            "ById" {
+                # Nothing to do
+            }
+
             Default {
                 Stop-PSFFunction -Message "Unhandeled ParameterSetName. Developers mistake." -EnableException $true -Cmdlet $pscmdlet
             }
@@ -132,16 +175,26 @@
         }
 
         # compile api path
-        $apiPath = Format-ApiPath -Path "api/v1/timestamps"
-        if($AutoPause) { $apiPath = $apiPath + "?autoPause=true"}
+        $paramFormatApiPath = @{}
+        if ($AutoPause) { $paramFormatApiPath.Add("autoPause", 'true') }
+        if($parameterSetName -like "Default") {
+            $apiPath = Format-ApiPath -Path "/api/v1/timestamps" -QueryParameter $paramFormatApiPath
+        } else {
+            $apiPath = Format-ApiPath -Path "/api/timestamps/v1" -QueryParameter $paramFormatApiPath
+        }
+        $apiPath = $apiPath.TrimEnd("?")
 
         foreach ($id in $EmployeeId) {
             $name = ConvertFrom-NameCache -Id $id -Type "Employees"
             Write-PSFMessage -Level Verbose -Message "Working on employee '$($name)' (Id $($id))" -Tag "TimeStamp", "Stamping"
 
+            #$apiPath = Format-ApiPath -Path "/api/v1/timestamps/$id/day/$(Get-Date -Date $date.Date -Format "yyyy-MM-dd")" -QueryParameter $paramFormatApiPath
+            #$apiPath = $apiPath.TrimEnd("?")
+
             # Compile body object
             $body = @{
                 "employeeId" = $id
+                #"date"       = [int32][double]::Parse((Get-Date -Date $Date.ToUniversalTime() -UFormat %s))
                 "state"      = $apiStateText
                 "type"       = $apiTypeText
             }
@@ -152,14 +205,26 @@
                 Write-PSFMessage -Level Verbose -Message "New timestamp for employee '$($name)' (ID: $($id)) with state '$($State)'" -Tag "TimeStamp", "Stamping"
 
                 # Push data into service
-                $response = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body
+                $paramInvokeTANSSRequest = @{
+                    "Type" = "POST"
+                    "ApiPath" = $apiPath
+                    "Body" = $body
+                }
+                # Choose token for "personal writing" or "delegated writing for other employees"
+                if($parameterSetName -like "Default") {
+                    $paramInvokeTANSSRequest.Add("Token",$Token)
+                } else {
+                    $paramInvokeTANSSRequest.Add("Token",$ServiceToken)
+                }
+
+                $response = Invoke-TANSSRequest @paramInvokeTANSSRequest
                 Write-PSFMessage -Level Verbose -Message "$($response.meta.text) - Timestamp Id '$($response.content.id)' with status '$($response.content.state)'" -Tag "TimeStamp", "Stamping", "TimeStampRequestResult"
 
-                #Push-DataToCacheRunspace -MetaData $response.meta
-
-                [TANSS.TimeStamp]@{
-                    BaseObject = $response.content
-                    Id         = $response.content.id
+                if ($response) {
+                    [TANSS.TimeStamp]@{
+                        BaseObject = $response.content
+                        Id         = $response.content.id
+                    }
                 }
             }
         }

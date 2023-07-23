@@ -112,6 +112,9 @@
                 }
             }
 
+            "ById" {
+            }
+
             Default {
                 Stop-PSFFunction -Message "Unhandeled ParameterSetName. Developers mistake." -EnableException $true -Cmdlet $pscmdlet
             }
@@ -136,10 +139,6 @@
                 $apiParameters.Add("till", $till)
             } else {
                 $till = [int32][double]::Parse((Get-Date -Date (Get-Date).Date.AddDays(1).ToUniversalTime() -UFormat %s))
-                $apiParameters.Add("till", $till)
-            }
-            if ($Start -and (-not $End)) {
-                $till = [int32][double]::Parse((Get-Date -Date $Start.Date.AddDays(1).ToUniversalTime() -UFormat %s))
                 $apiParameters.Add("till", $till)
             }
 
