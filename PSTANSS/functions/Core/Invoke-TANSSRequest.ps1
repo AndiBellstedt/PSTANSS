@@ -90,13 +90,14 @@
     }
 
     end {
-        if(-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
+        if(-not $Token) {$Token = Get-TANSSRegisteredAccessToken }
+        Invoke-TANSSTokenCheck -Token $Token
 
         $ApiPath = Format-ApiPath -Path $ApiPath -QueryParameter $QueryParameter
 
         # Body
         if ($Body) {
-            $bodyData = $Body | ConvertTo-Json
+            $bodyData = $Body | ConvertTo-Json -Compress
         } else {
             $bodyData = $null
         }
@@ -130,20 +131,20 @@
         }
 
         if ($pscmdlet.ShouldProcess("$($Type) web REST call against URL '$($param.Uri)'", "Invoke")) {
-            Write-PSFMessage -Level Verbose -Message "Invoke $($Type) web REST call against URL '$($param.Uri)'"
+            Write-PSFMessage -Level Verbose -Message "Invoke $($Type) web REST call against URL '$($param.Uri)'" -Tag "TANSSApiRequest" -Data @{ "body" = $bodyData; "Method" = $Type}
 
             try {
                 $response = Invoke-RestMethod @param
-                Write-PSFMessage -Level System -Message "API Response: $($response.meta.text)"
+                Write-PSFMessage -Level System -Message "API Response: $($response.meta.text)" -Tag "TANSSApiRequest", "SuccessfulRequest" -Data @{ "response" = $response }
             } catch {
                 if($invokeError[0].Message.StartsWith("{")) {
                     $response = $invokeError[0].Message | ConvertFrom-Json -ErrorAction SilentlyContinue
                 }
 
                 if($response) {
-                    Write-PSFMessage -Level Error -Message "$($response.Error.text) - $($response.Error.localizedText)" -Exception $response.Error.type -Tag "REST call $($Type)"
+                    Write-PSFMessage -Level Error -Message "$($response.Error.text) - $($response.Error.localizedText)" -Tag "TANSSApiRequest", "FailedRequest" -Exception $response.Error.type -Tag "REST call $($Type)" -PSCmdlet $pscmdlet
                 } else {
-                    Write-PSFMessage -Level Error -Message "$($invokeError[0].Source) ($($invokeError[0].HResult)): $($invokeError[0].Message)" -Exception $invokeError[0].InnerException -Tag "REST call $($Type)" -ErrorRecord $invokeError[0].ErrorRecord
+                    Write-PSFMessage -Level Error -Message "$($invokeError[0].Source) ($($invokeError[0].HResult)): $($invokeError[0].Message)" -Tag "TANSSApiRequest", "FailedRequest" -Exception $invokeError[0].InnerException -Tag "REST call $($Type)" -ErrorRecord $invokeError[0].ErrorRecord  -PSCmdlet $pscmdlet
                 }
 
                 return
