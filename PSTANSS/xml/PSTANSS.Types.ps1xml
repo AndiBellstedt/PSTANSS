@@ -2779,9 +2779,6 @@
                         [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($this.BaseObject.creationDate).ToLocalTime()
                     }
                 </GetScriptBlock>
-                <SetScriptBlock>
-                    $this.BaseObject.creationDate = Get-Date -UFormat %s -Date $args[0].Date.ToUniversalTime()
-                </SetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
@@ -2789,9 +2786,6 @@
                 <GetScriptBlock>
                     $this.BaseObject.creationMode
                 </GetScriptBlock>
-                <SetScriptBlock>
-                    $this.BaseObject.creationMode = $args[0]
-                </SetScriptBlock>
             </ScriptProperty>
 
             <CodeProperty IsHidden="true">
