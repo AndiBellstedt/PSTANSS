@@ -32,6 +32,13 @@
     .PARAMETER AutoPause
         Tells the api to set autoPause to true
 
+    .PARAMETER ServiceToken
+        A timestamp api service token generated within TANSS.
+        ServiceToken hast to be specified as a TANSS.Connection.
+
+        A ServiceToken is required, if timestamps for other employees than the logged in one, are used
+        to be written into the service.
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
@@ -63,6 +70,7 @@
         PositionalBinding = $true,
         ConfirmImpact = 'Medium'
     )]
+    [OutputType([TANSS.TimeStamp])]
     Param(
         [Parameter(Mandatory = $true, Position = 0)]
         [ValidateSet("Coming", "Leaving", "StartPause", "EndPause")]
@@ -77,7 +85,7 @@
 
         [Parameter(Position = 2)]
         [datetime]
-        $Date,# = (Get-Date),
+        $Date,
 
         [bool]
         $AutoPause,
@@ -149,52 +157,30 @@
             }
         }
 
-        switch ($State) {
-            "Coming" { $apiStateText = "ON" }
-            "Leaving" { $apiStateText = "OFF" }
-            "StartPause" { $apiStateText = "PAUSE_START" }
-            "EndPause" { $apiStateText = "PAUSE_END" }
-            Default {
-                Stop-PSFFunction -Message "Unhandeled ParameterSetName. Developers mistake." -EnableException $true -Cmdlet $pscmdlet
-            }
-        }
+        $apiStateText = ConvertFrom-TANSSTimeStampParameters -Text $State -TextType State
+        $apiTypeText = ConvertFrom-TANSSTimeStampParameters -Text $Type -TextType Type
 
-        switch ($Type) {
-            "Work" { $apiTypeText = "WORK" }
-            "Inhouse" { $apiTypeText = "INHOUSE" }
-            "Errand" { $apiTypeText = "ERRAND" }
-            "Vacation" { $apiTypeText = "VACATION" }
-            "Illness" { $apiTypeText = "ILLNESS" }
-            "PaidAbsence" { $apiTypeText = "ABSENCE_PAID" }
-            "UnpaidAbsence" { $apiTypeText = "ABSENCE_UNPAID" }
-            "Overtime" { $apiTypeText = "OVERTIME" }
-            "Support" { $apiTypeText = "DOCUMENTED_SUPPORT" }
-            Default {
-                Stop-PSFFunction -Message "Unhandeled ParameterSetName. Developers mistake." -EnableException $true -Cmdlet $pscmdlet
-            }
-        }
-
-        # compile api path
+        # Compile api path
         $paramFormatApiPath = @{}
         if ($AutoPause) { $paramFormatApiPath.Add("autoPause", 'true') }
-        if($parameterSetName -like "Default") {
+        if ($parameterSetName -like "Default") {
+            # Use the "personal" api path
             $apiPath = Format-ApiPath -Path "/api/v1/timestamps" -QueryParameter $paramFormatApiPath
         } else {
+            # Use the api path for api keys -> this one can write timestamps for other employees then the logged in one
             $apiPath = Format-ApiPath -Path "/api/timestamps/v1" -QueryParameter $paramFormatApiPath
         }
-        $apiPath = $apiPath.TrimEnd("?")
 
+        # Work through employees
         foreach ($id in $EmployeeId) {
             $name = ConvertFrom-NameCache -Id $id -Type "Employees"
             Write-PSFMessage -Level Verbose -Message "Working on employee '$($name)' (Id $($id))" -Tag "TimeStamp", "Stamping"
 
             #$apiPath = Format-ApiPath -Path "/api/v1/timestamps/$id/day/$(Get-Date -Date $date.Date -Format "yyyy-MM-dd")" -QueryParameter $paramFormatApiPath
-            #$apiPath = $apiPath.TrimEnd("?")
 
             # Compile body object
             $body = @{
                 "employeeId" = $id
-                #"date"       = [int32][double]::Parse((Get-Date -Date $Date.ToUniversalTime() -UFormat %s))
                 "state"      = $apiStateText
                 "type"       = $apiTypeText
             }
@@ -206,15 +192,17 @@
 
                 # Push data into service
                 $paramInvokeTANSSRequest = @{
-                    "Type" = "POST"
+                    "Type"    = "POST"
                     "ApiPath" = $apiPath
-                    "Body" = $body
+                    "Body"    = $body
                 }
                 # Choose token for "personal writing" or "delegated writing for other employees"
-                if($parameterSetName -like "Default") {
-                    $paramInvokeTANSSRequest.Add("Token",$Token)
+                if ($parameterSetName -like "Default") {
+                    # Use standard user specific token to write timestamps for logged in user only
+                    $paramInvokeTANSSRequest.Add("Token", $Token)
                 } else {
-                    $paramInvokeTANSSRequest.Add("Token",$ServiceToken)
+                    # Use serviceToken to allow writing for other employees then the logged in one
+                    $paramInvokeTANSSRequest.Add("Token", $ServiceToken)
                 }
 
                 $response = Invoke-TANSSRequest @paramInvokeTANSSRequest
