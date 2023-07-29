@@ -11,10 +11,20 @@
         This function allows you to create a service token to give to other functions,
         that require such a token.
 
-    .PARAMETER Token
-        The TANSS.Connection token to access api
+    .PARAMETER Server
+        Name of the service the token is generated from
 
-        If not specified, the registered default token from within the module is going to be used
+    .PARAMETER ServiceToken
+        A API token generated within Tanss to access specific TANSS modules explicit via
+        API service as a non-employee-account.
+
+        For security reaons, the parameter only accept secure strings.
+        Please avoid plain-text for sensitive informations!
+        To generate secure strings use:
+        $ServiceTokenSecureString = Read-Host -AsSecureString
+
+    .PARAMETER Protocol
+        Specifies if the service connection is done with http or https
 
     .PARAMETER WhatIf
         If this switch is enabled, no actions are performed but informational messages will be displayed that explain what would happen if the command were to run.
@@ -23,9 +33,12 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        PS C:\>
+        PS C:\> $tanssServiceToken = New-TANSSServiceToken -Server "tanss.corp.company.com" -ServiceToken $ServiceTokenSecureString
 
+        Outputs a ServiceToken as a TANSS.Connection object for "tanss.corp.company.com" with the api key from the variable $ServiceTokenSecureString
 
+        API variable $ServiceTokenSecureString hast to be a securestring.
+        ($ServiceTokenSecureString = Read-Host -AsSecureString)
 
     .NOTES
         Author: Andreas Bellstedt

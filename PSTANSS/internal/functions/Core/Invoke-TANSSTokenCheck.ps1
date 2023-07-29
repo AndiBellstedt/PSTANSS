@@ -12,15 +12,31 @@
     .PARAMETER NoRefresh
         Indicates that the function will not try to update the specified token
 
-
     .PARAMETER DoNotRegisterConnection
+        Do not register the connection as default connection
 
     .PARAMETER PassThru
+        Outputs the token to the console, even when the register switch is set
 
     .EXAMPLE
         PS C:\> Invoke-TANSSTokenCheck -Token $Token
 
         Test the TANSS.Connection object from variable $Token for validity
+        If the token has a lifetime under 5 percent, the function will try to update the token.
+        If the token matches the registered token within the module, the updated token will also be registered.
+
+    .EXAMPLE
+        PS C:\> Invoke-TANSSTokenCheck -Token $Token -NoRefresh
+
+        Test the TANSS.Connection object from variable $Token for validity, but will NOT try to update the token.
+        Considered for testing ServiceTokes, that can't be updated
+
+    .EXAMPLE
+        PS C:\> Invoke-TANSSTokenCheck -Token $Token -DoNotRegisterConnection -PassThru
+
+        Test the TANSS.Connection object from variable $Token for validity.
+        If the token has a lifetime under 5 percent, the function will try to update the token,
+        but not registered as the standard token for the module. Instead, the token will be outputted to the console.
 
     .NOTES
         Author: Andreas Bellstedt
@@ -33,6 +49,7 @@
         SupportsShouldProcess = $false,
         ConfirmImpact = 'Low'
     )]
+    [OutputType([TANSS.Connection])]
     Param(
         [Parameter(
             Mandatory = $true,
@@ -95,7 +112,7 @@
         }
 
         # Output if
-        if(-not $newToken -and $PassThru) {
+        if((-not $newToken) -and $PassThru) {
             $Token
         }
     }
