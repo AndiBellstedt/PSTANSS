@@ -6,6 +6,40 @@
     .DESCRIPTION
         Get docmented timestamps from TANSS
 
+    .PARAMETER Start
+        Starting date of the pariod to retreive timestamps for
+
+        If not specified,the current day will be received.
+
+    .PARAMETER End
+        Enddate of the pariod to retreive timestamps for
+
+        If not specified,the current day will be received.
+
+    .PARAMETER EmployeeId
+        The Id of the employee to retreive timestamps for
+
+        As a default, the Id of employee logged in will be used.
+
+    .PARAMETER EmployeeName
+        The name of the employee to retreive timestamps for
+
+        Tab completion available for known names
+
+    .PARAMETER State
+        The status of the timestamps to retreive
+
+        Available via tab completion:
+        "On", "Off", "StartPause", "EndPause"
+
+        As a default, all states are retreived.
+
+    .PARAMETER Type
+        The type for the period to stamp
+
+        Available via tab completion:
+        "Work", "Inhouse", "Errand", "Vacation", "Illness", "PaidAbsence", "UnpaidAbsence", "Overtime", "Support"
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
@@ -58,14 +92,14 @@
         [string[]]
         $EmployeeName,
 
-        [ValidateSet("On", "Off", "StartPause", "EndPause")]
-        [string]
+        [ValidateSet("Coming", "Leaving", "StartPause", "EndPause")]
+        [string[]]
         $State,
 
         [ValidateSet("Work", "Inhouse", "Errand", "Vacation", "Illness", "PaidAbsence", "UnpaidAbsence", "Overtime", "Support")]
         [ValidateNotNullOrEmpty()]
         [String]
-        $Type = "Work",
+        $Type,
 
         [TANSS.Connection]
         $Token
@@ -113,6 +147,7 @@
             }
 
             "ById" {
+                # Nothing to do, Id is already in place
             }
 
             Default {
@@ -153,9 +188,30 @@
 
             # Output response
             foreach ($item in $response.content.timestamps) {
-                [TANSS.TimeStamp]@{
+                Write-PSFMessage -Level System -Message "Create TANSS.TimeStamp object id '$($item.id)' ($( Get-Date -Date ( [datetime]::new(1970, 1, 1, 0, 0, 0, 0, [DateTimeKind]::Utc).AddSeconds($item.date).ToLocalTime()) -Format 'yyyy-MM-dd' ), $($item.type), $($item.state) )" -Tag "TimeStamp", "TimeStampRequestResult"
+
+                # Create object
+                $output = [TANSS.TimeStamp]@{
                     BaseObject = $item
                     Id         = $item.id
+                }
+
+                # filter output
+                Write-PSFMessage -Level System -Message "Client side filtering for TANSS.TimeStamp object id '$($item.id)'" -Tag "TimeStamp", "TimeStampRequestResult"
+                if ($State) {
+                    $output = $output | Where-Object State -in $State
+                }
+
+                if ($Type) {
+                    $output = $output | Where-Object State -in $Type
+                }
+
+                if($output) {
+                    # Output the result
+                    Write-PSFMessage -Level System -Message "Ouput TANSS.TimeStamp object id '$($item.id)'" -Tag "TimeStamp", "TimeStampRequestResult"
+                    $output
+                } else {
+                    Write-PSFMessage -Level System -Message "TANSS.TimeStamp object id '$($item.id)' is not going to output, because of client side filtering" -Tag "TimeStamp", "TimeStampRequestResult"
                 }
             }
         }
