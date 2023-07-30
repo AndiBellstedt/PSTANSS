@@ -129,26 +129,30 @@
         Write-PSFMessage -Level Debug -Message "ParameterNameSet: $($parameterSetName)"
 
         switch ($parameterSetName) {
-            "Default" { $EmployeeId = $Token.EmployeeId }
+            "Default" {
+                Write-PSFMessage -Level System -Message "Using EmployeeId '$($Token.EmployeeId)' of '$($Token.UserName)' from given Token" -Tag "TimeStamp", "ParameterSetting"
+                $EmployeeId = $Token.EmployeeId
+            }
 
             "ByName" {
-                Write-PSFMessage -Level System -Message "Convert EmployeeId from EmployeeName" -Tag "TimeStamp", "EmployeeName"
+                Write-PSFMessage -Level System -Message "Convert EmployeeId from EmployeeName" -Tag "TimeStamp", "ParameterSetting"
                 $EmployeeId = @()
 
                 foreach ($name in $EmployeeName) {
-                    Write-PSFMessage -Level System -Message "Working on employee name '$($name)'" -Tag "TimeStamp", "EmployeeName"
+                    Write-PSFMessage -Level System -Message "Working on employee name '$($name)'" -Tag "TimeStamp", "ParameterSetting"
 
                     $id = ConvertFrom-NameCache -Name $name -Type "Employees"
                     if (-not $id) {
-                        Write-PSFMessage -Level Warning -Message "No Id for employee '$($name)' found" -Tag "TimeStamp", "EmployeeName", "Warning"
+                        Write-PSFMessage -Level Warning -Message "No Id for employee '$($name)' found" -Tag "TimeStamp", "ParameterSetting", "Warning"
                     } else {
-                        Write-PSFMessage -Level System -Message "Found id '$($id)' for employee '$($name)'" -Tag "TimeStamp", "EmployeeName"
+                        Write-PSFMessage -Level System -Message "Found id '$($id)' for employee '$($name)'" -Tag "TimeStamp", "ParameterSetting"
                         $EmployeeId += $id
                     }
                 }
             }
 
             "ById" {
+                Write-PSFMessage -Level System -Message "EmployeeId '$($Token.EmployeeId)' already given to function" -Tag "TimeStamp", "ParameterSetting"
                 # Nothing to do
             }
 
@@ -176,8 +180,6 @@
             $name = ConvertFrom-NameCache -Id $id -Type "Employees"
             Write-PSFMessage -Level Verbose -Message "Working on employee '$($name)' (Id $($id))" -Tag "TimeStamp", "Stamping"
 
-            #$apiPath = Format-ApiPath -Path "/api/v1/timestamps/$id/day/$(Get-Date -Date $date.Date -Format "yyyy-MM-dd")" -QueryParameter $paramFormatApiPath
-
             # Compile body object
             $body = @{
                 "employeeId" = $id
@@ -199,9 +201,11 @@
                 # Choose token for "personal writing" or "delegated writing for other employees"
                 if ($parameterSetName -like "Default") {
                     # Use standard user specific token to write timestamps for logged in user only
+                    Write-PSFMessage -Level System -Message "Using Employee token from connection for API call" -Tag "TimeStamp", "ParameterSetting"
                     $paramInvokeTANSSRequest.Add("Token", $Token)
                 } else {
                     # Use serviceToken to allow writing for other employees then the logged in one
+                    Write-PSFMessage -Level System -Message "Using token from serviceToken parameter for API call" -Tag "TimeStamp", "ParameterSetting"
                     $paramInvokeTANSSRequest.Add("Token", $ServiceToken)
                 }
 
