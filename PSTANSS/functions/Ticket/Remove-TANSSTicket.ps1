@@ -62,6 +62,7 @@
 
     begin {
         if (-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
+        Assert-CacheRunspaceRunning
     }
 
     process {
