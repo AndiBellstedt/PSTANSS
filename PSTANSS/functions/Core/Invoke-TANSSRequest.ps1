@@ -142,9 +142,9 @@
                 }
 
                 if($response) {
-                    Write-PSFMessage -Level Error -Message "$($response.Error.text) - $($response.Error.localizedText)" -Tag "TANSSApiRequest", "FailedRequest" -Exception $response.Error.type -Tag "REST call $($Type)" -PSCmdlet $pscmdlet
+                    Write-PSFMessage -Level Error -Message "$($response.Error.text) - $($response.Error.localizedText)" -Exception $response.Error.type -Tag "TANSSApiRequest", "FailedRequest", "REST call $($Type)" -Data $invokeError[0].Message -PSCmdlet $pscmdlet -ErrorRecord $invokeError[0].ErrorRecord
                 } else {
-                    Write-PSFMessage -Level Error -Message "$($invokeError[0].Source) ($($invokeError[0].HResult)): $($invokeError[0].Message)" -Tag "TANSSApiRequest", "FailedRequest" -Exception $invokeError[0].InnerException -Tag "REST call $($Type)" -ErrorRecord $invokeError[0].ErrorRecord  -PSCmdlet $pscmdlet
+                    Write-PSFMessage -Level Error -Message "$($invokeError[0].Source) ($($invokeError[0].HResult)): $($invokeError[0].Message)" -Exception $invokeError[0].InnerException -Tag "TANSSApiRequest", "FailedRequest", "REST call $($Type)" -ErrorRecord $invokeError[0].ErrorRecord  -PSCmdlet $pscmdlet -Data $invokeError[0].Message
                 }
 
                 return
