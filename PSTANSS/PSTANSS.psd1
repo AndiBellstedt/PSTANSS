@@ -93,7 +93,8 @@
 
         # TimeStamps
         'New-TANSSTimeStamp',
-        'Get-TANSSTimeStamp'
+        'Get-TANSSTimeStamp',
+        'Remove-TANSSTimeStamp'
     )
 
     # Cmdlets to export from this module
