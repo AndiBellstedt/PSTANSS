@@ -90,6 +90,9 @@
         'New-TANSSProject',
         'Remove-TANSSProject',
         'Get-TANSSProjectPhase',
+        'New-TANSSProjectPhase',
+        'Set-TANSSProjectPhase',
+        'Remove-TANSSProjectPhase',
 
         # TimeStamps
         'New-TANSSTimeStamp',
