@@ -1,10 +1,10 @@
 ﻿function New-TANSSProject {
     <#
-        .Synopsis
-            New-TANSSProject
+    .Synopsis
+        New-TANSSProject
 
-        .DESCRIPTION
-            Creates a project in TANSS, that can contain multiple tickets
+    .DESCRIPTION
+        Creates a project in TANSS, that can contain multiple tickets
 
     .PARAMETER Token
         The TANSS.Connection token to access api
