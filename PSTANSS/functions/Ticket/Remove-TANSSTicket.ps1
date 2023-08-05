@@ -83,6 +83,10 @@
                 Write-PSFMessage -Level Verbose -Message "Removing TicketID $($ticket.Id) '$($ticket.Title)' from TANSS" -Tag "Ticket"
 
                 Invoke-TANSSRequest -Type DELETE -ApiPath $apiPath -Token $Token -ErrorAction Stop -ErrorVariable invokeError
+
+                if(-not $invokeError) {
+                    [TANSS.Lookup]::Tickets.Remove("$($ticket.Id)")
+                }
             }
         }
     }
