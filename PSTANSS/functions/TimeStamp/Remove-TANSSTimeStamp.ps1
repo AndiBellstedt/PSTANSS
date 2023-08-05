@@ -1,10 +1,10 @@
 ﻿function Remove-TANSSTimeStamp {
     <#
     .Synopsis
-        Verb-Noun
+        Remove-TANSSTimeStamp
 
     .DESCRIPTION
-        Description
+        Remove a timestamp from TANSS
 
     .PARAMETER InputObject
         TANSS TimeStamp object to remove
