@@ -2624,20 +2624,45 @@
             <ScriptProperty>
                 <Name>BillingType</Name>
                 <GetScriptBlock>
-                    $this.BaseObject.billingType
+                    switch ($this.BaseObject.billingType) {
+                        "DEFAULT" { "InstantBillSupportActivities" }
+                        "TICKET_MUST_BE_CLOSED" { "BillClosedTicketOnly" }
+                        "ALL_TICKETS_MUST_BE_CLOSED" { "BillOnlyWhenAllTicketsClosed" }
+                        Default { $this.BaseObject.billingType }
+                    }
                 </GetScriptBlock>
                 <SetScriptBlock>
-                    $this.BaseObject.billingType = $args[0]
+                    switch ($args[0]) {
+                        "InstantBillSupportActivities" { $this.BaseObject.billingType = "DEFAULT" }
+                        "BillClosedTicketOnly" { $this.BaseObject.billingType = "TICKET_MUST_BE_CLOSED" }
+                        "BillOnlyWhenAllTicketsClosed" { $this.BaseObject.billingType = "ALL_TICKETS_MUST_BE_CLOSED" }
+                        Default {
+                            Write-Error "Unhandeled value in BillingType. $($args[0]) is not supported"
+                        }
+                    }
                 </SetScriptBlock>
             </ScriptProperty>
 
             <ScriptProperty>
                 <Name>ClearanceMode</Name>
                 <GetScriptBlock>
-                    $this.BaseObject.clearanceMode
+                    switch ($this.BaseObject.clearanceMode) {
+                        "DEFAULT" { "Default" }
+                        "DONT_CLEAR_SUPPORTS" { "ReleaseSupportOfUnresolvedTickets" }
+                        "MAY_CLEAR_SUPPORTS" { "LockSupportsOfUnresolvedTickets" }
+                        Default { $this.BaseObject.clearanceMode }
+                    }
+
                 </GetScriptBlock>
                 <SetScriptBlock>
-                    $this.BaseObject.clearanceMode = $args[0]
+                    switch ($args[0]) {
+                        "Default" { $this.BaseObject.clearanceMode = "DEFAULT" }
+                        "ReleaseSupportOfUnresolvedTickets" { $this.BaseObject.clearanceMode = "DONT_CLEAR_SUPPORTS" }
+                        "LockSupportsOfUnresolvedTickets" { $this.BaseObject.clearanceMode = "MAY_CLEAR_SUPPORTS" }
+                        Default {
+                            Write-Error "Unhandeled value in ClearanceMode. $($args[0]) is not supported"
+                        }
+                    }
                 </SetScriptBlock>
             </ScriptProperty>
 
