@@ -34,7 +34,7 @@
         https://github.com/AndiBellstedt/PSTANSS
     #>
     [CmdletBinding(
-        DefaultParameterSetName = "Default",
+        DefaultParameterSetName = "ByProject",
         SupportsShouldProcess = $false,
         PositionalBinding = $true,
         ConfirmImpact = 'Low'
@@ -80,6 +80,7 @@
             [array]$ProjectID = $Project.id
         }
 
+
         foreach ($projectIdItem in $ProjectID) {
             Write-PSFMessage -Level Verbose -Message "Working on project ID $($projectIdItem)"  -Tag "ProjectPhase", "Query"
 
@@ -89,14 +90,18 @@
             # query content
             $response = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token
             Push-DataToCacheRunspace -MetaData $response.meta
-            Write-PSFMessage -Level Verbose -Message "$($response.meta.text): Received $($response.meta.properties.extras.count) VacationEntitlement records in year $($Year)" -Tag "VacationEntitlement", "Query"
+            Write-PSFMessage -Level Verbose -Message "$($response.meta.text): Received $($response.meta.properties.extras.count) VacationEntitlement records in year $($Year)" -Tag "ProjectPhase", "Query"
 
             # create output
             foreach ($phase in $response.content) {
+                # output object
                 [TANSS.ProjectPhase]@{
                     BaseObject = $phase
                     Id         = $phase.id
                 }
+
+                # cache Lookup refresh
+                [TANSS.Lookup]::Phases[$phase.id] = $phase.name
             }
         }
     }
