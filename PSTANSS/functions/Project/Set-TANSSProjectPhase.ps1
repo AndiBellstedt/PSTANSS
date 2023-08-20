@@ -70,9 +70,16 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        PS C:\> New-TANSSProjectPhase
+        PS C:\> Set-TANSSProjectPhase -PhaseID $phase.Id -Name "NewPhaseName X"
 
+        Rename the phase from variable $phase to "NewPhaseName X"
+        $Phase has to be filled with a
 
+    .EXAMPLE
+        PS C:\> $phase | Set-TANSSProjectPhase -Name "NewPhaseName X"
+
+        Rename the phase from variable $phase to "NewPhaseName X"
+        $Phase has to be filled with a
 
     .NOTES
         Author: Andreas Bellstedt
@@ -112,7 +119,7 @@
             ValueFromPipeline = $true,
             Mandatory = $true
         )]
-        [TANSS.Project]
+        [TANSS.Ticket]
         $Project,
 
         [Parameter(
