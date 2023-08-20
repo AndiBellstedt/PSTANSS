@@ -14,6 +14,13 @@
         - New-TANSSTimeStamp
         - Remove-TANSSTimeStamp
         - Get-TANSSTimeStamp
+    - Core functions
+        - New-TANSSServiceToken:\
+          create Tokens from TANSS API keys
+- Update:
+    - Core functions
+        - Invoke-TANSSRequest:\
+          Parameter 'BodyForceArray' -> Tells the function always to invoke the data in the body as a JSON array formatted string
 
 ## 0.5.1 BugFix version (2023-07-09)
  - Fix: typo in command "technican" -> "technician"
