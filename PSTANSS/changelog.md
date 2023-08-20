@@ -1,4 +1,20 @@
 ﻿# Changelog
+## 0.6.0 New version (2023-08-20)
+- New: Timestamp & ProjectPhase functions
+    - Projects (basically alias functions ticket functions)
+        - New-TANSSProject
+        - Remove-TANSSProject
+        - Get-TANSSProject
+    - Project phase management
+        - New-TANSSProjectPhase
+        - Set-TANSSProjectPhase
+        - Remove-TANSSProjectPhase
+        - Get-TANSSProjectPhase
+    - TimeStamp (only functional when module is licensed within the software)
+        - New-TANSSTimeStamp
+        - Remove-TANSSTimeStamp
+        - Get-TANSSTimeStamp
+
 ## 0.5.1 BugFix version (2023-07-09)
  - Fix: typo in command "technican" -> "technician"
  - Update:
