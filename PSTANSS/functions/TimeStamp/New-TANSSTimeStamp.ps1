@@ -161,8 +161,8 @@
             }
         }
 
-        $apiStateText = ConvertFrom-TANSSTimeStampParameters -Text $State -TextType State
-        $apiTypeText = ConvertFrom-TANSSTimeStampParameters -Text $Type -TextType Type
+        $apiStateText = ConvertFrom-TANSSTimeStampParameter -Text $State -TextType State
+        $apiTypeText = ConvertFrom-TANSSTimeStampParameter -Text $Type -TextType Type
 
         # Compile api path
         $paramFormatApiPath = @{}

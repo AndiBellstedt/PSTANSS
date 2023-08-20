@@ -1,7 +1,7 @@
-﻿function ConvertFrom-TANSSTimeStampParameters {
+﻿function ConvertFrom-TANSSTimeStampParameter {
     <#
     .Synopsis
-        ConvertFrom-TANSSTimeStampParameters
+        ConvertFrom-TANSSTimeStampParameter
 
     .DESCRIPTION
         Convert display names for Type & State parameter into api texts
@@ -13,7 +13,7 @@
         Specifies if the text is a timestampe "state" or "type"
 
     .EXAMPLE
-        PS C:\> ConvertFrom-TANSSTimeStampParameters -Text "Coming" -TextType "State"
+        PS C:\> ConvertFrom-TANSSTimeStampParameter -Text "Coming" -TextType "State"
 
         Outputs "On" as a "comming state for TANSS api
 
