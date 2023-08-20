@@ -1,10 +1,10 @@
-﻿function Remove-TANSSTicket {
+﻿function Remove-TANSSProject {
     <#
-    .Synopsis
-        Remove-TANSSTicket
+        .Synopsis
+            Remove-TANSSProject
 
-    .DESCRIPTION
-        Delete a ticket in TANSS
+        .DESCRIPTION
+            Delete a project in TANSS
 
     .PARAMETER Token
         The TANSS.Connection token to access api
@@ -18,9 +18,9 @@
         If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
     .EXAMPLE
-        PS C:\> Remove-TANSSTicket -ID 10
+        PS C:\> Remove-TANSSProject -ID 100
 
-        Remove ticket with ticketID 10 from TANSS
+        Remove project with ticketID 100 from TANSS
 
     .NOTES
         Author: Andreas Bellstedt
@@ -28,12 +28,15 @@
     .LINK
         https://github.com/AndiBellstedt/PSTANSS
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidMultipleTypeAttributes", "")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSShouldProcess", "")]
     [CmdletBinding(
         DefaultParameterSetName = 'ById',
         SupportsShouldProcess = $true,
         PositionalBinding = $true,
         ConfirmImpact = 'High'
     )]
+    [OutputType([TANSS.Ticket])]
     param (
         # TANSS Ticket object to remove
         [Parameter(
@@ -52,45 +55,41 @@
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
-        [Alias("TicketId", "Ticket")]
+        [Alias("ProjectId", "Project","TicketId", "Ticket")]
         [int[]]
         $Id,
 
         [TANSS.Connection]
         $Token
     )
-
     begin {
-        if (-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
-        Assert-CacheRunspaceRunning
+        try {
+            $outBuffer = $null
+            if ($PSBoundParameters.TryGetValue('OutBuffer', [ref]$outBuffer)) {
+                $PSBoundParameters['OutBuffer'] = 1
+            }
+            $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand('Remove-TANSSTicket', [System.Management.Automation.CommandTypes]::Function)
+            $scriptCmd = {& $wrappedCmd @PSBoundParameters }
+            $steppablePipeline = $scriptCmd.GetSteppablePipeline()
+            $steppablePipeline.Begin($PSCmdlet)
+        } catch {
+            throw
+        }
     }
 
     process {
-        $parameterSetName = $pscmdlet.ParameterSetName
-        Write-PSFMessage -Level Debug -Message "ParameterNameSet: $($parameterSetName)"
-
-        if ($parameterSetName -like "ById") {
-            $InputObject = foreach ($idItem in $Id) {
-                Get-TANSSTicket -Id $idItem -ErrorAction Continue
-            }
-        }
-
-        foreach ($ticket in $InputObject) {
-            Write-PSFMessage -Level Verbose -Message "Working on TicketID $($ticket.Id) '$($ticket.Title)'"
-            $apiPath = Format-ApiPath -Path "api/v1/tickets/$($ticket.Id)"
-
-            if ($pscmdlet.ShouldProcess("TicketID $($ticket.Id) '$($ticket.Title)' from TANSS", "Remove")) {
-                Write-PSFMessage -Level Verbose -Message "Removing TicketID $($ticket.Id) '$($ticket.Title)' from TANSS" -Tag "Ticket"
-
-                Invoke-TANSSRequest -Type DELETE -ApiPath $apiPath -Token $Token -ErrorAction Stop -ErrorVariable invokeError
-
-                if(-not $invokeError) {
-                    [TANSS.Lookup]::Tickets.Remove("$($ticket.Id)")
-                }
-            }
+        try {
+            $steppablePipeline.Process($_)
+        } catch {
+            throw
         }
     }
 
     end {
+        try {
+            $steppablePipeline.End()
+        } catch {
+            throw
+        }
     }
 }

@@ -56,3 +56,15 @@ Register-PSFTeppArgumentCompleter -Command Request-TANSSVacationRequestObject -P
 
 Register-PSFTeppArgumentCompleter -Command Set-TANSSVacationEntitlement -Parameter EmployeeName -Name "PSTANSS.CacheLookup.Employees"
 #endregion Vacation
+
+
+#region TimeStamp
+Register-PSFTeppArgumentCompleter -Command Get-TANSSTimeStamp -Parameter EmployeeName -Name "PSTANSS.CacheLookup.Employees"
+
+Register-PSFTeppArgumentCompleter -Command New-TANSSTimeStamp -Parameter EmployeeName -Name "PSTANSS.CacheLookup.Employees"
+#endregion TimeStamp
+
+
+#region ProjektPhase
+Register-PSFTeppArgumentCompleter -Command Set-TANSSProjectPhase -Parameter PhaseName -Name "PSTANSS.CacheLookup.Phases"
+#endregion ProjektPhase

@@ -13,7 +13,7 @@
         The credentials to login
 
     .PARAMETER LoginToken
-        If the user needs an login token, this field must be set as well
+        If the user needs an -application specific- login token for MFA, this field must be set as well
 
     .PARAMETER Protocol
         Specifies if the connection is done with http or https

@@ -3,7 +3,7 @@
     RootModule         = 'PSTANSS.psm1'
 
     # Version number of this module.
-    ModuleVersion      = '0.5.1'
+    ModuleVersion      = '0.6.0'
 
     # ID used to uniquely identify this module
     GUID               = '1fc30b15-bde9-49ba-8763-d3b5060a99cd'
@@ -48,6 +48,7 @@
         'Update-TANSSAccessToken',
         'Find-TANSSObject',
         'Get-TANSSDepartment',
+        'New-TANSSServiceToken',
 
         # Ticket
         'New-TANSSTicket',
@@ -82,7 +83,21 @@
         'Request-TANSSVacationRequestObject',
         'Out-TANSSVacationRequestPdf',
         'Get-TANSSVacationEntitlement',
-        'Set-TANSSVacationEntitlement'
+        'Set-TANSSVacationEntitlement',
+
+        # Projects
+        'Get-TANSSProject',
+        'New-TANSSProject',
+        'Remove-TANSSProject',
+        'Get-TANSSProjectPhase',
+        'New-TANSSProjectPhase',
+        'Set-TANSSProjectPhase',
+        'Remove-TANSSProjectPhase',
+
+        # TimeStamps
+        'New-TANSSTimeStamp',
+        'Get-TANSSTimeStamp',
+        'Remove-TANSSTimeStamp'
     )
 
     # Cmdlets to export from this module

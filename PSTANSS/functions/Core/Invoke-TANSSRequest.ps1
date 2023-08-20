@@ -24,6 +24,9 @@
     .PARAMETER Pdf
         if a PDF should be queried, this switch must be specified
 
+    .PARAMETER BodyForceArray
+        Tells the function always to invoke the data in the body as a JSON array formatted string
+
     .PARAMETER Token
         The TANSS.Connection token to access api
 
@@ -70,7 +73,7 @@
         [hashtable]
         $QueryParameter,
 
-        [hashtable]
+        [hashtable[]]
         $Body,
 
         [hashtable]
@@ -78,6 +81,9 @@
 
         [switch]
         $Pdf,
+
+        [switch]
+        $BodyForceArray,
 
         [TANSS.Connection]
         $Token
@@ -90,15 +96,19 @@
     }
 
     end {
-        if(-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
+        if (-not $Token) { $Token = Get-TANSSRegisteredAccessToken }
+        Invoke-TANSSTokenCheck -Token $Token
 
         $ApiPath = Format-ApiPath -Path $ApiPath -QueryParameter $QueryParameter
 
         # Body
         if ($Body) {
-            $bodyData = $Body | ConvertTo-Json
+            $bodyData = $Body | ConvertTo-Json -Compress
         } else {
             $bodyData = $null
+        }
+        if ($BodyForceArray -and (-not ([string]$bodyData).StartsWith("["))) {
+            $bodyData = "[$($bodyData)]"
         }
 
 
@@ -107,7 +117,9 @@
             "apiToken" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Token.AccessToken))
         }
 
-        if($Pdf) { $header.Add("Accept","pdf") }
+
+        if ($Pdf) { $header.Add("Accept", "pdf") }
+
 
         if ($MyInvocation.BoundParameters['AdditionalHeader'] -and $AdditionalHeader) {
             foreach ($key in $AdditionalHeader.Keys) {
@@ -117,7 +129,7 @@
 
 
         # Invoke request
-        $param = @{
+        $param = [ordered]@{
             "Uri"           = "$($Token.Server)/$($ApiPath)"
             "Headers"       = $header
             "Body"          = $bodyData
@@ -130,20 +142,20 @@
         }
 
         if ($pscmdlet.ShouldProcess("$($Type) web REST call against URL '$($param.Uri)'", "Invoke")) {
-            Write-PSFMessage -Level Verbose -Message "Invoke $($Type) web REST call against URL '$($param.Uri)'"
+            Write-PSFMessage -Level Verbose -Message "Invoke $($Type) web REST call against URL '$($param.Uri)'" -Tag "TANSSApiRequest" -Data @{ "body" = $bodyData; "Method" = $Type }
 
             try {
                 $response = Invoke-RestMethod @param
-                Write-PSFMessage -Level System -Message "API Response: $($response.meta.text)"
+                Write-PSFMessage -Level System -Message "API Response: $($response.meta.text)" -Tag "TANSSApiRequest", "SuccessfulRequest" -Data @{ "response" = $response }
             } catch {
-                if($invokeError[0].Message.StartsWith("{")) {
+                if ($invokeError[0].Message.StartsWith("{")) {
                     $response = $invokeError[0].Message | ConvertFrom-Json -ErrorAction SilentlyContinue
                 }
 
-                if($response) {
-                    Write-PSFMessage -Level Error -Message "$($response.Error.text) - $($response.Error.localizedText)" -Exception $response.Error.type -Tag "REST call $($Type)"
+                if ($response) {
+                    Write-PSFMessage -Level Error -Message "$($response.Error.text) - $($response.Error.localizedText)" -Exception $response.Error.type -Tag "TANSSApiRequest", "FailedRequest", "REST call $($Type)" -Data @{ "Message" = $invokeError[0].Message } -PSCmdlet $pscmdlet -ErrorRecord $invokeError[0].ErrorRecord
                 } else {
-                    Write-PSFMessage -Level Error -Message "$($invokeError[0].Source) ($($invokeError[0].HResult)): $($invokeError[0].Message)" -Exception $invokeError[0].InnerException -Tag "REST call $($Type)" -ErrorRecord $invokeError[0].ErrorRecord
+                    Write-PSFMessage -Level Error -Message "$($invokeError[0].Source) ($($invokeError[0].HResult)): $($invokeError[0].Message)" -Exception $invokeError[0].InnerException -Tag "TANSSApiRequest", "FailedRequest", "REST call $($Type)" -ErrorRecord $invokeError[0].ErrorRecord  -PSCmdlet $pscmdlet -Data @{ "Message" = $invokeError[0].Message }
                 }
 
                 return

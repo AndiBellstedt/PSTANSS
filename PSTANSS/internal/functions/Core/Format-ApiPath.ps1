@@ -80,5 +80,6 @@
 
 
     # Output Result
+    $ApiPath = $ApiPath.TrimEnd("?")
     $ApiPath
 }
