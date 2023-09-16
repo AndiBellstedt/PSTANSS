@@ -257,7 +257,7 @@
         $apiPath = Format-ApiPath @paramFormatApiPath
 
         # Create phase
-        $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $phaseToSet -Token $Token
+        $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $phaseToSet -Token $Token -WhatIf:$false
         Write-PSFMessage -Level Verbose -Message "$($response.meta.text): $($response.content.adjustedPhases.name) (Rank: $($response.content.adjustedPhases.rank), Id: $($response.content.adjustedPhases.id))" -Tag "ProjectPhase", "Set", "Modify"
 
 

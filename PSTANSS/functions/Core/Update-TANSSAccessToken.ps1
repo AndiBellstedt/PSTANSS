@@ -126,7 +126,7 @@
                 # Make the connection the default connection for further commands
                 Write-PSFMessage -Level Significant -Message "Updating AccessToken for service '($($token.Server))' as '$($token.UserName)' and register it as default connection" -Tag "Connection"
 
-                Register-TANSSAccessToken -Token $token
+                Register-TANSSAccessToken -Token $token -WhatIf:$false
 
                 if ($PassThru) {
                     Write-PSFMessage -Level System -Message "Outputting TANSS.Connection object" -Tag "Connection"

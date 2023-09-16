@@ -441,7 +441,7 @@
             if ($pscmdlet.ShouldProcess("TicketID $($ticket.Id) with $(if($NewTitle){"new "})title '$(if($NewTitle){$NewTitle}else{$ticket.Title})'", "Update")) {
                 Write-PSFMessage -Level Verbose -Message "Updating TicketID $($ticket.Id) with $(if($NewTitle){"new "})title '$(if($NewTitle){$NewTitle}else{$ticket.Title})'" -Tag "Ticket" -Data $body
 
-                $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token
+                $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false
 
                 if ($response) {
                     Write-PSFMessage -Level Verbose -Message "API Response: $($response.meta.text)"

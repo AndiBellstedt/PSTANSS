@@ -214,7 +214,7 @@
                 Write-PSFMessage -Level Verbose -Message "New phase '$($nameItem)' in project id $($ProjectID)" -Tag "ProjectPhase", "New"
 
                 # invoke api call
-                $response = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $phaseToCreate -Token $Token
+                $response = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $phaseToCreate -Token $Token -WhatIf:$false
 
                 Write-PSFMessage -Level Verbose -Message "$($response.meta.text): $($response.content.name) (Rank: $($response.content.rank), Id: $($response.content.id))" -Tag "ProjectPhase", "New", "CreatedSuccessfully"
 

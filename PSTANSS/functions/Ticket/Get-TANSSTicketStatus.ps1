@@ -69,7 +69,7 @@
         Assert-CacheRunspaceRunning
 
         $apiPath = Format-ApiPath -Path "api/v1/tickets/status"
-        $ticketStates = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token | Select-Object -ExpandProperty content
+        $ticketStates = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token -WhatIf:$false | Select-Object -ExpandProperty content
 
 
         [array]$filteredTicketStates = @()

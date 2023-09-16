@@ -72,7 +72,7 @@
         $response += foreach ($companyId in $FreelancerCompanyId) {
             $queryParameter = @{}
 
-            if($MyInvocation.BoundParameters['ExcludeRestrictedLicenseUser'] -and $ExcludeRestrictedLicenseUser) {
+            if ($MyInvocation.BoundParameters['ExcludeRestrictedLicenseUser'] -and $ExcludeRestrictedLicenseUser) {
                 $queryParameter.Add("restrictedLicenses", $false)
             } else {
                 $queryParameter.Add("restrictedLicenses", $true)
@@ -87,6 +87,7 @@
                 "Type"    = "GET"
                 "ApiPath" = (Format-ApiPath -Path $apiPath -QueryParameter $queryParameter)
                 "Token"   = $Token
+                "WhatIf"  = $false
             }
 
             Invoke-TANSSRequest @invokeParam
@@ -138,6 +139,7 @@
                         "Type"    = "GET"
                         "ApiPath" = (Format-ApiPath -Path "api/v1/employees/$($technician.id)")
                         "Token"   = $Token
+                        "WhatIf"  = $false
                     }
 
                     $employeeResponse = Invoke-TANSSRequest @invokeParam

@@ -100,7 +100,6 @@
                     "ApiPath" = $apiPath
                     "Token"   = $Token
                     "WhatIf"  = $false
-                    "Verbose" = $false
                 }
                 $response = Invoke-TANSSRequest @paramInvokeTANSSRequest
                 Push-DataToCacheRunspace -MetaData $response.meta -Verbose:$false
@@ -116,6 +115,7 @@
                     "ApiPath"        = $apiPath
                     "Token"          = $Token
                     "BodyForceArray" = $true
+                    "WhatIf"         = $false
                 }
                 if ($body) { $paramInvokeTANSSRequest.Add("body", $body) }
 

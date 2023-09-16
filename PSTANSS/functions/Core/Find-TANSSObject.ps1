@@ -225,7 +225,7 @@
                         }
                     }
 
-                    $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token
+                    $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false
 
                     if ($response.content.companies) {
                         $countCompanyAll = ([array]($response.content.companies)).count
@@ -276,7 +276,7 @@
                     if("GetCategories" -in $PSCmdlet.MyInvocation.BoundParameters.Keys) { $body.configs.employee.Add("categories", $GetCategories) }
                     if("GetCallbacks" -in $PSCmdlet.MyInvocation.BoundParameters.Keys) { $body.configs.employee.Add("callbacks", $GetCallbacks) }
 
-                    $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token
+                    $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false
 
                     if ($response.content.employees) {
                         $countEmployeeAll = ([array]($response.content.employees)).count
@@ -311,7 +311,7 @@
                     if($CompanyId) { $body.configs.employee.Add("companyId", $CompanyId) }
                     if($PreviewContentMaxChars) { $body.configs.employee.Add("previewContentMaxChars", $PreviewContentMaxChars) }
 
-                    $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token
+                    $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false
 
                     if ($response.content.Tickets) {
                         $countTicketsAll = ([array]($response.content.Tickets)).count

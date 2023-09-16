@@ -145,7 +145,7 @@
                 foreach ($id in $EmployeeId) {
                     Write-PSFMessage -Level Verbose -Message "Working on employee id $($id)"
 
-                    $response = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/employees/$($id)" -Token $Token
+                    $response = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/employees/$($id)" -Token $Token -WhatIf:$false
 
                     if ($response.meta.text -like "Object found") {
 
@@ -176,7 +176,7 @@
                 foreach ($id in $CompanyId) {
                     Write-PSFMessage -Level Verbose -Message "Query employee(s) for company id $($id)"
 
-                    $response = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/companies/$($id)/employees" -Token $Token
+                    $response = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/companies/$($id)/employees" -Token $Token -WhatIf:$false
 
                     if ($response.meta.text -like "Object found") {
 

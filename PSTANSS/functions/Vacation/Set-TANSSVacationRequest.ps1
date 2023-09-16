@@ -202,7 +202,7 @@
 
                 # Query VacationRequest by ID
                 $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/$($requesterId)"
-                $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token -Confirm:$false
+                $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token -Confirm:$false -WhatIf:$false
 
                 # Output result
                 Write-PSFMessage -Level Verbose -Message "$($response.meta.text): VacationRequestId $($requesterId)" -Tag "VacationRequest", "Query"
@@ -302,7 +302,7 @@
                 Write-PSFMessage -Level Verbose -Message "Set VacationRequest for employeeId '$($vacationRequest.EmployeeId)' with $($vacationRequest.days | Measure-Object | Select-Object -ExpandProperty Count) days on planningType '$($vacationRequest.Type)' on dates '$(Get-Date -Date $vacationRequest.StartDate -Format 'yyyy-MM-dd')'-'$(Get-Date -Date $vacationRequest.EndDate -Format 'yyyy-MM-dd')'" -Tag "VacationRequest", "Set"
 
                 # Create the object within TANSS
-                $result = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token
+                $result = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false
                 Write-PSFMessage -Level Verbose -Message "$($result.meta.text) - RequestId '$($result.content.id)' with status '$($result.content.status)'" -Tag "VacationRequest", "VactionRequestObject", "VacationRequestResult"
 
                 # output the result

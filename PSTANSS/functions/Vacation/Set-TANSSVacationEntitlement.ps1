@@ -151,7 +151,7 @@
                 }
 
                 # Set entitlement
-                $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token
+                $response = Invoke-TANSSRequest -Type PUT -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false
 
                 # Output result
                 if ($PassThru) {

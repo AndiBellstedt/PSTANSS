@@ -358,7 +358,7 @@
         if ($pscmdlet.ShouldProcess("Employee '$($Name)' on companyID '$([string]::Join(", ", $CompanyId))'", "New")) {
             Write-PSFMessage -Level Verbose -Message "Creating new employee '$($Name)' on companyID '$([string]::Join(", ", $CompanyId))'" -Tag "Employee" -Data $body
 
-            $response = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token
+            $response = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false
 
             if ($response) {
                 Write-PSFMessage -Level Verbose -Message "API Response: $($response.meta.text)"

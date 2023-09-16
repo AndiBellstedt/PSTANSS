@@ -109,7 +109,7 @@
 
                 # Query VacationRequest by ID
                 $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/$($requesterId)"
-                $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token
+                $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token -WhatIf:$false
 
                 # Output result
                 Write-PSFMessage -Level Verbose -Message "$($response.meta.text): VacationRequestId $($requesterId)" -Tag "VacationRequest", "Query"
@@ -150,7 +150,7 @@
 
                     # Set status on VacationRequest
                     $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/$($vacationRequest.Id)"
-                    $response = Invoke-TANSSRequest -Type "PUT" -ApiPath $apiPath -Body $body -Token $Token
+                    $response = Invoke-TANSSRequest -Type "PUT" -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false
                     Write-PSFMessage -Level Verbose -Message "VacationRequestId '$($vacationRequest.Id)' - $($response.meta.text)" -Tag "VacationRequest", "Set"
 
                     # Output if Passthrough is set

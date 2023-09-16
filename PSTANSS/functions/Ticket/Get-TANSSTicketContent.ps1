@@ -104,7 +104,7 @@
                 Write-PSFMessage -Level Verbose -Message "Getting documents from ticket $($ticketIdItem)"  -Tag "TicketContent", "Query", "QueryDocuments"
 
                 $apiPath = Format-ApiPath -Path "api/v1/tickets/$ticketIdItem/documents"
-                $response = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token
+                $response = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token -WhatIf:$false
                 Push-DataToCacheRunspace -MetaData $response.meta
 
                 if ($response.content) {
@@ -116,7 +116,7 @@
                         $apiPath = Format-ApiPath -Path "api/v1/tickets/$ticketIdItem/documents/$($document.id)"
 
                         # query download uri
-                        $responseDocumentUri = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token
+                        $responseDocumentUri = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token -WhatIf:$false
 
                         # create output
                         $object = [TANSS.TicketDocument]@{
@@ -147,7 +147,7 @@
                 Write-PSFMessage -Level Verbose -Message "Getting images from ticket $($ticketIdItem)"  -Tag "TicketContent", "Query", "QueryImages"
 
                 $apiPath = Format-ApiPath -Path "api/v1/tickets/$ticketIdItem/screenshots"
-                $response = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token
+                $response = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token -WhatIf:$false
                 Push-DataToCacheRunspace -MetaData $response.meta
 
                 if ($response.content) {
@@ -178,7 +178,7 @@
                 Write-PSFMessage -Level Verbose -Message "Getting comments, mails and activities from ticket $($ticketIdItem)"  -Tag "TicketContent", "Query", "QueryHistory"
 
                 $apiPath = Format-ApiPath -Path "api/v1/tickets/history/$ticketIdItem"
-                $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/history/$ticketID" -Token $Token
+                $response = Invoke-TANSSRequest -Type GET -ApiPath "backend/api/v1/tickets/history/$ticketID" -Token $Token -WhatIf:$false
                 Push-DataToCacheRunspace -MetaData $response.meta
 
                 if ($response.content) {

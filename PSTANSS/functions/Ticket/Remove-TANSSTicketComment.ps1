@@ -106,7 +106,7 @@
 
             # Remove comment from ticket
             $apiPath = Format-ApiPath -Path "api/v1/tickets/$($TicketID)/comments/$($Id)"
-            Invoke-TANSSRequest -Type DELETE -ApiPath $apiPath -Token $Token -Confirm:$false
+            Invoke-TANSSRequest -Type DELETE -ApiPath $apiPath -Token $Token -Confirm:$false -WhatIf:$false
         }
     }
 

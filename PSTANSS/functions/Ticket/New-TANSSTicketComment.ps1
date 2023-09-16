@@ -119,7 +119,7 @@
         if ($pscmdlet.ShouldProcess("$(if($IsInternal -eq $true) {"Internal"}else{"Public"}) comment $(if($Title){"with title '$($Title)' "})on Ticket $($TicketID)", "New")) {
             Write-PSFMessage -Level Verbose -Message "New $(if($IsInternal -eq $true) {"Internal"}else{"Public"}) comment $(if($Title){"with title '$($Title)' "})on Ticket $($TicketID)" -Tag "TicketComment", "Add"
 
-            $response = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token
+            $response = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false
 
             if ($response.content) {
                 Write-PSFMessage -Level Verbose -Message "$($response.meta.text)" -Tag "TicketComment", "Added"

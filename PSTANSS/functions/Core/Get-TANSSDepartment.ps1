@@ -72,7 +72,7 @@
         if ($IncludeEmployeeId) {
             Write-PSFMessage -Level Verbose -Message "IncludeEmployeeId switch is specified, going to ask for linked IDs" -Tag "Department", "IncludeEmployeeId"
 
-            $deparmentsWithEmployeeId = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/companies/departments?withEmployees=true" -Token $Token | Select-Object -ExpandProperty content
+            $deparmentsWithEmployeeId = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/companies/departments?withEmployees=true" -Token $Token -WhatIf:$false | Select-Object -ExpandProperty content
 
             $departments = foreach ($department in $departments) {
                 [array]$_employeeIds = $deparmentsWithEmployeeId | Where-Object id -like $department.id | Select-Object -ExpandProperty employeeIds
@@ -83,7 +83,7 @@
             }
             Remove-Variable -Name deparmentsWithEmployeeId, _employeeIds, deparment -Force -WhatIf:$false -Confirm:$false -Verbose:$false -Debug:$false -ErrorAction:Ignore -WarningAction:Ignore -InformationAction:Ignore
         } else {
-            $departments = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/employees/departments" -Token $Token | Select-Object -ExpandProperty content
+            $departments = Invoke-TANSSRequest -Type GET -ApiPath "api/v1/employees/departments" -Token $Token -WhatIf:$false | Select-Object -ExpandProperty content
         }
 
         [array]$filteredDepartments = @()

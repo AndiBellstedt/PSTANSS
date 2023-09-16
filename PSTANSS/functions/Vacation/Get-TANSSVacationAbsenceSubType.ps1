@@ -58,7 +58,7 @@
     }
 
     process {
-        $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token
+        $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token -WhatIf:$false
 
         if ($response) {
             Write-PSFMessage -Level Verbose -Message "Found $(($response.content).count) vacation types" -Tag "Vacation", "VacationType"

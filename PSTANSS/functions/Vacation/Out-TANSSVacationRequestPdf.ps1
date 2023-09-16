@@ -86,9 +86,9 @@
 
         # Check path
         if ($Path) {
-            if($Path.Contains("\")) {
+            if ($Path.Contains("\")) {
                 # Check if pdf filename is specified
-                if($Path.split("\")[-1] -like "*.pdf") {
+                if ($Path.split("\")[-1] -like "*.pdf") {
                     # assume explicit specified PDF
                     $fileName = $Path.split("\")[-1]
                     $resolved = Resolve-Path -Path $Path.TrimEnd( $fileName ) -ErrorAction Ignore
@@ -97,20 +97,20 @@
                     $resolved = Resolve-Path -Path $Path  -ErrorAction Ignore
                 }
 
-                if($resolved) {
+                if ($resolved) {
                     $_path = $resolved | Select-Object -ExpandProperty Path
-                    if($fileName) { $_path = "$($_path)\$($fileName)" }
+                    if ($fileName) { $_path = "$($_path)\$($fileName)" }
                 } else {
                     Stop-PSFFunction -Message "Path '$($Path)' is not valid" -EnableException $true -Cmdlet $pscmdlet -Tag "VacationRequest", "OutPdf", "PathException"
                 }
             } else {
-                if($Path -notlike "*.pdf") {
+                if ($Path -notlike "*.pdf") {
                     Write-PSFMessage -Level Warning -Message "Unusual behaviour, filename for outputfile does not contain '.pdf'" -Tag "VacationRequest", "OutPdf", "FileName"
                 }
                 $fileName = $Path
 
                 $_path = "$(Resolve-Path -Path ".\" -ErrorAction Ignore | Select-Object -ExpandProperty Path)\$fileName"
-                if(-not $_path) {
+                if (-not $_path) {
                     Stop-PSFFunction -Message "Path '$($Path)' is not valid" -EnableException $true -Cmdlet $pscmdlet -Tag "VacationRequest", "OutPdf", "PathException"
                 }
             }
@@ -147,13 +147,11 @@
             }
 
             $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/$($vacationRequest.Id)/pdf"
-            #$apiPath = "backend/api/v1/vacationRequests/$($vacationRequest.Id)/pdf"
-            $downloadLink = Invoke-TANSSRequest -Type Get -ApiPath $apiPath -Pdf
+            $downloadLink = Invoke-TANSSRequest -Type Get -ApiPath $apiPath -Pdf -WhatIf:$false
 
             if ($pscmdlet.ShouldProcess("PDF for vacation request '$vacationRequest.Id' from '$($vacationRequest.EmployeeName)' to '$_path'", "Out")) {
                 Write-PSFMessage -Level Verbose -Message "Ouput PDF for vacation request '$vacationRequest.Id' from '$($vacationRequest.EmployeeName)' to '$_path'" -Tag "VacationRequest", "OutPdf"
                 $apiPath = Format-ApiPath -Path $downloadLink.content.url
-                #$apiPath = "backend/$($downloadLink.content.url)"
                 $param = @{
                     "Uri"           = "$($Token.Server)/$($apiPath)"
                     "Headers"       = @{
@@ -174,7 +172,7 @@
                     continue
                 }
 
-                if($PassThru) {
+                if ($PassThru) {
                     Get-Item -Path $_path
                 }
             }

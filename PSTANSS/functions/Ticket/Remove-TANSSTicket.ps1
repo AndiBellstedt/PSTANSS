@@ -82,7 +82,7 @@
             if ($pscmdlet.ShouldProcess("TicketID $($ticket.Id) '$($ticket.Title)' from TANSS", "Remove")) {
                 Write-PSFMessage -Level Verbose -Message "Removing TicketID $($ticket.Id) '$($ticket.Title)' from TANSS" -Tag "Ticket"
 
-                Invoke-TANSSRequest -Type DELETE -ApiPath $apiPath -Token $Token -ErrorAction Stop -ErrorVariable invokeError
+                Invoke-TANSSRequest -Type DELETE -ApiPath $apiPath -Token $Token -ErrorAction Stop -ErrorVariable invokeError -WhatIf:$false
 
                 if(-not $invokeError) {
                     [TANSS.Lookup]::Tickets.Remove("$($ticket.Id)")

@@ -164,7 +164,7 @@
 
         if (-not $DoNotRegisterConnection) {
             # Make the connection the default connection for further commands
-            Register-TANSSAccessToken -Token $token
+            Register-TANSSAccessToken -Token $token -WhatIf:$false
 
             Write-PSFMessage -Level Significant -Message "Connected to service '($($token.Server))' as '$($token.UserName)' as default connection" -Tag "Connection"
 

@@ -79,7 +79,7 @@
 
                 # Remove projectPhase
                 $apiPath = Format-ApiPath -Path "api/v1/projects/phases/$($projectPhase.Id)"
-                Invoke-TANSSRequest -Type DELETE -ApiPath $apiPath -Token $Token -Confirm:$false -ErrorVariable "invokeError"
+                Invoke-TANSSRequest -Type DELETE -ApiPath $apiPath -Token $Token -Confirm:$false -WhatIf:$false -ErrorVariable "invokeError"
 
                 # cache Lookup refresh
                 [TANSS.Lookup]::Phases.Remove($($projectPhase.Id))

@@ -89,7 +89,7 @@
 
                 # Query VacationRequest by ID
                 $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/$($requesterId)"
-                $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token -Confirm:$false
+                $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token -Confirm:$false -WhatIf:$false
 
                 # Output result
                 Write-PSFMessage -Level Verbose -Message "$($response.meta.text): VacationRequestId $($requesterId)" -Tag "VacationRequest", "Query"
@@ -121,7 +121,7 @@
 
                     # Remove VacationRequest
                     $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/$($vacationRequest.Id)"
-                    $response = Invoke-TANSSRequest -Type DELETE -ApiPath $apiPath -Token $Token -Confirm:$false
+                    $response = Invoke-TANSSRequest -Type DELETE -ApiPath $apiPath -Token $Token -Confirm:$false -WhatIf:$false
                 }
             }
         }

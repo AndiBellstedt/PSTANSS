@@ -455,7 +455,7 @@
         if ($pscmdlet.ShouldProcess("Ticket with title '$($Title)' on companyID '$($CompanyId)'", "New")) {
             Write-PSFMessage -Level Verbose -Message "Creating Ticket with title '$($Title)' on companyID '$($CompanyId)'" -Tag "Ticket" -Data $body
 
-            $response = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token
+            $response = Invoke-TANSSRequest -Type POST -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false
 
             if($response) {
                 Write-PSFMessage -Level Verbose -Message "API Response: $($response.meta.text)"

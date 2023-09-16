@@ -169,14 +169,14 @@
             "TicketId" {
                 # in case of "Query by Id" -> Do the query now
                 $response += foreach ($ticketId in $Id) {
-                    Invoke-TANSSRequest -Type GET -ApiPath "api/v1/tickets/$($ticketId)" -Token $Token
+                    Invoke-TANSSRequest -Type GET -ApiPath "api/v1/tickets/$($ticketId)" -Token $Token -WhatIf:$false
                 }
             }
 
             "CompanyId" {
                 # in case of "Query by CompanyId" -> Do the query now
                 $response += foreach ($_companyId in $CompanyId) {
-                    Invoke-TANSSRequest -Type GET -ApiPath "api/v1/tickets/company/$($_companyId)" -Token $Token
+                    Invoke-TANSSRequest -Type GET -ApiPath "api/v1/tickets/company/$($_companyId)" -Token $Token -WhatIf:$false
                 }
             }
 
@@ -219,7 +219,7 @@
 
         # Do the constructed query, as long, as variable apiPath has a value
         if ($apiPath) {
-            $response += Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token
+            $response += Invoke-TANSSRequest -Type GET -ApiPath $apiPath -Token $Token -WhatIf:$false
         }
 
         if ($response) {

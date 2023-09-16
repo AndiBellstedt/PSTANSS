@@ -184,7 +184,7 @@
 
                     # Query VacationRequest by ID
                     $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/$($requesterId)"
-                    $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token
+                    $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token -WhatIf:$false
 
                     # Output result
                     Write-PSFMessage -Level Verbose -Message "$($response.meta.text): VacationRequestId $($requesterId)" -Tag "VacationRequest"
@@ -288,7 +288,7 @@
                 if ($AddFrontendValue) { $body.Add("addFrontendValues", $AddFrontendValue) }
                 Write-PSFMessage -Level Debug -Message "Prepared body for API request with parameters: '$( [string]::Join("', '", [array]($body.Keys)) )'" -Data $body -Tag "VacationRequest", "Query"
 
-                $response = Invoke-TANSSRequest -Type "PUT" -ApiPath $apiPath -Body $body -Token $Token
+                $response = Invoke-TANSSRequest -Type "PUT" -ApiPath $apiPath -Body $body -Token $Token -WhatIf:$false
                 Write-PSFMessage -Level Verbose -Message "Found $( ([array]($response.content.vacationRequests)).count ) request" -Tag "VacationRequest", "Output"
                 Push-DataToCacheRunspace -MetaData $response.meta
 

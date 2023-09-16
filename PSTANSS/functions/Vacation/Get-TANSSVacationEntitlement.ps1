@@ -51,7 +51,7 @@
     process {
         # Query entitlement for year
         $apiPath = Format-ApiPath -Path "api/v1/vacationRequests/vacationDays/year/$($Year)"
-        $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token
+        $response = Invoke-TANSSRequest -Type "GET" -ApiPath $apiPath -Token $Token -WhatIf:$false
 
         # Output result
         Write-PSFMessage -Level Verbose -Message "$($response.meta.text): Received $($response.meta.properties.extras.count) VacationEntitlement records in year $($Year)" -Tag "VacationEntitlement", "Query"

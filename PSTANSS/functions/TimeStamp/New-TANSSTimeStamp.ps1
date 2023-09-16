@@ -197,6 +197,7 @@
                     "Type"    = "POST"
                     "ApiPath" = $apiPath
                     "Body"    = $body
+                    "WhatIf"  = $false
                 }
                 # Choose token for "personal writing" or "delegated writing for other employees"
                 if ($parameterSetName -like "Default") {

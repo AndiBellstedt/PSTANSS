@@ -182,7 +182,7 @@
 
 
             # Get data from service
-            $response = Invoke-TANSSRequest -Type GET -ApiPath $apiPath
+            $response = Invoke-TANSSRequest -Type GET -ApiPath $apiPath -WhatIf:$false
             Write-PSFMessage -Level Verbose -Message "$($response.meta.text) - $($response.content.timestamps.count) timestamp$(if($response.content.timestamps.count -ne 1){"s"}) received" -Tag "TimeStamp", "TimeStampRequestResult"
 
 
