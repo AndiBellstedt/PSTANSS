@@ -1,4 +1,8 @@
 ﻿# Changelog
+## 1.0.0 New version (2023-09-21)
+- Finally production release
+- Fix: WhatIf behaviour on various commands lead to unexpected WhatIf- & sometimes error-output. -> this behavious goes back that the functions calls subfunktions wihtin the module following the WhatIf preference correctly.
+
 ## 0.6.0 New version (2023-08-20)
 - New: Timestamp & ProjectPhase functions
     - Projects (basically alias functions ticket functions)
